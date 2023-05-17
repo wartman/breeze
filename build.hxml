@@ -1,0 +1,13 @@
+-cp src
+-cp test
+
+-lib kit
+-lib pine
+
+-debug
+-main Test
+
+-D js-es=6
+-D message-reporting=pretty
+
+-js dist/test.js

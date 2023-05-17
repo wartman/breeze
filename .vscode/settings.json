@@ -1,0 +1,11 @@
+{
+  "[haxe]": {
+    "editor.suggestSelection": "first",
+    "editor.inlayHints.enabled": "off",
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true
+  },
+  "cSpell.words": [
+    "overscroll"
+  ]
+}

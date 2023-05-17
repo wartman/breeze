@@ -1,0 +1,27 @@
+package breeze.rule;
+
+macro function font(...exprs);
+macro function fontSize(...exprs);
+macro function fontSmoothing(...exprs);
+macro function fontStyle(...exprs);
+macro function fontWeight(...exprs);
+macro function tracking(...exprs);
+macro function lineClamp(...exprs);
+macro function leading(...exprs);
+macro function listStyle(...exprs);
+macro function listPosition(...exprs);
+macro function textAlign(...exprs);
+macro function textColor(...exprs);
+macro function textDecoration(...exprs);
+macro function textDecorationColor(...exprs);
+macro function textDecorationStyle(...exprs);
+macro function textDecorationThickness(...exprs);
+macro function textUnderlineOffset(...exprs);
+macro function textTransform(...exprs);
+macro function textOverflow(...exprs);
+macro function textIndent(...exprs);
+macro function textVerticalAlign(...exprs);
+macro function whitespace(...exprs);
+macro function wordBreak(...exprs);
+macro function hyphens(...exprs);
+macro function content(...exprs);
