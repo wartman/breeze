@@ -9,7 +9,7 @@ using haxe.io.Path;
 using breeze.core.MacroTools;
 using breeze.core.CssTools;
 
-final CssMeta = ':breeze.css';
+final CssMeta = ':bz.css';
 
 typedef CssEntry = {
 	public var wrapper:Null<String>;
@@ -31,6 +31,13 @@ function registerCss(css:CssEntry, pos:Position) {
 
 	cls.meta.add(CssMeta, [macro $v{css.selector}, macro $v{parsed}], pos);
 
+	// @todo: Only export if this is in export mode.
+	export();
+}
+
+function registerRawCss(id:String, css:String, pos:Position) {
+	var cls = Context.getLocalClass().get();
+	cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
 	// @todo: Only export if this is in export mode.
 	export();
 }

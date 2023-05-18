@@ -1,0 +1,10 @@
+{
+  "compiler": {
+    "output": "assets/examples.css"
+  },
+  "colors": {
+    "example": {
+      "0": "orange"
+    }
+  }
+}

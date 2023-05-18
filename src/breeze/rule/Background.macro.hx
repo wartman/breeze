@@ -30,7 +30,7 @@ function bgColor(...exprs:Expr):Expr {
 	var args = prepareArguments(exprs);
 	return switch args.args {
 		case [colorExpr]:
-			var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
+			var color = colorExpr.extractCssValue([Word(['inherit', 'currentColor', 'transparent']), ColorExpr]);
 			createRule({
 				prefix: 'bg',
 				type: [color],

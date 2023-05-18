@@ -61,9 +61,9 @@ function containerBreakpoint(size:Expr, ...exprs:Expr) {
 	var words = [for (name in breakpoints.keys()) name].concat(['full']);
 	var breakpoint = size.extractCssValue([Word(words), Unit]);
 	var constraint = switch breakpoint {
-		case 'full': 'width < 100%';
-		case name if (breakpoints.exists(name)): 'width < ${breakpoints.get(name)}';
-		case unit: 'width < $unit';
+		case 'full': 'min-width: 100%';
+		case name if (breakpoints.exists(name)): 'min-width: ${breakpoints.get(name)}';
+		case unit: 'min-width: $unit';
 	}
 	var name = 'container-$breakpoint';
 	return wrapWithVariant(name, entry -> {

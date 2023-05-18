@@ -137,7 +137,7 @@ function textAlign(...exprs:Expr) {
 }
 
 function textColor(...exprs:Expr) {
-	return createSimpleRule('text-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])]);
+	return createSimpleRule('text-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])], {property: 'color'});
 }
 
 function textDecoration(...exprs:Expr) {
