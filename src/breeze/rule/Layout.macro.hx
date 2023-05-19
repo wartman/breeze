@@ -215,7 +215,7 @@ function layer(...exprs:Expr) {
 			var layer = layerExpr.extractCssValue([Integer]);
 			return createRule({
 				prefix: 'layer',
-				type: [layer],
+				type: [direction == '-' ? 'neg' : null, layer].filter(s -> s != null),
 				variants: args.variants,
 				properties: [
 					{
