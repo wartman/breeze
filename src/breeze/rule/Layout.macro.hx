@@ -221,8 +221,8 @@ function layer(...exprs:Expr) {
 					{
 						name: 'z-index',
 						value: switch direction {
-							case '-': '-${direction}';
-							default: direction;
+							case '-': '-${layer}';
+							default: layer;
 						}
 					}
 				],
