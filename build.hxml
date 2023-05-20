@@ -1,10 +1,12 @@
+extraParams.hxml
+
 -cp src
 -cp test
 
 -lib kit
 -lib pine
 
--debug
+# -debug
 -main Test
 
 -D js-es=6

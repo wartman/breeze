@@ -1,5 +1,7 @@
 package breeze;
 
+import haxe.Resource;
+
 class Config {
 	public static function load(?file:String) {
 		// @todo: this will load a JSON file relative to the
@@ -18,6 +20,8 @@ class Config {
 		return config;
 	}
 
+	public var includePreflight:Bool = true;
+	public var preflight = Resource.getString(#if debug 'preflight' #else 'preflight.min' #end);
 	public final fontFamilies:Map<String, String> = [
 		'sans' =>
 		'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
@@ -83,7 +87,59 @@ class Config {
 	public final colors:Map<String, Map<String, String>> = [
 		'black' => ['0' => 'rgb(0 0 0)'],
 		'white' => ['0' => 'rgb(255 255 255)'],
-		'slate' => ['50' => '#f8fafc', '100' => '#f1f5f9', '200' => '#e2e8f0']
+		'gray' => [
+			'50' => 'rgb(249, 249, 249)',
+			'100' => 'rgb(244, 244, 245)',
+			'200' => 'rgb(228, 228, 231)',
+			'300' => 'rgb(212, 212, 216)',
+			'400' => 'rgb(161, 161, 171)',
+			'500' => 'rgb(113, 113, 122)',
+			'600' => 'rgb(82, 82, 91)',
+			'700' => 'rgb(63, 63, 70)',
+			'800' => 'rgb(39, 39, 42)',
+			'900' => 'rgb(24, 24, 27)',
+			'950' => 'rgb(19, 19, 22)'
+		],
+		'sky' => [
+			'50' => 'rgb(240, 249, 255)',
+			'100' => 'rgb(224, 242, 254)',
+			'200' => 'rgb(186, 230, 253)',
+			'300' => 'rgb(125, 211, 252)',
+			'400' => 'rgb(56, 189, 248)',
+			'500' => 'rgb(14, 165, 233)',
+			'600' => 'rgb(2, 132, 199)',
+			'700' => 'rgb(3, 105, 161)',
+			'800' => 'rgb(7, 89, 133)',
+			'900' => 'rgb(12, 74, 110)',
+			'950' => 'rgb(11, 50, 73)',
+		],
+		'green' => [
+			'50' => 'rgb(240, 253, 244)',
+			'100' => 'rgb(220, 252, 231)',
+			'200' => 'rgb(187, 247, 208)',
+			'300' => 'rgb(134, 239, 172)',
+			'400' => 'rgb(74, 222, 128)',
+			'500' => 'rgb(34, 197, 94)',
+			'600' => 'rgb(22, 163, 74)',
+			'700' => 'rgb(21, 128, 61)',
+			'800' => 'rgb(22, 101, 52)',
+			'900' => 'rgb(20, 83, 45)',
+			'950' => 'rgb(12, 49, 27)',
+		],
+		'red' => [
+			'50' => 'rgb(254, 242, 242)',
+			'100' => 'rgb(254, 226, 226)',
+			'200' => 'rgb(254, 202, 202)',
+			'300' => 'rgb(252, 165, 165)',
+			'400' => 'rgb(248, 113, 113)',
+			'500' => 'rgb(239, 68, 68)',
+			'600' => 'rgb(220, 38, 38)',
+			'700' => 'rgb(185, 28, 28)',
+			'800' => 'rgb(153, 27, 27)',
+			'900' => 'rgb(127, 29, 29)',
+			'950' => 'rgb(80, 20, 20)',
+		],
+		// @todo: more
 	];
 	public final animations:Map<String, String> = [
 		'spin' => '1s linear infinite',

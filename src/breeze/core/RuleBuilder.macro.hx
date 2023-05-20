@@ -22,7 +22,7 @@ typedef RuleProperty = {
 }
 
 function createRule(rule:Rule):Expr {
-	var css = '{ ${parseProperties(rule.properties)} }';
+	var css = '{${parseProperties(rule.properties)}}';
 	var entry:CssEntry = {
 		selector: parseClassName(rule),
 		wrapper: null,
@@ -171,14 +171,3 @@ function prepareArguments(exprs:Array<Expr>):{args:Array<Expr>, variants:Array<S
 		variants: variants
 	};
 }
-
-// function createVariantRule(variant:Variant, rule:Rule) {
-// 	var selector = parseVariantClassName(variant, rule);
-// 	var body
-// 	registerCss(selector, variant.parse(selector, rule), rule.pos);
-// 	return macro breeze.ClassName.ofString($v{selector});
-// }
-// function parseVariantClassName(variant:Variant, rule:Rule) {
-// 	var name = parseClassName(rule);
-// 	return name + '--' + variant.name;
-// }

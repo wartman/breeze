@@ -23,10 +23,10 @@ function registerCss(css:CssEntry, pos:Position) {
 
 	var parsed = '.${css.selector.sanitizeCssClassName()}';
 	if (css.modifiers.length > 0) parsed += css.modifiers.join('');
-	parsed += ' ' + css.css;
+	parsed += css.css;
 
 	if (css.wrapper != null) {
-		parsed = css.wrapper + ' {$parsed}';
+		parsed = css.wrapper + '{$parsed}';
 	}
 
 	cls.meta.add(CssMeta, [macro $v{css.selector}, macro $v{parsed}], pos);
@@ -35,7 +35,8 @@ function registerCss(css:CssEntry, pos:Position) {
 	export();
 }
 
-function registerRawCss(id:String, css:String, pos:Position) {
+function registerRawCss(id:String, css:String, ?pos:Position) {
+	var pos = pos ?? Context.currentPos();
 	var cls = Context.getLocalClass().get();
 	cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
 	// @todo: Only export if this is in export mode.
@@ -75,9 +76,14 @@ private function export() {
 			default:
 		}
 
-		var data = [for (_ => css in output) css].join('\n');
+		var data = [for (_ => css in output) css];
 		var path = getExportFilename();
-		File.saveContent(path, data);
+
+		if (Config.instance().includePreflight) {
+			data.unshift(Config.instance().preflight);
+		}
+
+		File.saveContent(path, data.join(#if debug '\n' #else '' #end));
 	});
 }
 

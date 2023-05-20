@@ -22,7 +22,10 @@ function main() {
 		borderWidth(1),
 		borderStyle('solid'),
 		borderColor('black', 0),
-		breeze.Css.rule('--test: #ccc; background-color: var(--test)')
+		breeze.Css.rule('
+			--test: #ccc;
+			background-color: var(--test);
+		')
 	];
 
 	mount(Browser.document.getElementById('root'), () -> new Html<'div'>({
@@ -38,7 +41,7 @@ function main() {
 					font('sans'),
 					fontSize('base'),
 					fontWeight('bold'),
-					modifier('hover', bgColor('slate', 50))
+					modifier('hover', bgColor('gray', 50))
 				]),
 				children: [
 					new Html<'div'>({
@@ -61,7 +64,7 @@ function main() {
 			}),
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					bgColor('slate', 200),
+					bgColor('sky', 500),
 					borderStyle('dotted'),
 					borderColor('black', 0),
 					borderWidth('2px'),

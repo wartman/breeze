@@ -6,14 +6,14 @@ import haxe.macro.Context;
 import haxe.macro.Expr;
 import breeze.core.RuleBuilder;
 
+using StringTools;
 using breeze.core.MacroTools;
 using haxe.macro.Tools;
 
 /**
-	Create an arbitrary CSS rule. No checks will be performed --
-	this is intended entirely as a way to add CSS that Breeze doesn't
-	provide. Only use this as a last resort and check to see if there
-	is a function Breeze has!
+	Create an arbitrary CSS rule. No checks will be performed to ensure the
+	css is valid -- this is intended entirely as an escape hatch if you need
+	functionality that Breeze does not provide.
 
 	```haxe
 	var className = Css.rule('
@@ -23,13 +23,13 @@ using haxe.macro.Tools;
 	```
 
 	Note that you should *not* wrap the css in curly braces (see the example
-	above).
+	above). Breeze will do this for you.
 **/
 function rule(...expr:Expr) {
 	var args = prepareArguments(expr);
 	return switch args.args {
 		case [expr]:
-			var css = '{' + expr.extractString() + '}';
+			var css = '{ ' + normalizeCss(expr.extractString()) + ' }';
 			var entry:CssEntry = {
 				selector: createClassName(),
 				wrapper: null,
@@ -55,4 +55,8 @@ private function createClassName() {
 	});
 	var pos = Context.currentPos().getInfos();
 	return 'bz-$id-${pos.max}';
+}
+
+private function normalizeCss(value:String) {
+	return value.replace('\r\n', '\n').split('\n').map(part -> part.trim()).join(' ').trim();
 }
