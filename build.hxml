@@ -6,7 +6,7 @@ extraParams.hxml
 -lib kit
 -lib pine
 
-# -debug
+-debug
 -main Test
 
 -D js-es=6

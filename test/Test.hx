@@ -8,6 +8,7 @@ import breeze.rule.Sizing;
 import breeze.rule.Spacing;
 import breeze.rule.Transition;
 import breeze.rule.Typography;
+import breeze.rule.Filter;
 import breeze.variant.Breakpoint;
 import breeze.variant.Pseudo;
 import js.Browser;
@@ -22,6 +23,8 @@ function main() {
 		borderWidth(1),
 		borderStyle('solid'),
 		borderColor('black', 0),
+		dropShadow('md'),
+		modifier('hover', dropShadow('xxl')),
 		breeze.Css.rule('
 			--test: #ccc;
 			background-color: var(--test);
