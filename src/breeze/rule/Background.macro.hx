@@ -2,6 +2,7 @@ package breeze.rule;
 
 import breeze.core.ColorTools;
 import breeze.core.RuleBuilder;
+import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -49,7 +50,7 @@ function bgColor(...exprs:Expr):Expr {
 				pos: Context.currentPos()
 			});
 		default:
-			Context.error('Expected 1 to 2 arguments', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 

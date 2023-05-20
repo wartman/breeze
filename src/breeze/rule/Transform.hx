@@ -1,3 +1,7 @@
 package breeze.rule;
 
-// @todo: https://tailwindcss.com/docs/scale
+macro function scale(...exprs);
+macro function rotate(...exprs);
+macro function translate(...exprs);
+macro function skew(...exprs);
+macro function origin(...exprs);

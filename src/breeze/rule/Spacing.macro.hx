@@ -3,6 +3,7 @@ package breeze.rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import breeze.core.RuleBuilder;
+import breeze.core.ErrorTools;
 
 using breeze.core.ValueTools;
 using breeze.core.MacroTools;
@@ -16,7 +17,7 @@ function pad(...expr:Expr) {
 		case [typeExpr, sizeExpr]:
 			createSpacingRule('p', 'padding', typeExpr, sizeExpr, args.variants);
 		default:
-			Context.error('Expected at least one argument', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 
@@ -28,7 +29,7 @@ function margin(...expr:Expr) {
 		case [typeExpr, sizeExpr]:
 			createSpacingRule('m', 'margin', typeExpr, sizeExpr, args.variants);
 		default:
-			Context.error('Expected at least one argument', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 
@@ -54,7 +55,7 @@ function between(...expr:Expr) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 1 argument', Context.currentPos());
+			expectedArguments(1);
 	}
 }
 

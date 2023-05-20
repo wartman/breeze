@@ -54,7 +54,7 @@ function createSimpleRule(prefix:String, exprs:Array<Expr>, allowed:Array<CssVal
 				pos: Context.currentPos()
 			});
 		default:
-			Context.error('Expected one argument', Context.currentPos());
+			ErrorTools.expectedArguments(1);
 	}
 }
 

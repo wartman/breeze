@@ -2,9 +2,11 @@
   "compiler": {
     "output": "assets/examples.css"
   },
-  "colors": {
-    "example": {
-      "0": "orange"
+  "theme": {
+    "colors": {
+      "example": {
+        "0": "orange"
+      }
     }
   }
 }

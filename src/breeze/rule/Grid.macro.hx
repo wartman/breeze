@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.RuleBuilder;
-import haxe.macro.Context;
+import breeze.core.ErrorTools;
 import haxe.macro.Expr;
 
 using breeze.core.CssTools;
@@ -50,7 +50,7 @@ function column(...exprs:Expr) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 1 or 2 arguments', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 
@@ -96,7 +96,7 @@ function row(...exprs:Expr) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 1 or 2 arguments', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 
@@ -123,7 +123,7 @@ function flow(...exprs:Expr) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 1 or 2 arguments', Context.currentPos());
+			expectedArguments(1, 2);
 	}
 }
 

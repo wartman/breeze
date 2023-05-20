@@ -14,6 +14,7 @@ enum CssValueType {
 	ColorExpr;
 	ColorName;
 	Integer;
+	Number;
 	Unit;
 }
 
@@ -52,7 +53,9 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 				e.pos.createError(allowed);
 			}
 			value;
-		case EConst(CInt(i)) if (allowed.contains(Integer)):
+		case EConst(CInt(i)) if (allowed.contains(Integer) || allowed.contains(Number)):
+			return Std.string(i);
+		case EConst(CFloat(i)) if (allowed.contains(Number)):
 			return Std.string(i);
 		case EConst(CInt(i)) | EConst(CFloat(i)):
 			if (!allowed.contains(Unit) && !allowed.contains(All)) {
@@ -71,6 +74,7 @@ function createError(pos:Position, allowed:Array<CssValueType>) {
 	var expected = allowed.map(type -> switch type {
 		case All: 'any expression';
 		case Integer: 'an integer';
+		case Number: 'an integer or a float';
 		case Word(allowed): '[' + allowed.map(value -> '"$value"').join('|') + ']';
 		case ColorExpr: 'an arbitrary color (using a hex like #ccc or an RGB/A function)';
 		case ColorName: 'a pre-defined color (like `black` or `slate`)';
