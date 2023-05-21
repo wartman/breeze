@@ -34,7 +34,7 @@ function bgColor(...exprs:Expr):Expr {
 			var color = colorExpr.extractCssValue([Word(['inherit', 'currentColor', 'transparent']), ColorExpr]);
 			createRule({
 				prefix: 'bg',
-				type: [color],
+				type: [color.sanitizeClassName()],
 				variants: args.variants,
 				properties: [{name: 'background-color', value: color}],
 				pos: Context.currentPos()

@@ -1,5 +1,6 @@
 package breeze.core;
 
+import breeze.core.CssTools.sanitizeClassName;
 import haxe.macro.Context;
 import breeze.core.Registry;
 import haxe.macro.Expr;
@@ -48,7 +49,7 @@ function createSimpleRule(prefix:String, exprs:Array<Expr>, allowed:Array<CssVal
 			var value = valueExpr.extractCssValue(allowed);
 			createRule({
 				prefix: prefix,
-				type: [value.sanitizeClassName()],
+				type: [value],
 				variants: args.variants,
 				properties: [{name: property, value: process(value)}],
 				pos: Context.currentPos()
@@ -60,7 +61,7 @@ function createSimpleRule(prefix:String, exprs:Array<Expr>, allowed:Array<CssVal
 
 function parseClassName(rule:Rule) {
 	var selector = rule.prefix;
-	var type = rule?.type?.filter(f -> f != null);
+	var type = rule?.type?.filter(f -> f != null) ?.map(sanitizeClassName);
 	if (type != null && type.length > 0) {
 		selector += '-' + type.join('-');
 	}

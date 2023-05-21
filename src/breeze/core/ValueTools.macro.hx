@@ -47,6 +47,10 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 							break;
 						}
 					}
+				// @todo: probably need a regular expression here to check color expressions.
+				case ColorExpr if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('rbga')):
+					passing = true;
+					break;
 				default:
 			}
 			if (!passing) {

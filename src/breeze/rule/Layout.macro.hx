@@ -25,7 +25,7 @@ function container(...exprs:Expr) {
 			var breakpoint = size.extractCssValue([Word(names), Unit]);
 			return createRule({
 				prefix: 'container',
-				type: [breakpoint.sanitizeClassName()],
+				type: [breakpoint],
 				variants: args.variants,
 				properties: [
 					switch breakpoint {

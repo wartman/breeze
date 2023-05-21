@@ -1,2 +1,2 @@
---resource res/preflight.css@preflight
---resource res/preflight.min.css@preflight.min
+--resource ./res/preflight.css@preflight
+--resource ./res/preflight.min.css@preflight.min

@@ -41,7 +41,7 @@ function between(...expr:Expr) {
 			var value = valueExpr.extractCssValue([Unit]);
 			return createRule({
 				prefix: 'between',
-				type: [direction, value.sanitizeClassName()],
+				type: [direction, value],
 				variants: args.variants.concat([
 					maybeRegisterVariant('between-wrapper', css -> {
 						css.modifiers.push(' > :not([hidden]) ~ :not([hidden])');
@@ -64,7 +64,7 @@ private function createSpacingRule(prefix:String, property:String, typeExpr:Null
 	var size = sizeExpr.extractCssValue([Word(['auto']), Unit]);
 	var rule:Rule = {
 		prefix: prefix,
-		type: [type, size.sanitizeClassName()],
+		type: [type, size],
 		variants: variants,
 		properties: switch type {
 			case null: [{name: property, value: size}];

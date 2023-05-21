@@ -12,7 +12,6 @@ using breeze.core.ValueTools;
 function shadow(...exprs:Expr) {
 	createSimpleRule('shadow', exprs, [Word(['sm', 'md', 'lg', 'xl', 'xxl', 'inner', 'none'])], {
 		property: 'box-shadow',
-		// The following is stolen directly from the TW site:
 		process: value -> switch value {
 			case 'sm': '0 1px 2px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))';
 			case 'md': '0 1px 3px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1))';
