@@ -1,0 +1,10 @@
+{
+  "name": "breeze",
+  "description": "A macro-based Haxe port of Tailwind",
+  "classPath": "src",
+  "contributors": ["wartman"],
+  "dependencies": {},
+  "version": "0.0.1",
+  "license": "MIT",
+  "releasenote": "Pre-alpha release"
+}

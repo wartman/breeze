@@ -1,7 +1,5 @@
 package breeze;
 
-import haxe.Resource;
-
 class Config {
 	public static function load(?file:String) {
 		// @todo: this will load a JSON file relative to the
@@ -21,7 +19,7 @@ class Config {
 	}
 
 	public var includePreflight:Bool = true;
-	public var preflight = Resource.getString(#if debug 'preflight' #else 'preflight.min' #end);
+	public var preflight = breeze.core.Preflight.defaultPreflight;
 	public final fontFamilies:Map<String, String> = [
 		'sans' =>
 		'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
