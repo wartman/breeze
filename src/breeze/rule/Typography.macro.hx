@@ -1,6 +1,8 @@
 package breeze.rule;
 
+import breeze.core.ColorTools;
 import breeze.core.RuleBuilder;
+import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -137,7 +139,30 @@ function textAlign(...exprs:Expr) {
 }
 
 function textColor(...exprs:Expr) {
-	return createSimpleRule('text-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])], {property: 'color'});
+	var args = prepareArguments(exprs);
+	return switch args.args {
+		case [colorExpr]:
+			var color = colorExpr.extractCssValue([Word(['inherit', 'currentColor', 'transparent']), ColorExpr]);
+			createRule({
+				prefix: 'text-color',
+				type: [color.sanitizeClassName()],
+				variants: args.variants,
+				properties: [{name: 'color', value: color}],
+				pos: Context.currentPos()
+			});
+		case [colorExpr, intensityExpr]:
+			var color = colorExpr.extractCssValue([ColorName]);
+			var intensity = intensityExpr.extractCssValue([Integer]);
+			createRule({
+				prefix: 'text-color',
+				type: [color, intensity],
+				variants: args.variants,
+				properties: [{name: 'color', value: parseColor(color, intensity)}],
+				pos: Context.currentPos()
+			});
+		default:
+			expectedArguments(1, 2);
+	}
 }
 
 function textDecoration(...exprs:Expr) {

@@ -24,7 +24,7 @@ function main() {
 		borderStyle('solid'),
 		borderColor('black', 0),
 		dropShadow('md'),
-		modifier('hover', dropShadow('xxl')),
+		hover(dropShadow('xxl')),
 		breeze.Css.rule('
 			--test: #ccc;
 			background-color: var(--test);
@@ -44,7 +44,7 @@ function main() {
 					font('sans'),
 					fontSize('base'),
 					fontWeight('bold'),
-					modifier('hover', bgColor('gray', 50))
+					hover(bgColor('gray', 50))
 				]),
 				children: [
 					new Html<'div'>({
@@ -74,7 +74,7 @@ function main() {
 					width('50px'),
 					height('50px'),
 					animation('bounce'),
-					modifier('hover', animation('pulse'), textColor('white'), bgColor('black', 0)),
+					hover(animation('pulse'), textColor('white', 0), bgColor('black', 0)),
 					display('flex'),
 					alignItems('center'),
 					justify('center')
@@ -87,7 +87,7 @@ function main() {
 					width('50px'),
 					height('50px'),
 					animation('spin'),
-					textColor('white'),
+					textColor('rgba(255 255 255 0.5)'),
 					display('flex'),
 					alignItems('center'),
 					justify('center')

@@ -1,10 +1,10 @@
 package breeze.core;
 
-import breeze.core.ColorTools.isColorName;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
 using StringTools;
+using breeze.core.ColorTools;
 using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
@@ -30,7 +30,7 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 			}
 			var unit = parseCssUnit(value, e.pos);
 			return '${unit.num}${unit.unit}';
-		case EConst(CString(value, _)) if (allowed.contains(ColorName) && isColorName(value)):
+		case EConst(CString(value, _)) if (allowed.contains(ColorName) && value.isColorName()):
 			return value;
 		case EConst(CString(value, _)):
 			var passing = false;
@@ -47,8 +47,7 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 							break;
 						}
 					}
-				// @todo: probably need a regular expression here to check color expressions.
-				case ColorExpr if (value.startsWith('#') || value.startsWith('rgb') || value.startsWith('rbga')):
+				case ColorExpr if (value.isColorExpr()):
 					passing = true;
 					break;
 				default:

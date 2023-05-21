@@ -13,6 +13,17 @@ function parseColor(name:String, intensity:String) {
 	return getColorIntensity(name, intensity);
 }
 
+final ColorExprHex = ~/([a-f0-9]{3}){1,2}$/i;
+final ColorExprFunction = ~/^rgb\(([0-9]{3}[ ,]?){3}\)$/g;
+final ColorExprWithAlphaFunction = ~/^rgba\(([0-9]{3}[ ,]){3}[0-9\.]+\)$/g;
+
+function isColorExpr(value:String) {
+	if (ColorExprHex.match(value)) return true;
+	if (ColorExprFunction.match(value)) return true;
+	if (ColorExprWithAlphaFunction.match(value)) return true;
+	return false;
+}
+
 function isColorName(name:String) {
 	return getColorConfig().exists(name);
 }
