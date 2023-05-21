@@ -33,29 +33,19 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 		case EConst(CString(value, _)) if (allowed.contains(ColorName) && value.isColorName()):
 			return value;
 		case EConst(CString(value, _)):
-			var passing = false;
 			for (item in allowed) switch item {
 				case All:
-					passing = true;
-					break;
+					return value;
 				case Word(allowed) if (allowed == null || allowed.length == 0):
-					passing = true;
-					break;
-				case Word(allowed): for (word in allowed) {
-						if (value == word) {
-							passing = true;
-							break;
-						}
-					}
+					return value;
+				case Word(allowed):
+					for (word in allowed) if (value == word) return value;
 				case ColorExpr if (value.isColorExpr()):
-					passing = true;
-					break;
+					return value;
 				default:
 			}
-			if (!passing) {
-				e.pos.createError(allowed);
-			}
-			value;
+			e.pos.createError(allowed);
+			'';
 		case EConst(CInt(i)) if (allowed.contains(Integer) || allowed.contains(Number)):
 			return Std.string(i);
 		case EConst(CFloat(i)) if (allowed.contains(Number)):
