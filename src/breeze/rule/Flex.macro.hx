@@ -1,6 +1,7 @@
 package breeze.rule;
 
 import breeze.core.RuleBuilder;
+import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -8,19 +9,25 @@ using breeze.core.MacroTools;
 using breeze.core.CssTools;
 using breeze.core.ValueTools;
 
-function flexBasis(...exprs) {
+function display(...exprs:Expr):Expr {
+	var exprs = exprs.toArray();
+	exprs.unshift(macro 'flex');
+	return Layout.display(...exprs);
+}
+
+function basis(...exprs) {
 	return createSimpleRule('flex-basis', exprs, [Unit]);
 }
 
-function flexDirection(...exprs) {
+function direction(...exprs) {
 	return createSimpleRule('flex-direction', exprs, [Word(['row', 'row-reverse', 'column', 'column-reverse'])]);
 }
 
-function flexWrap(...exprs) {
+function wrap(...exprs) {
 	return createSimpleRule('flex-wrap', exprs, [Word(['wrap', 'wrap-reverse', 'nowrap'])]);
 }
 
-function flex(...exprs) {
+function define(...exprs) {
 	return createSimpleRule('flex', exprs, [Word(['auto', 'initial', 'none']), Integer], {
 		process: value -> switch value {
 			case 'auto': '1 1 auto';
@@ -36,7 +43,7 @@ function flex(...exprs) {
 	Allow a flex item to grow to any space. You can also provide
 	an integer that will control how much the flex item will grow.
 **/
-function flexGrow(...exprs) {
+function grow(...exprs) {
 	var args = prepareArguments(exprs);
 	return switch args.args {
 		case []:
@@ -56,7 +63,7 @@ function flexGrow(...exprs) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 0 or 1 argument', Context.currentPos());
+			expectedArguments(0, 1);
 	}
 }
 
@@ -64,7 +71,7 @@ function flexGrow(...exprs) {
 	Allow a flex item to shrink if needed. You can also provide
 	an integer that will control how much the flex item will shrink.
 **/
-function flexShrink(...exprs) {
+function shrink(...exprs) {
 	var args = prepareArguments(exprs);
 	return switch args.args {
 		case []:
@@ -84,7 +91,7 @@ function flexShrink(...exprs) {
 				pos: valueExpr.pos
 			});
 		default:
-			Context.error('Expected 0 or 1 argument', Context.currentPos());
+			expectedArguments(0, 1);
 	}
 }
 

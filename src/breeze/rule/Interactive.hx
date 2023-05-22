@@ -1,17 +1,33 @@
 package breeze.rule;
 
-macro function accentColor(...exprs);
-macro function appearance(...exprs);
-macro function cursor(...exprs);
-macro function caretColor(...exprs);
-macro function pointerEvents(...exprs);
-macro function resize(...exprs);
-macro function scrollBehavior(...exprs);
-macro function scrollMargin(...exprs);
-macro function scrollPadding(...exprs);
-macro function scrollSnapAlign(...exprs);
-macro function scrollSnapStop(...exprs);
-macro function scrollSnapType(...exprs);
-macro function touch(...exprs);
-macro function userSelect(...exprs);
-macro function willChange(...exprs);
+class Interactive {
+	macro public static function accentColor(...exprs);
+
+	macro public static function appearance(...exprs);
+
+	macro public static function cursor(...exprs);
+
+	macro public static function caretColor(...exprs);
+
+	macro public static function pointerEvents(...exprs);
+
+	macro public static function resize(...exprs);
+
+	macro public static function scrollBehavior(...exprs);
+
+	macro public static function scrollMargin(...exprs);
+
+	macro public static function scrollPadding(...exprs);
+
+	macro public static function scrollSnapAlign(...exprs);
+
+	macro public static function scrollSnapStop(...exprs);
+
+	macro public static function scrollSnapType(...exprs);
+
+	macro public static function touch(...exprs);
+
+	macro public static function userSelect(...exprs);
+
+	macro public static function willChange(...exprs);
+}

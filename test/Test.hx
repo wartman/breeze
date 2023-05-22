@@ -1,50 +1,45 @@
-import breeze.ClassName;
-import breeze.rule.Background;
-import breeze.rule.Border;
-import breeze.rule.Flex;
-import breeze.rule.Grid;
-import breeze.rule.Layout;
-import breeze.rule.Sizing;
-import breeze.rule.Spacing;
-import breeze.rule.Transition;
-import breeze.rule.Typography;
-import breeze.rule.Filter;
-import breeze.variant.Breakpoint;
-import breeze.variant.Pseudo;
 import js.Browser;
 import pine.html.Html;
 import pine.html.client.Client;
 
+using Breeze;
+
 function main() {
 	var itemStyle:ClassName = [
-		pad('y', 1),
-		pad('x', 2),
-		borderRadius(3),
-		borderWidth(1),
-		borderStyle('solid'),
-		borderColor('black', 0),
-		dropShadow('md'),
-		hover(dropShadow('xxl')),
-		breeze.Css.rule('
+		Spacing.pad('y', 1),
+		Spacing.pad('x', 2),
+		Border.radius(3),
+		Border.width(1),
+		Border.style('solid'),
+		Border.color('black', 0),
+		ColorScheme.dark(Border.color('white', 0)),
+		Filter.dropShadow('md'),
+		Modifier.hover(Filter.dropShadow('xxl')),
+		Css.rule('
 			--test: #ccc;
 			background-color: var(--test);
 		')
 	];
 
 	mount(Browser.document.getElementById('root'), () -> new Html<'div'>({
-		className: ClassName.ofArray([container('md'), breakpoint('lg', container('lg')), margin('x', 'auto')]),
+		className: ClassName.ofArray([
+			Layout.container('md'),
+			Breakpoint.viewport('lg', Layout.container('lg')),
+			ColorScheme.dark(Background.color('gray', 500)),
+			Spacing.margin('x', 'auto')
+		]),
 		children: [
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					display('grid'),
-					gridColumns(2),
-					breakpoint('sm', gridColumns(3)),
-					breakpoint('lg', gridColumns(4)),
-					gap(3),
-					font('sans'),
-					fontSize('base'),
-					fontWeight('bold'),
-					hover(bgColor('gray', 50))
+					Grid.display(),
+					Grid.columns(2),
+					Breakpoint.viewport('sm', Grid.columns(3)),
+					Breakpoint.viewport('lg', Grid.columns(4)),
+					Flex.gap(3),
+					Typography.font('sans'),
+					Typography.fontSize('base'),
+					Typography.fontWeight('bold'),
+					Modifier.hover(Background.color('gray', 50))
 				]),
 				children: [
 					new Html<'div'>({
@@ -67,30 +62,30 @@ function main() {
 			}),
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					bgColor('sky', 500),
-					borderStyle('dotted'),
-					borderColor('black', 0),
-					borderWidth('2px'),
-					width('50px'),
-					height('50px'),
-					animation('bounce'),
-					hover(animation('pulse'), textColor('white', 0), bgColor('black', 0)),
-					display('flex'),
-					alignItems('center'),
-					justify('center')
+					Background.color('sky', 500),
+					Border.style('dotted'),
+					Border.color('black', 0),
+					Border.width('2px'),
+					Sizing.width('50px'),
+					Sizing.height('50px'),
+					Transition.animation('bounce'),
+					Modifier.hover(Transition.animation('pulse'), Typography.textColor('white', 0), Background.color('black', 0)),
+					Layout.display('flex'),
+					Flex.alignItems('center'),
+					Flex.justify('center')
 				]),
 				children: 'weee'
 			}),
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					bgColor('black', 0),
-					width('50px'),
-					height('50px'),
-					animation('spin'),
-					textColor('rgba(255 255 255 0.5)'),
-					display('flex'),
-					alignItems('center'),
-					justify('center')
+					Background.color('black', 0),
+					Sizing.width('50px'),
+					Sizing.height('50px'),
+					Transition.animation('spin'),
+					Typography.textColor('rgba(255 255 255 0.5)'),
+					Flex.display(),
+					Flex.alignItems('center'),
+					Flex.justify('center')
 				]),
 				children: 'woo'
 			})

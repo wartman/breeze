@@ -1,10 +1,19 @@
 package breeze.rule;
 
-macro function bgAttachment(...exprs);
-macro function bgClip(...exprs);
-macro function bgColor(...exprs);
-macro function bgOrigin(...exprs);
-macro function bgPosition(...exprs);
-macro function bgRepeat(...exprs);
-macro function bgSize(...exprs);
-macro function bgImage(...exprs);
+class Background {
+	macro static public function attachment(...exprs);
+
+	macro static public function clip(...exprs);
+
+	macro static public function color(...exprs);
+
+	macro static public function origin(...exprs);
+
+	macro static public function position(...exprs);
+
+	macro static public function repeat(...exprs);
+
+	macro static public function size(...exprs);
+
+	macro static public function image(...exprs);
+}

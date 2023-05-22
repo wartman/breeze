@@ -7,10 +7,10 @@ import breeze.core.RuleBuilder;
 using breeze.core.ValueTools;
 
 /**
-	The `breakpoint` function will wrap the rules you give it in the given
+	The `Breakpoint.viewport` function will wrap the rules you give it in the given
 	breakpoint.
 
-	Valid breakpoints:
+	Valid breakpoints (by default):
 	- sm: min-width: 640px
 	- md: min-width: 768px
 	- lg: min-width: 1024px
@@ -20,7 +20,7 @@ using breeze.core.ValueTools;
 	You can also provide your own arbitrary units (can be pixels or bare floats, 
 	which will be converted to `rem` units).
 **/
-function breakpoint(size:Expr, ...exprs:Expr) {
+function viewport(size:Expr, ...exprs:Expr) {
 	var breakpoints = Config.instance().breakpoints;
 	var words = [for (name in breakpoints.keys()) name].concat(['full']);
 	var breakpoint = size.extractCssValue([Word(words), Unit]);
@@ -45,7 +45,7 @@ function breakpoint(size:Expr, ...exprs:Expr) {
 	but it uses the new `@container` query rather than a `@media` query. You
 	can learn more about it [here](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries).
 
-	Valid breakpoints:
+	Valid breakpoints (by default):
 	- sm: min-width: 640px
 	- md: min-width: 768px
 	- lg: min-width: 1024px
@@ -55,7 +55,7 @@ function breakpoint(size:Expr, ...exprs:Expr) {
 	You can also provide your own arbitrary units (can be pixels or bare floats, 
 	which will be converted to `rem` units).
 **/
-function containerBreakpoint(size:Expr, ...exprs:Expr) {
+function container(size:Expr, ...exprs:Expr) {
 	// @todo: Do we need to add a `name` arg here? For `container-name`?
 	var breakpoints = Config.instance().breakpoints;
 	var words = [for (name in breakpoints.keys()) name].concat(['full']);

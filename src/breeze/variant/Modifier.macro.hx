@@ -1,13 +1,12 @@
 package breeze.variant;
 
 import breeze.core.ErrorTools;
-import haxe.macro.Context;
-import haxe.macro.Expr;
 import breeze.core.RuleBuilder;
+import haxe.macro.Expr;
 
 using breeze.core.ValueTools;
 
-function modifier(...exprs:Expr) {
+function on(...exprs:Expr) {
 	var exprs = exprs.toArray();
 	var modifier = exprs.shift();
 	return createModifierVariant(modifier, exprs);
@@ -43,21 +42,6 @@ function focusVisible(...exprs:Expr) {
 
 function target(...exprs:Expr) {
 	return createModifierVariant(macro 'target', exprs);
-}
-
-function child(...exprs:Expr) {
-	var exprs = exprs.toArray();
-	var modifier = exprs.shift();
-	if (modifier == null) {
-		Context.error('Expected at least 1 argument', Context.currentPos());
-	}
-	var name = modifier.extractCssValue([Word(['first', 'last', 'odd', 'even'])]);
-
-	return wrapWithVariant(name, entry -> {
-		entry.selector = '$name:${entry.selector}';
-		entry.modifiers.push(':${name}-child');
-		return entry;
-	}, exprs);
 }
 
 private function createModifierVariant(modifier:Null<Expr>, exprs:Array<Expr>) {

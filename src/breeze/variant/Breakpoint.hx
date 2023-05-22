@@ -1,4 +1,7 @@
 package breeze.variant;
 
-macro function breakpoint(size, ...exprs);
-macro function containerBreakpoint(size, ...exprs);
+class Breakpoint {
+	macro public static function viewport(size, ...exprs);
+
+	macro public static function container(size, ...exprs);
+}

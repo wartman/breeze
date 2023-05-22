@@ -1,20 +1,39 @@
 package breeze.rule;
 
-macro function blur(...exprs);
-macro function brightness(...exprs);
-macro function contrast(...exprs);
-macro function dropShadow(...exprs);
-macro function grayscale(...exprs);
-macro function hueRotate(...exprs);
-macro function invert(...exprs);
-macro function saturate(...exprs);
-macro function sepia(...exprs);
-macro function backdropBlur(...exprs);
-macro function backdropBrightness(...exprs);
-macro function backdropContrast(...exprs);
-macro function backdropGrayscale(...exprs);
-macro function backdropHueRotate(...exprs);
-macro function backdropInvert(...exprs);
-macro function backdropOpacity(...exprs);
-macro function backdropSaturate(...exprs);
-macro function backdropSepia(...exprs);
+class Filter {
+	macro public static function blur(...exprs);
+
+	macro public static function brightness(...exprs);
+
+	macro public static function contrast(...exprs);
+
+	macro public static function dropShadow(...exprs);
+
+	macro public static function grayscale(...exprs);
+
+	macro public static function hueRotate(...exprs);
+
+	macro public static function invert(...exprs);
+
+	macro public static function saturate(...exprs);
+
+	macro public static function sepia(...exprs);
+
+	macro public static function backdropBlur(...exprs);
+
+	macro public static function backdropBrightness(...exprs);
+
+	macro public static function backdropContrast(...exprs);
+
+	macro public static function backdropGrayscale(...exprs);
+
+	macro public static function backdropHueRotate(...exprs);
+
+	macro public static function backdropInvert(...exprs);
+
+	macro public static function backdropOpacity(...exprs);
+
+	macro public static function backdropSaturate(...exprs);
+
+	macro public static function backdropSepia(...exprs);
+}

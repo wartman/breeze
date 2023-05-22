@@ -8,7 +8,13 @@ using breeze.core.CssTools;
 using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
-function gridColumns(...exprs:Expr) {
+function display(...exprs:Expr):Expr {
+	var exprs = exprs.toArray();
+	exprs.unshift(macro 'grid');
+	return Layout.display(...exprs);
+}
+
+function columns(...exprs:Expr) {
 	return createSimpleRule('grid-cols', exprs, [Word(['none']), Integer], {
 		property: 'grid-template-columns',
 		process: value -> switch value {
@@ -54,7 +60,7 @@ function column(...exprs:Expr) {
 	}
 }
 
-function gridRows(...exprs:Expr) {
+function rows(...exprs:Expr) {
 	return createSimpleRule('grid-rows', exprs, [Word(['none']), Integer], {
 		property: 'grid-template-rows',
 		process: value -> switch value {

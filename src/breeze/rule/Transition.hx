@@ -1,7 +1,13 @@
 package breeze.rule;
 
-macro function transition(...exprs);
-macro function duration(...exprs);
-macro function ease(...exprs);
-macro function delay(...exprs);
-macro function animation(...exprs);
+class Transition {
+	macro public static function transition(...exprs);
+
+	macro public static function duration(...exprs);
+
+	macro public static function ease(...exprs);
+
+	macro public static function delay(...exprs);
+
+	macro public static function animation(...exprs);
+}

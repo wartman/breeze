@@ -1,16 +1,33 @@
 package breeze.rule;
 
-macro function flexBasis(...exprs);
-macro function flexDirection(...exprs);
-macro function flexWrap(...exprs);
-macro function flex(...exprs);
-macro function flexGrow(...exprs);
-macro function flexShrink(...exprs);
-macro function order(...exprs);
-macro function justify(...exprs);
-macro function justifyItems(...exprs);
-macro function justifySelf(...exprs);
-macro function align(...exprs);
-macro function alignItems(...exprs);
-macro function alignSelf(...exprs);
-macro function gap(...exprs);
+class Flex {
+	macro public static function display(...exprs);
+
+	macro public static function basis(...exprs);
+
+	macro public static function direction(...exprs);
+
+	macro public static function wrap(...exprs);
+
+	macro public static function define(...exprs);
+
+	macro public static function grow(...exprs);
+
+	macro public static function shrink(...exprs);
+
+	macro public static function order(...exprs);
+
+	macro public static function justify(...exprs);
+
+	macro public static function justifyItems(...exprs);
+
+	macro public static function justifySelf(...exprs);
+
+	macro public static function align(...exprs);
+
+	macro public static function alignItems(...exprs);
+
+	macro public static function alignSelf(...exprs);
+
+	macro public static function gap(...exprs);
+}

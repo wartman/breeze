@@ -1,7 +1,13 @@
 package breeze.rule;
 
-macro function scale(...exprs);
-macro function rotate(...exprs);
-macro function translate(...exprs);
-macro function skew(...exprs);
-macro function origin(...exprs);
+class Transform {
+	macro public static function scale(...exprs);
+
+	macro public static function rotate(...exprs);
+
+	macro public static function translate(...exprs);
+
+	macro public static function skew(...exprs);
+
+	macro public static function origin(...exprs);
+}

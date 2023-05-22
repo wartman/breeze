@@ -1,14 +1,30 @@
 package breeze.rule;
 
-macro function borderRadius(...exprs);
-macro function borderWidth(...exprs);
-macro function borderStyle(...exprs);
-macro function borderColor(...exprs);
+class Border {
+	macro public static function radius(...exprs);
 
-// macro function divideWidth(...exprs);
-// macro function divideStyle(...exprs);
-// macro function divideColor(...exprs);
-// macro function ringWidth(...exprs);
-// macro function ringColor(...exprs);
-// macro function ringOffsetWidth(...exprs);
-// macro function ringOffsetColor(...exprs);
+	macro public static function width(...exprs);
+
+	macro public static function style(...exprs);
+
+	macro public static function color(...exprs);
+
+	macro public static function outlineWidth(...exprs);
+
+	macro public static function outlineStyle(...exprs);
+
+	macro public static function outlineColor(...exprs);
+
+	macro public static function outlineOffset(...exprs);
+
+	macro public static function divideWidth(...exprs);
+
+	macro public static function divideStyle(...exprs);
+
+	macro public static function divideColor(...exprs);
+
+	// macro public static function ringWidth(...exprs);
+	// macro public static function ringColor(...exprs);
+	// macro public static function ringOffsetWidth(...exprs);
+	// macro public static function ringOffsetColor(...exprs);
+}

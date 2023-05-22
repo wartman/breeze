@@ -1,5 +1,9 @@
 package breeze.rule;
 
-macro function pad(...expr);
-macro function margin(...expr);
-macro function between(...expr);
+class Spacing {
+	macro public static function pad(...expr);
+
+	macro public static function margin(...expr);
+
+	macro public static function between(...expr);
+}

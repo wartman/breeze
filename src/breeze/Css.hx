@@ -1,3 +1,5 @@
 package breeze;
 
-macro function rule(...expr);
+class Css {
+	macro public static function rule(...expr);
+}

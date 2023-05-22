@@ -1,9 +1,19 @@
 package breeze.rule;
 
-macro function gridColumns(...exprs);
-macro function column(...exprs);
-macro function gridRows(...exprs);
-macro function row(...exprs);
-macro function flow(...exprs);
-macro function autoColumns(...exprs);
-macro function autoRows(...exprs);
+class Grid {
+	macro public static function display(...exprs);
+
+	macro public static function columns(...exprs);
+
+	macro public static function column(...exprs);
+
+	macro public static function rows(...exprs);
+
+	macro public static function row(...exprs);
+
+	macro public static function flow(...exprs);
+
+	macro public static function autoColumns(...exprs);
+
+	macro public static function autoRows(...exprs);
+}

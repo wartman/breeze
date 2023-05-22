@@ -1,5 +1,9 @@
 package breeze.rule;
 
-macro function fill(...exprs);
-macro function stroke(...exprs);
-macro function strokeWidth(...exprs);
+class Svg {
+	macro public static function fill(...exprs);
+
+	macro public static function stroke(...exprs);
+
+	macro public static function strokeWidth(...exprs);
+}
