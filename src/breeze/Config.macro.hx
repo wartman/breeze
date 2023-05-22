@@ -1,5 +1,13 @@
 package breeze;
 
+import haxe.macro.Context;
+
+enum CssExport {
+	None;
+	File(?path:String);
+	Runtime;
+}
+
 class Config {
 	public static function load(?file:String) {
 		// @todo: this will load a JSON file relative to the
@@ -18,6 +26,12 @@ class Config {
 		return config;
 	}
 
+	public var export:CssExport = switch Context.definedValue('breeze.output') {
+			case null: File();
+			case 'none': None;
+			case 'runtime': Runtime;
+			case path: File(path);
+		}
 	public var includePreflight:Bool = true;
 	public var preflight = breeze.core.Preflight.defaultPreflight;
 	public final fontFamilies:Map<String, String> = [

@@ -82,7 +82,7 @@ function main() {
 					Sizing.width('50px'),
 					Sizing.height('50px'),
 					Transition.animation('spin'),
-					Typography.textColor('rgba(255 255 255 0.5)'),
+					Typography.textColor('rgba(255,255,255,0.5)'),
 					Flex.display(),
 					Flex.alignItems('center'),
 					Flex.justify('center')
