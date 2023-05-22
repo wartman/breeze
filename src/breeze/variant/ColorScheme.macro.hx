@@ -4,6 +4,9 @@ import haxe.macro.Expr;
 import haxe.macro.Context;
 import breeze.core.RuleBuilder;
 
+// @todo: allow this to be configured to use a class selector
+// instead of the media query?
+
 function dark(...exprs:Expr):Expr {
 	return wrapWithVariant('color-scheme:dark', entry -> {
 		if (entry.wrapper != null) {
