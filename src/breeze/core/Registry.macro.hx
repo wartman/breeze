@@ -42,7 +42,7 @@ private function export(id:String, css:String, pos:Position) {
 	switch Config.instance().export {
 		case Runtime:
 			cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
-			exportRuntime();
+			Context.error('Runtime is not available yet', pos);
 		case None:
 		case File(path):
 			cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
@@ -51,13 +51,7 @@ private function export(id:String, css:String, pos:Position) {
 }
 
 var initialized:Bool = false;
-
-// @todo: Doing things this way will probably result in
-// never removing dead class names. We need to think of a better
-// solution.
-//
-// However, if it's not @:persistent the output is wrong too.
-@:persistent var output:Map<String, String> = [];
+var output:Map<String, String> = [];
 
 private function extract(exprs:Array<Expr>) {
 	switch exprs {
@@ -82,39 +76,6 @@ private function extractAllCssFromTypes(types:Array<ModuleType>) {
 			}
 		default:
 	}
-}
-
-private function exportRuntime() {
-	if (initialized) return;
-	initialized = true;
-
-	Context.onAfterTyping(types -> {
-		extractAllCssFromTypes(types);
-
-		try {
-			Context.getType('breeze.Styles');
-			return;
-		} catch (e) {}
-
-		var exprs = [
-			for (key => value in output) macro breeze.Runtime.instance().add($v{key}, $v{value})
-		];
-
-		Context.defineType({
-			name: 'Styles',
-			pack: ['breeze'],
-			kind: TDClass(),
-			meta: [{name: ':keep', pos: (macro null).pos}],
-			pos: (macro null).pos,
-			fields: (macro class {
-				@:keep public static function __init__() {
-					@:mergeBlock $b{exprs};
-				}
-			}).fields
-		});
-	});
-
-	// Context.error('Runtime exporting is not implemented yet.', Context.currentPos());
 }
 
 private function exportFile(path:Null<String>) {

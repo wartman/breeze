@@ -8,7 +8,7 @@
 -main Test
 
 -dce full
--D breeze.output=runtime
+# -D breeze.output=runtime
 -D analyzer-optimize
 -D js-es=6
 -D message-reporting=pretty
