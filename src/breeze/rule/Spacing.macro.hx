@@ -9,53 +9,55 @@ using breeze.core.ValueTools;
 using breeze.core.MacroTools;
 using breeze.core.CssTools;
 
-function pad(...expr:Expr) {
-	var args = prepareArguments(expr.toArray());
-	return switch args.args {
-		case [sizeExpr]:
-			createSpacingRule('p', 'padding', null, sizeExpr, args.variants);
-		case [typeExpr, sizeExpr]:
-			createSpacingRule('p', 'padding', typeExpr, sizeExpr, args.variants);
-		default:
-			expectedArguments(1, 2);
+class Spacing {
+	public static function pad(...expr:Expr) {
+		var args = prepareArguments(expr.toArray());
+		return switch args.args {
+			case [sizeExpr]:
+				createSpacingRule('p', 'padding', null, sizeExpr, args.variants);
+			case [typeExpr, sizeExpr]:
+				createSpacingRule('p', 'padding', typeExpr, sizeExpr, args.variants);
+			default:
+				expectedArguments(1, 2);
+		}
 	}
-}
 
-function margin(...expr:Expr) {
-	var args = prepareArguments(expr.toArray());
-	return switch args.args {
-		case [sizeExpr]:
-			createSpacingRule('m', 'margin', null, sizeExpr, args.variants);
-		case [typeExpr, sizeExpr]:
-			createSpacingRule('m', 'margin', typeExpr, sizeExpr, args.variants);
-		default:
-			expectedArguments(1, 2);
+	public static function margin(...expr:Expr) {
+		var args = prepareArguments(expr.toArray());
+		return switch args.args {
+			case [sizeExpr]:
+				createSpacingRule('m', 'margin', null, sizeExpr, args.variants);
+			case [typeExpr, sizeExpr]:
+				createSpacingRule('m', 'margin', typeExpr, sizeExpr, args.variants);
+			default:
+				expectedArguments(1, 2);
+		}
 	}
-}
 
-function between(...expr:Expr) {
-	var args = prepareArguments(expr.toArray());
-	return switch args.args {
-		case [directionExpr, valueExpr]:
-			var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
-			var value = valueExpr.extractCssValue([Unit]);
-			return createRule({
-				prefix: 'between',
-				type: [direction, value],
-				variants: args.variants.concat([
-					maybeRegisterVariant('between-wrapper', css -> {
-						css.modifiers.push(' > :not([hidden]) ~ :not([hidden])');
-						return css;
-					})
-				]),
-				properties: switch direction {
-					case 'x': [{name: 'margin-left', value: value}];
-					default: [{name: 'margin-top', value: value}];
-				},
-				pos: valueExpr.pos
-			});
-		default:
-			expectedArguments(1);
+	public static function between(...expr:Expr) {
+		var args = prepareArguments(expr.toArray());
+		return switch args.args {
+			case [directionExpr, valueExpr]:
+				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
+				var value = valueExpr.extractCssValue([Unit]);
+				return createRule({
+					prefix: 'between',
+					type: [direction, value],
+					variants: args.variants.concat([
+						maybeRegisterVariant('between-wrapper', css -> {
+							css.modifiers.push(' > :not([hidden]) ~ :not([hidden])');
+							return css;
+						})
+					]),
+					properties: switch direction {
+						case 'x': [{name: 'margin-left', value: value}];
+						default: [{name: 'margin-top', value: value}];
+					},
+					pos: valueExpr.pos
+				});
+			default:
+				expectedArguments(1);
+		}
 	}
 }
 

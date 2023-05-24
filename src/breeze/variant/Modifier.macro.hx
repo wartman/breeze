@@ -6,42 +6,44 @@ import haxe.macro.Expr;
 
 using breeze.core.ValueTools;
 
-function on(...exprs:Expr) {
-	var exprs = exprs.toArray();
-	var modifier = exprs.shift();
-	return createModifierVariant(modifier, exprs);
-}
+class Modifier {
+	public static function on(...exprs:Expr) {
+		var exprs = exprs.toArray();
+		var modifier = exprs.shift();
+		return createModifierVariant(modifier, exprs);
+	}
 
-function hover(...exprs:Expr) {
-	return createModifierVariant(macro 'hover', exprs);
-}
+	public static function hover(...exprs:Expr) {
+		return createModifierVariant(macro 'hover', exprs);
+	}
 
-function focus(...exprs:Expr) {
-	return createModifierVariant(macro 'focus', exprs);
-}
+	public static function focus(...exprs:Expr) {
+		return createModifierVariant(macro 'focus', exprs);
+	}
 
-function active(...exprs:Expr) {
-	return createModifierVariant(macro 'active', exprs);
-}
+	public static function active(...exprs:Expr) {
+		return createModifierVariant(macro 'active', exprs);
+	}
 
-function disabled(...exprs:Expr) {
-	return createModifierVariant(macro 'disabled', exprs);
-}
+	public static function disabled(...exprs:Expr) {
+		return createModifierVariant(macro 'disabled', exprs);
+	}
 
-function visited(...exprs:Expr) {
-	return createModifierVariant(macro 'visited', exprs);
-}
+	public static function visited(...exprs:Expr) {
+		return createModifierVariant(macro 'visited', exprs);
+	}
 
-function focusWithin(...exprs:Expr) {
-	return createModifierVariant(macro 'focus-within', exprs);
-}
+	public static function focusWithin(...exprs:Expr) {
+		return createModifierVariant(macro 'focus-within', exprs);
+	}
 
-function focusVisible(...exprs:Expr) {
-	return createModifierVariant(macro 'focus-visible', exprs);
-}
+	public static function focusVisible(...exprs:Expr) {
+		return createModifierVariant(macro 'focus-visible', exprs);
+	}
 
-function target(...exprs:Expr) {
-	return createModifierVariant(macro 'target', exprs);
+	public static function target(...exprs:Expr) {
+		return createModifierVariant(macro 'target', exprs);
+	}
 }
 
 private function createModifierVariant(modifier:Null<Expr>, exprs:Array<Expr>) {

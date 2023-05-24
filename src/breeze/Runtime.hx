@@ -2,6 +2,8 @@ package breeze;
 
 using StringTools;
 
+// @todo: This isn't used yet! It's here for when I figure out
+// a good runtime solution.
 class Runtime {
 	public static function instance() {
 		static var runtime:Null<Runtime> = null;
