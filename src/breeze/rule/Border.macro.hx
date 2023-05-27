@@ -16,6 +16,48 @@ class Border {
 	}
 
 	public static function width(...exprs:Expr) {
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [expr]:
+				var width = expr.extractCssValue([Unit]);
+				createRule({
+					prefix: 'border',
+					type: [width],
+					variants: args.variants,
+					properties: [
+						{name: 'border-width', value: width}
+					],
+					pos: Context.currentPos()
+				});
+			case [directionExpr, widthExpr]:
+				var direction = directionExpr.extractCssValue([Word(['top', 'right', 'bottom', 'left', 'x', 'y'])]);
+				var width = widthExpr.extractCssValue([Unit]);
+				createRule({
+					prefix: 'border',
+					type: [direction, width],
+					variants: args.variants,
+					properties: switch direction {
+						case 'x': 
+							[
+								{name: 'border-left-width', value: width},
+								{name: 'border-right-width', value: width}
+							];
+						case 'y': 
+							[
+								{name: 'border-top-width', value: width},
+								{name: 'border-bottom-width', value: width}
+							];
+						default:
+							[
+								{name: 'border-${direction}-width', value: width}
+							];
+					},
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1, 2);
+		}
+
 		return createSimpleRule('border', exprs, [Unit], {property: 'border-width'});
 	}
 

@@ -34,11 +34,6 @@ class Layout {
 								{name: 'width', value: '100%'};
 							case name if (config.exists(name)):
 								{name: 'max-width', value: config.get(name)};
-							// case 'sm': {name: 'max-width', value: '640px'};
-							// case 'md': {name: 'max-width', value: '768px'};
-							// case 'lg': {name: 'max-width', value: '1024px'};
-							// case 'xl': {name: 'max-width', value: '1280px'};
-							// case 'xxl': {name: 'max-width', value: '1536px'};
 							case unit:
 								{name: 'max-width', value: unit};
 						}

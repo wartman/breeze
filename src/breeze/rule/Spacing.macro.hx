@@ -56,7 +56,7 @@ class Spacing {
 					pos: valueExpr.pos
 				});
 			default:
-				expectedArguments(1);
+				expectedArguments(2);
 		}
 	}
 }
