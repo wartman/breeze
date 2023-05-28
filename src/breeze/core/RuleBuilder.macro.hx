@@ -36,8 +36,7 @@ function createRule(rule:Rule):Expr {
 			entry = variant.parse(entry);
 		}
 	}
-	registerCss(entry, rule.pos);
-	return macro breeze.ClassName.ofString($v{entry.selector});
+	return registerCss(entry, rule.pos);
 }
 
 function createSimpleRule(prefix:String, exprs:Array<Expr>, allowed:Array<CssValueType>, ?options:{?property:String, ?process:(value:String) -> String}):Expr {

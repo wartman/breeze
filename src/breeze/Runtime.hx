@@ -2,8 +2,6 @@ package breeze;
 
 using StringTools;
 
-// @todo: This isn't used yet! It's here for when I figure out
-// a good runtime solution.
 class Runtime {
 	public static function instance() {
 		static var runtime:Null<Runtime> = null;
@@ -17,6 +15,11 @@ class Runtime {
 	public function new() {
 		this.sheet = createSheet();
 		setupPreflight();
+	}
+
+	public function rule(id:String, css:String) {
+		if (!indices.exists(id)) add(id, css);
+		return new ClassName(id);
 	}
 
 	public function add(id:String, css:String) {
@@ -42,8 +45,6 @@ class Runtime {
 
 	function setupPreflight() {
 		var preflight = breeze.core.Preflight.getPreflight();
-		if (preflight.length > 0) {
-			add('bz-preflight', preflight);
-		}
+		for (id => css in preflight) add(id, css);
 	}
 }

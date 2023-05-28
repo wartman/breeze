@@ -20,8 +20,9 @@ class Config {
 		// macro where they manually configure the Config instance.
 	}
 
+	@:persistent static var config:Null<Config> = null;
+
 	public static function instance() {
-		static var config:Null<Config> = null;
 		if (config == null) config = new Config();
 		return config;
 	}
@@ -33,7 +34,7 @@ class Config {
 			case path: File(path);
 		}
 	public var includePreflight:Bool = true;
-	public var preflight = breeze.core.Preflight.defaultPreflight;
+	public var preflight:Map<String, String> = ['default' => breeze.core.Preflight.defaultPreflight];
 	public final fontFamilies:Map<String, String> = [
 		'sans' =>
 		'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',

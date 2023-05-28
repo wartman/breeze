@@ -20,6 +20,7 @@
 @:noUsing typedef ColorScheme = breeze.variant.ColorScheme;
 
 class Breeze {
+	@:noUsing
 	inline public static function compose(...classes:ClassName) {
 		return ClassName.ofArray(classes);
 	}

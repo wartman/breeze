@@ -102,26 +102,29 @@ class Transition {
 				if (frames == null) {
 					Context.error('No keyframes exist for the animation $name', Context.currentPos());
 				}
-				registerKeyframes(name, frames, Context.currentPos());
-				createRule({
-					prefix: 'animation',
-					type: [name],
-					variants: args.variants,
-					properties: [{name: 'animation', value: '$name $animation'}],
-					pos: Context.currentPos()
-				});
+				var exprs = [
+					registerKeyframes(name, frames, Context.currentPos()),
+					createRule({
+						prefix: 'animation',
+						type: [name],
+						variants: args.variants,
+						properties: [{name: 'animation', value: '$name $animation'}],
+						pos: Context.currentPos()
+					})
+				];
+				return macro breeze.ClassName.ofArray([$a{exprs}]);
 			default:
 				Context.error('Expected 1 argument', Context.currentPos());
 		}
 	}
 
-	public static function registerKeyframes(name:String, keyframes:Map<String, String>, pos:Position) {
+	public static function registerKeyframes(name:String, keyframes:Map<String, String>, pos:Position):Expr {
 		var id = 'keyframe_$name';
 		var css = '@keyframes $name { ' + [
 			for (key => value in keyframes) {
 				'$key { $value }';
 			}
 		].join(' ') + ' }';
-		registerRawCss(id, css, pos);
+		return registerRawCss(id, css, pos);
 	}
 }
