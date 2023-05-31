@@ -13,6 +13,7 @@ enum CssValueType {
 	Word(?allowed:Array<String>);
 	ColorExpr;
 	ColorName;
+	String;
 	Integer;
 	Number;
 	Unit;
@@ -24,6 +25,8 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 	}
 
 	return switch e.expr {
+		case EConst(CString(s, _)) if (allowed.contains(String)):
+			s;
 		case EConst(CString(value, _)) if (isCssUnit(value)):
 			if (!allowed.contains(Unit) && !allowed.contains(All)) {
 				e.pos.createError(allowed);
@@ -68,6 +71,7 @@ function createError(pos:Position, allowed:Array<CssValueType>) {
 		case All: 'any expression';
 		case Integer: 'an integer';
 		case Number: 'an integer or a float';
+		case String: 'a string';
 		case Word(allowed): '[' + allowed.map(value -> '"$value"').join('|') + ']';
 		case ColorExpr: 'an arbitrary color (using a hex like #ccc or an RGB/A function)';
 		case ColorName: 'a pre-defined color (like `black` or `slate`)';
@@ -77,7 +81,7 @@ function createError(pos:Position, allowed:Array<CssValueType>) {
 }
 
 final CssUnits = [
-	'px', 'rem', 'em', 'vw', 'vh', 'vmin', 'vmax', 'vb', 'vi', 'svw', 'svh', 'lvw', 'lvh', 'dvw', 'dvh'
+	'%', 'px', 'rem', 'em', 'vw', 'vh', 'vmin', 'vmax', 'vb', 'vi', 'svw', 'svh', 'lvw', 'lvh', 'dvw', 'dvh'
 ];
 
 function isCssUnit(value:String) {

@@ -3,15 +3,15 @@ package breeze;
 using StringTools;
 
 abstract ClassName(String) to String {
-	@:from public static function ofString(s:String):ClassName {
+	@:from public inline static function ofString(s:String):ClassName {
 		return if (s == null) null else new ClassName(s.trim());
 	}
 
-	@:from public static function ofMap(parts:Map<String, Bool>) {
+	@:from public inline static function ofMap(parts:Map<String, Bool>) {
 		return ofArray([for (name => isValid in parts) if (isValid) ofString(name)]);
 	}
 
-	@:from public static function ofDynamicAccess(parts:haxe.DynamicAccess<Bool>) {
+	@:from public inline static function ofDynamicAccess(parts:haxe.DynamicAccess<Bool>) {
 		return ofArray([for (name => isValid in parts) if (isValid) ofString(name)]);
 	}
 

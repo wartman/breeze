@@ -24,6 +24,7 @@ function main() {
 	mount(Browser.document.getElementById('root'), () -> new Html<'div'>({
 		className: ClassName.ofArray([
 			Layout.container('md'),
+			Breakpoint.markContainer('box', 'inline-size'),
 			Breakpoint.viewport('lg', Layout.container('lg')),
 			ColorScheme.dark(Background.color('gray', 500)),
 			Spacing.margin('x', 'auto')
@@ -62,13 +63,14 @@ function main() {
 			}),
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					Background.color('sky', 500),
+					// Background.color('sky', 500),
 					Border.style('dotted'),
 					Border.color('black', 0),
 					Border.width('2px'),
 					Sizing.width('50px'),
 					Sizing.height('50px'),
 					Transition.animation('bounce'),
+					Breakpoint.container('box', '400px', Background.color('red', 300)),
 					Modifier.hover(Transition.animation('pulse'), Typography.textColor('white', 0), Background.color('black', 0)),
 					Layout.display('flex'),
 					Flex.alignItems('center'),

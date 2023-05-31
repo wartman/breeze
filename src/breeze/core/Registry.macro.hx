@@ -47,8 +47,14 @@ private function export(id:String, css:String, pos:Position) {
 		case None:
 			macro breeze.ClassName.ofString($v{id});
 		case File(path):
-			// @todo: What's the benefit of us adding this to class meta?
-			// Could we get the same effect with a simple Map?
+			// @todo: This works really poorly. All kinds of weird stuff can
+			// happen. We need to figure out a bit better how the Completion server
+			// and cacheing work, as this only outputs the correct CSS file
+			// on a fresh build. The main issue is that the the CSS file will be
+			// regenerated whenever the completion server runs, which can be super
+			// weird.
+			//
+			// Take a look at tink_onbuild for some guidance.
 			cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
 			exportFile(path);
 			macro breeze.ClassName.ofString($v{id});
@@ -57,6 +63,7 @@ private function export(id:String, css:String, pos:Position) {
 
 private function exportFile(path:Null<String>) {
 	if (initialized) return;
+
 	initialized = true;
 
 	Context.onAfterTyping(types -> {
