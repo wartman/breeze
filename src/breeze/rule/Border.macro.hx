@@ -11,11 +11,11 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Border {
-	public static function radius(...exprs:Expr) {
+	public static function radius(...exprs:Expr):Expr {
 		return createSimpleRule('border-radius', exprs, [Unit]);
 	}
 
-	public static function width(...exprs:Expr) {
+	public static function width(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [expr]:
@@ -24,9 +24,7 @@ class Border {
 					prefix: 'border',
 					type: [width],
 					variants: args.variants,
-					properties: [
-						{name: 'border-width', value: width}
-					],
+					properties: [{name: 'border-width', value: width}],
 					pos: Context.currentPos()
 				});
 			case [directionExpr, widthExpr]:
@@ -37,20 +35,18 @@ class Border {
 					type: [direction, width],
 					variants: args.variants,
 					properties: switch direction {
-						case 'x': 
+						case 'x':
 							[
 								{name: 'border-left-width', value: width},
 								{name: 'border-right-width', value: width}
 							];
-						case 'y': 
+						case 'y':
 							[
 								{name: 'border-top-width', value: width},
 								{name: 'border-bottom-width', value: width}
 							];
 						default:
-							[
-								{name: 'border-${direction}-width', value: width}
-							];
+							[{name: 'border-${direction}-width', value: width}];
 					},
 					pos: Context.currentPos()
 				});
@@ -61,11 +57,13 @@ class Border {
 		return createSimpleRule('border', exprs, [Unit], {property: 'border-width'});
 	}
 
-	public static function style(...exprs:Expr) {
+	// @todo: Need to be able to define a direction as well.
+	public static function style(...exprs:Expr):Expr {
 		return createSimpleRule('border', exprs, [Word(['solid', 'dashed', 'dotted', 'double', 'hidden', 'none'])], {property: 'border-style'});
 	}
 
-	public static function color(...exprs:Expr) {
+	// @todo: Need to be able to define a direction as well.
+	public static function color(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -100,7 +98,7 @@ class Border {
 		}
 	}
 
-	public static function outlineWidth(...exprs:Expr) {
+	public static function outlineWidth(...exprs:Expr):Expr {
 		return createSimpleRule('outline-width', exprs, [Unit]);
 	}
 
@@ -127,7 +125,7 @@ class Border {
 		}
 	}
 
-	public static function outlineColor(...exprs:Expr) {
+	public static function outlineColor(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -162,7 +160,7 @@ class Border {
 		}
 	}
 
-	public static function outlineOffset(...exprs:Expr) {
+	public static function outlineOffset(...exprs:Expr):Expr {
 		return createSimpleRule('outline-offset', exprs, [Unit]);
 	}
 
@@ -193,7 +191,7 @@ class Border {
 		}
 	}
 
-	public static function divideStyle(...exprs:Expr) {
+	public static function divideStyle(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [expr]:
@@ -210,7 +208,7 @@ class Border {
 		}
 	}
 
-	public static function divideColor(...exprs:Expr) {
+	public static function divideColor(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -245,10 +243,10 @@ class Border {
 		}
 	}
 
-	// public static function ringWidth(...exprs:Expr) {}
-	// public static function ringColor(...exprs:Expr) {}
-	// public static function ringOffsetWidth(...exprs:Expr) {}
-	// public static function ringOffsetColor(...exprs:Expr) {}
+	// public static function ringWidth(...exprs:Expr):Expr {}
+	// public static function ringColor(...exprs:Expr):Expr {}
+	// public static function ringOffsetWidth(...exprs:Expr):Expr {}
+	// public static function ringOffsetColor(...exprs:Expr):Expr {}
 }
 
 private function divideSuffix() {

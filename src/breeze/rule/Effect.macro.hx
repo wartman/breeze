@@ -10,8 +10,8 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Effect {
-	public static function shadow(...exprs:Expr) {
-		createSimpleRule('shadow', exprs, [Word(['sm', 'md', 'lg', 'xl', 'xxl', 'inner', 'none'])], {
+	public static function shadow(...exprs:Expr):Expr {
+		return createSimpleRule('shadow', exprs, [Word(['sm', 'md', 'lg', 'xl', 'xxl', 'inner', 'none'])], {
 			property: 'box-shadow',
 			process: value -> switch value {
 				case 'sm': '0 1px 2px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))';
@@ -26,7 +26,7 @@ class Effect {
 		});
 	}
 
-	public static function shadowColor(...exprs:Expr) {
+	public static function shadowColor(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -53,8 +53,8 @@ class Effect {
 		}
 	}
 
-	public static function opacity(...exprs:Expr) {
-		createSimpleRule('opacity', exprs, [Integer], {
+	public static function opacity(...exprs:Expr):Expr {
+		return createSimpleRule('opacity', exprs, [Integer], {
 			process: value -> {
 				var int = Std.parseInt(value);
 				var float:Float = int == 1 ? 1 : int / 100;
@@ -63,11 +63,12 @@ class Effect {
 		});
 	}
 
-	public static function mixBlend(...exprs:Expr) {
+	public static function mixBlend(...exprs:Expr):Expr {
 		throw 'todo';
 	}
 
-	public static function bgBlend(...exprs:Expr) {
+	public static function bgBlend(...exprs:Expr):Expr {
 		throw 'todo';
 	}
 }
+

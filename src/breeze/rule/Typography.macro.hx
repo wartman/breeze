@@ -12,7 +12,7 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Typography {
-	public static function font(...exprs:Expr) {
+	public static function font(...exprs:Expr):Expr {
 		var fontConfig = Config.instance().fontFamilies;
 		var names = [for (name in fontConfig.keys()) name];
 		return createSimpleRule('font', exprs, [Word(names)], {
@@ -25,7 +25,7 @@ class Typography {
 		});
 	}
 
-	public static function fontSize(...exprs:Expr) {
+	public static function fontSize(...exprs:Expr):Expr {
 		var fontSizes = Config.instance().fontSizes;
 		var names = [for (name in fontSizes.keys()) name];
 		var args = prepareArguments(exprs);
@@ -65,15 +65,15 @@ class Typography {
 		}
 	}
 
-	public static function fontSmoothing(...exprs:Expr) {
+	public static function fontSmoothing(...exprs:Expr):Expr {
 		throw 'todo';
 	}
 
-	public static function fontStyle(...exprs:Expr) {
+	public static function fontStyle(...exprs:Expr):Expr {
 		return createSimpleRule('font-style', exprs, [Word(['italic', 'normal'])]);
 	}
 
-	public static function fontWeight(...exprs:Expr) {
+	public static function fontWeight(...exprs:Expr):Expr {
 		var fontWeights = Config.instance().fontWeights;
 		var names = [for (name in fontWeights.keys()) name];
 		return createSimpleRule('font-weight', exprs, [Word(names)], {
@@ -87,7 +87,7 @@ class Typography {
 		});
 	}
 
-	public static function tracking(...exprs:Expr) {
+	public static function tracking(...exprs:Expr):Expr {
 		var tracking = Config.instance().tracking;
 		var names = [for (name in tracking.keys()) name];
 		return createSimpleRule('tracking', exprs, [Word(names)], {
@@ -102,12 +102,12 @@ class Typography {
 		});
 	}
 
-	public static function lineClamp(...exprs:Expr) {
+	public static function lineClamp(...exprs:Expr):Expr {
 		// https://tailwindcss.com/docs/line-clamp
 		throw 'todo';
 	}
 
-	public static function leading(...exprs:Expr) {
+	public static function leading(...exprs:Expr):Expr {
 		var leading = Config.instance().leading;
 		var names = [for (name in leading.keys()) name];
 		return createSimpleRule('leading', exprs, [Word(names)], {
@@ -122,24 +122,24 @@ class Typography {
 		});
 	}
 
-	public static function listStyle(...exprs:Expr) {
+	public static function listStyle(...exprs:Expr):Expr {
 		// https://tailwindcss.com/docs/list-style-image
 		throw 'todo';
 	}
 
-	public static function listPosition(...exprs:Expr) {
+	public static function listPosition(...exprs:Expr):Expr {
 		return createSimpleRule('list', exprs, [Word(['inside, outside'])], {
 			property: 'list-style-position'
 		});
 	}
 
-	public static function textAlign(...exprs:Expr) {
+	public static function textAlign(...exprs:Expr):Expr {
 		return createSimpleRule('text', exprs, [Word(['left', 'center', 'right', 'justify', 'start', 'end'])], {
 			property: 'text-align'
 		});
 	}
 
-	public static function textColor(...exprs:Expr) {
+	public static function textColor(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -166,23 +166,23 @@ class Typography {
 		}
 	}
 
-	public static function textDecoration(...exprs:Expr) {
+	public static function textDecoration(...exprs:Expr):Expr {
 		return createSimpleRule('text-decoration', exprs, [Word(['underline', 'overline', 'line-through', 'none'])]);
 	}
 
-	public static function textDecorationColor(...exprs:Expr) {
+	public static function textDecorationColor(...exprs:Expr):Expr {
 		return createSimpleRule('decoration-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])], {
 			property: 'text-decoration-color'
 		});
 	}
 
-	public static function textDecorationStyle(...exprs:Expr) {
+	public static function textDecorationStyle(...exprs:Expr):Expr {
 		return createSimpleRule('decoration', exprs, [Word(['solid', 'double', 'dotted', 'dashed', 'wavy'])], {
 			property: 'text-decoration-style'
 		});
 	}
 
-	public static function textDecorationThickness(...exprs:Expr) {
+	public static function textDecorationThickness(...exprs:Expr):Expr {
 		return createSimpleRule('decoration', exprs, [Word(['auto', 'form-font']), Integer], {
 			property: 'text-decoration-thickness',
 			process: value -> switch value {
@@ -192,7 +192,7 @@ class Typography {
 		});
 	}
 
-	public static function textUnderlineOffset(...exprs:Expr) {
+	public static function textUnderlineOffset(...exprs:Expr):Expr {
 		return createSimpleRule('underline-offset', exprs, [Word(['auto']), Integer], {
 			property: 'text-underline-offset',
 			process: value -> switch value {
@@ -202,31 +202,31 @@ class Typography {
 		});
 	}
 
-	public static function textTransform(...exprs:Expr) {
+	public static function textTransform(...exprs:Expr):Expr {
 		return createSimpleRule('transform', exprs, [Word(['uppercase', 'lowercase', 'capitalize', 'none'])], {
 			property: 'text-transform'
 		});
 	}
 
-	public static function textOverflow(...exprs:Expr) {
+	public static function textOverflow(...exprs:Expr):Expr {
 		return createSimpleRule('text-overflow', exprs, [Word(['ellipsis', 'clip'])]);
 	}
 
-	public static function textIndent(...exprs:Expr) {
+	public static function textIndent(...exprs:Expr):Expr {
 		return createSimpleRule('text-indent', exprs, [Unit]);
 	}
 
-	public static function textVerticalAlign(...exprs:Expr) {
+	public static function textVerticalAlign(...exprs:Expr):Expr {
 		return createSimpleRule('vertical-align', exprs, [
 			Word(['baseline', 'top', 'middle', 'bottom', 'text-top', 'text-bottom', 'sub', 'super'])
 		]);
 	}
 
-	public static function whitespace(...exprs:Expr) {
+	public static function whitespace(...exprs:Expr):Expr {
 		return createSimpleRule('whitespace', exprs, [Word(['normal', 'nowrap', 'pre', 'pre-line', 'pre-wrap', 'break-spaces'])]);
 	}
 
-	public static function wordBreak(...exprs:Expr) {
+	public static function wordBreak(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [expr]:
@@ -256,11 +256,11 @@ class Typography {
 		}
 	}
 
-	public static function hyphens(...exprs:Expr) {
+	public static function hyphens(...exprs:Expr):Expr {
 		return createSimpleRule('hyphens', exprs, [Word(['none', 'manual', 'auto'])]);
 	}
 
-	public static function content(...exprs:Expr) {
+	public static function content(...exprs:Expr):Expr {
 		// @todo: Maybe allow other content (from the Config)?
 		// @see: https://tailwindcss.com/docs/content
 		return createSimpleRule('content', exprs, [Word(['none'])]);

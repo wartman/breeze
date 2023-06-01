@@ -38,14 +38,14 @@ class Transform {
 		}
 	}
 
-	public static function rotate(...exprs:Expr) {
+	public static function rotate(...exprs:Expr):Expr {
 		return createSimpleRule('rotate', exprs, [Integer], {
 			property: 'transform',
 			process: value -> 'rotate(${value}deg)'
 		});
 	}
 
-	public static function translate(...exprs:Expr) {
+	public static function translate(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [directionExpr, translateExpr]:
@@ -63,7 +63,7 @@ class Transform {
 		}
 	}
 
-	public static function skew(...exprs:Expr) {
+	public static function skew(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [directionExpr, skewExpr]:
@@ -81,7 +81,7 @@ class Transform {
 		}
 	}
 
-	public static function origin(...exprs:Expr) {
+	public static function origin(...exprs:Expr):Expr {
 		return createSimpleRule('origin', exprs, [
 			Word([
 				'center',

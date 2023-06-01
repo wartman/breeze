@@ -16,19 +16,19 @@ class Flex {
 		return Layout.display(...exprs);
 	}
 
-	public static function basis(...exprs) {
+	public static function basis(...exprs:Expr):Expr {
 		return createSimpleRule('flex-basis', exprs, [Unit]);
 	}
 
-	public static function direction(...exprs) {
+	public static function direction(...exprs:Expr):Expr {
 		return createSimpleRule('flex-direction', exprs, [Word(['row', 'row-reverse', 'column', 'column-reverse'])]);
 	}
 
-	public static function wrap(...exprs) {
+	public static function wrap(...exprs:Expr):Expr {
 		return createSimpleRule('flex-wrap', exprs, [Word(['wrap', 'wrap-reverse', 'nowrap'])]);
 	}
 
-	public static function define(...exprs) {
+	public static function define(...exprs:Expr):Expr {
 		return createSimpleRule('flex', exprs, [Word(['auto', 'initial', 'none']), Integer], {
 			process: value -> switch value {
 				case 'auto': '1 1 auto';
@@ -44,7 +44,7 @@ class Flex {
 		Allow a flex item to grow to any space. You can also provide
 		an integer that will control how much the flex item will grow.
 	**/
-	public static function grow(...exprs) {
+	public static function grow(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case []:
@@ -72,7 +72,7 @@ class Flex {
 		Allow a flex item to shrink if needed. You can also provide
 		an integer that will control how much the flex item will shrink.
 	**/
-	public static function shrink(...exprs) {
+	public static function shrink(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case []:
@@ -96,11 +96,11 @@ class Flex {
 		}
 	}
 
-	public static function order(...exprs) {
+	public static function order(...exprs:Expr):Expr {
 		return createSimpleRule('flex-order', exprs, [Integer], {property: 'order'});
 	}
 
-	public static function justify(...exprs:Expr) {
+	public static function justify(...exprs:Expr):Expr {
 		return createSimpleRule('justify', exprs, [
 			Word(['normal', 'start', 'end', 'center', 'between', 'around', 'evenly', 'stretch'])
 		], {
@@ -113,15 +113,15 @@ class Flex {
 		});
 	}
 
-	public static function justifyItems(...exprs:Expr) {
+	public static function justifyItems(...exprs:Expr):Expr {
 		return createSimpleRule('justify-items', exprs, [Word(['start', 'end', 'center', 'stretch'])]);
 	}
 
-	public static function justifySelf(...exprs:Expr) {
+	public static function justifySelf(...exprs:Expr):Expr {
 		return createSimpleRule('justify-self', exprs, [Word(['auto', 'start', 'end', 'center', 'stretch'])]);
 	}
 
-	public static function align(...exprs:Expr) {
+	public static function align(...exprs:Expr):Expr {
 		return createSimpleRule('align', exprs, [
 			Word(['normal', 'start', 'end', 'center', 'between', 'around', 'evenly', 'stretch'])
 		], {
@@ -134,7 +134,7 @@ class Flex {
 		});
 	}
 
-	public static function alignItems(...exprs:Expr) {
+	public static function alignItems(...exprs:Expr):Expr {
 		return createSimpleRule('align-items', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
 			process: value -> switch value {
 				case 'start' | 'end': 'flex-$value';
@@ -143,7 +143,7 @@ class Flex {
 		});
 	}
 
-	public static function alignSelf(...exprs:Expr) {
+	public static function alignSelf(...exprs:Expr):Expr {
 		return createSimpleRule('align-self', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
 			process: value -> switch value {
 				case 'start' | 'end': 'flex-$value';
@@ -152,7 +152,7 @@ class Flex {
 		});
 	}
 
-	public static function gap(...exprs:Expr) {
+	public static function gap(...exprs:Expr):Expr {
 		return createSimpleRule('gap', exprs, [Unit]);
 	}
 }

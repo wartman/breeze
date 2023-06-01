@@ -62,14 +62,14 @@ class Transition {
 		}
 	}
 
-	public static function duration(...exprs:Expr) {
+	public static function duration(...exprs:Expr):Expr {
 		return createSimpleRule('duration', exprs, [Integer], {
 			property: 'transition-duration',
 			process: value -> value + 'ms'
 		});
 	}
 
-	public static function ease(...exprs:Expr) {
+	public static function ease(...exprs:Expr):Expr {
 		return createSimpleRule('ease', exprs, [Word(['in', 'out', 'linear', 'in-out'])], {
 			property: 'transition-timing-function',
 			process: value -> switch value {
@@ -81,7 +81,7 @@ class Transition {
 		});
 	}
 
-	public static function delay(...exprs:Expr) {
+	public static function delay(...exprs:Expr):Expr {
 		return createSimpleRule('delay', exprs, [Integer], {
 			property: 'transition-delay',
 			process: value -> value + 'ms'

@@ -15,7 +15,7 @@ class Grid {
 		return Layout.display(...exprs);
 	}
 
-	public static function columns(...exprs:Expr) {
+	public static function columns(...exprs:Expr):Expr {
 		return createSimpleRule('grid-cols', exprs, [Word(['none']), Integer], {
 			property: 'grid-template-columns',
 			process: value -> switch value {
@@ -25,7 +25,7 @@ class Grid {
 		});
 	}
 
-	public static function column(...exprs:Expr) {
+	public static function column(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [valueExpr]:
@@ -61,7 +61,7 @@ class Grid {
 		}
 	}
 
-	public static function rows(...exprs:Expr) {
+	public static function rows(...exprs:Expr):Expr {
 		return createSimpleRule('grid-rows', exprs, [Word(['none']), Integer], {
 			property: 'grid-template-rows',
 			process: value -> switch value {
@@ -71,7 +71,7 @@ class Grid {
 		});
 	}
 
-	public static function row(...exprs:Expr) {
+	public static function row(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [valueExpr]:
@@ -107,7 +107,7 @@ class Grid {
 		}
 	}
 
-	public static function flow(...exprs:Expr) {
+	public static function flow(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [valueExpr]:
@@ -134,7 +134,7 @@ class Grid {
 		}
 	}
 
-	public static function autoColumns(...exprs:Expr) {
+	public static function autoColumns(...exprs:Expr):Expr {
 		return createSimpleRule('grid-auto-columns', exprs, [Word(['auto', 'min', 'max']), Integer], {
 			process: value -> switch value {
 				case 'min': 'min-content';
@@ -145,7 +145,7 @@ class Grid {
 		});
 	}
 
-	public static function autoRows(...exprs:Expr) {
+	public static function autoRows(...exprs:Expr):Expr {
 		return createSimpleRule('grid-auto-rows', exprs, [Word(['auto', 'min', 'max']), Integer], {
 			process: value -> switch value {
 				case 'min': 'min-content';

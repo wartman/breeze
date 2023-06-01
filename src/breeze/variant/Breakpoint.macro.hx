@@ -22,7 +22,7 @@ class Breakpoint {
 		You can also provide your own arbitrary units (can be pixels or bare floats, 
 		which will be converted to `rem` units).
 	**/
-	public static function viewport(size:Expr, ...exprs:Expr) {
+	public static function viewport(size:Expr, ...exprs:Expr):Expr {
 		var breakpoints = Config.instance().breakpoints;
 		var words = [for (name in breakpoints.keys()) name].concat(['full']);
 		var breakpoint = size.extractCssValue([Word(words), Unit]);
@@ -63,7 +63,7 @@ class Breakpoint {
 		You can target a specific container using a `containerName`, or target
 		the nearest element with a `container-type` by passing `"any"`.
 	**/
-	public static function container(containerName:Expr, size:Expr, ...exprs:Expr) {
+	public static function container(containerName:Expr, size:Expr, ...exprs:Expr):Expr {
 		var breakpoints = Config.instance().breakpoints;
 		var words = [for (name in breakpoints.keys()) name].concat(['full']);
 		var name = containerName.extractCssValue([String, Word(['any'])]);

@@ -9,7 +9,7 @@ using breeze.core.CssTools;
 using breeze.core.ValueTools;
 
 class Layout {
-	public static function container(...exprs:Expr) {
+	public static function container(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case []:
@@ -45,7 +45,7 @@ class Layout {
 		}
 	}
 
-	public static function columns(...exprs:Expr) {
+	public static function columns(...exprs:Expr):Expr {
 		return createSimpleRule('columns', exprs, [Integer]);
 	}
 
@@ -162,11 +162,11 @@ class Layout {
 		}
 	}
 
-	public static function position(...exprs:Expr) {
+	public static function position(...exprs:Expr):Expr {
 		return createSimpleRule('position', exprs, [Word(['static', 'fixed', 'absolute', 'relative', 'sticky'])]);
 	}
 
-	public static function attach(...exprs:Expr) {
+	public static function attach(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [sideExpr, distanceExpr]:
@@ -188,14 +188,14 @@ class Layout {
 		}
 	}
 
-	public static function visibility(...exprs:Expr) {
+	public static function visibility(...exprs:Expr):Expr {
 		return createSimpleRule('visibility', exprs, [Word(['visible', 'hidden', 'collapse'])]);
 	}
 
 	/**
 		Sets the z-index in a consistent way.
 	**/
-	public static function layer(...exprs:Expr) {
+	public static function layer(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [layerExpr]:

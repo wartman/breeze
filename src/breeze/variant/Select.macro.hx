@@ -7,7 +7,7 @@ import breeze.core.RuleBuilder;
 using breeze.core.ValueTools;
 
 class Select {
-	public static function child(...exprs:Expr) {
+	public static function child(...exprs:Expr):Expr {
 		var exprs = exprs.toArray();
 		var modifier = exprs.shift();
 

@@ -38,11 +38,11 @@ class Interactive {
 		}
 	}
 
-	public static function appearance(...exprs:Expr) {
+	public static function appearance(...exprs:Expr):Expr {
 		return createSimpleRule('appearance', exprs, [Word(['none'])]);
 	}
 
-	public static function cursor(...exprs:Expr) {
+	public static function cursor(...exprs:Expr):Expr {
 		return createSimpleRule('cursor', exprs, [
 			Word([
 				'auto', 'default', 'pointer', 'wait', 'text', 'move', 'help', 'not-allowed', 'none', 'context-menu', 'progress', 'cell', 'crosshair',
@@ -52,7 +52,7 @@ class Interactive {
 		]);
 	}
 
-	public static function caretColor(...exprs:Expr) {
+	public static function caretColor(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [expr]:
@@ -79,42 +79,42 @@ class Interactive {
 		}
 	}
 
-	public static function pointerEvents(...exprs:Expr) {
+	public static function pointerEvents(...exprs:Expr):Expr {
 		return createSimpleRule('pointer-events', exprs, [Word(['none', 'auto'])]);
 	}
 
-	public static function resize(...exprs:Expr) {
+	public static function resize(...exprs:Expr):Expr {
 		return createSimpleRule('resize', exprs, [Word(['none', 'vertical', 'horizontal', 'both'])]);
 	}
 
-	public static function scrollBehavior(...exprs:Expr) {
+	public static function scrollBehavior(...exprs:Expr):Expr {
 		return createSimpleRule('scroll-behavior', exprs, [Word(['smooth', 'auto'])]);
 	}
 
-	public static function scrollMargin(...exprs:Expr) {
+	public static function scrollMargin(...exprs:Expr):Expr {
 		// @todo: https://tailwindcss.com/docs/scroll-margin
 		throw 'todo';
 	}
 
-	public static function scrollPadding(...exprs:Expr) {
+	public static function scrollPadding(...exprs:Expr):Expr {
 		// @todo https://tailwindcss.com/docs/scroll-padding
 		throw 'todo';
 	}
 
-	public static function scrollSnapAlign(...exprs:Expr) {
+	public static function scrollSnapAlign(...exprs:Expr):Expr {
 		return createSimpleRule('scroll-snap-align', exprs, [Word(['none', 'start', 'end', 'center'])]);
 	}
 
-	public static function scrollSnapStop(...exprs:Expr) {
+	public static function scrollSnapStop(...exprs:Expr):Expr {
 		return createSimpleRule('scroll-snap-stop', exprs, [Word(['normal', 'always'])]);
 	}
 
-	public static function scrollSnapType(...exprs:Expr) {
+	public static function scrollSnapType(...exprs:Expr):Expr {
 		// @todo: https://tailwindcss.com/docs/scroll-snap-type
 		throw 'todo';
 	}
 
-	public static function touch(...exprs:Expr) {
+	public static function touch(...exprs:Expr):Expr {
 		return createSimpleRule('touch-action', exprs, [
 			Word([
 				'auto', 'none', 'pan-x', 'pan-left', 'pan-right', 'pan-y', 'pan-up', 'pan-down', 'pinch-zoom', 'manipulation'
@@ -122,11 +122,11 @@ class Interactive {
 		]);
 	}
 
-	public static function userSelect(...exprs:Expr) {
+	public static function userSelect(...exprs:Expr):Expr {
 		return createSimpleRule('user-select', exprs, [Word(['none', 'text', 'all', 'auto'])]);
 	}
 
-	public static function willChange(...exprs:Expr) {
+	public static function willChange(...exprs:Expr):Expr {
 		return createSimpleRule('will-change', exprs, [Word(['auto', 'scroll-position', 'contents', 'transform'])]);
 	}
 }

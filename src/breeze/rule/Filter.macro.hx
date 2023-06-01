@@ -8,7 +8,7 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Filter {
-	public static function blur(...exprs:Expr) {
+	public static function blur(...exprs:Expr):Expr {
 		return createSimpleRule('blur', exprs, [Word(['none', 'sm', 'base', 'md', 'lg', 'xl', 'xxl', '3xl'])], {
 			property: 'filter',
 			process: value -> 'blur(${switch value {
@@ -25,21 +25,21 @@ class Filter {
 		});
 	}
 
-	public static function brightness(...exprs:Expr) {
+	public static function brightness(...exprs:Expr):Expr {
 		return createSimpleRule('brightness', exprs, [Integer], {
 			property: 'filter',
 			process: value -> 'brightness(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function contrast(...exprs:Expr) {
+	public static function contrast(...exprs:Expr):Expr {
 		return createSimpleRule('contrast', exprs, [Integer], {
 			property: 'filter',
 			process: value -> 'contrast(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function dropShadow(...exprs:Expr) {
+	public static function dropShadow(...exprs:Expr):Expr {
 		return createSimpleRule('drop-shadow', exprs, [Word(['none', 'sm', 'base', 'md', 'lg', 'xl', 'xxl'])], {
 			property: 'filter',
 			process: value -> switch value {
@@ -55,7 +55,7 @@ class Filter {
 		});
 	}
 
-	public static function grayscale(...exprs:Expr) {
+	public static function grayscale(...exprs:Expr):Expr {
 		return createSimpleRule('grayscale', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'grayscale(${switch value {
@@ -65,14 +65,14 @@ class Filter {
 		});
 	}
 
-	public static function hueRotate(...exprs:Expr) {
+	public static function hueRotate(...exprs:Expr):Expr {
 		return createSimpleRule('hue-rotate', exprs, [Integer], {
 			property: 'filter',
 			process: value -> 'hue-rotate(${value}deg)'
 		});
 	}
 
-	public static function invert(...exprs:Expr) {
+	public static function invert(...exprs:Expr):Expr {
 		return createSimpleRule('invert', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'invert(${switch value {
@@ -82,14 +82,14 @@ class Filter {
 		});
 	}
 
-	public static function saturate(...exprs:Expr) {
+	public static function saturate(...exprs:Expr):Expr {
 		return createSimpleRule('saturate', exprs, [Integer], {
 			property: 'filter',
 			process: value -> 'saturate(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function sepia(...exprs:Expr) {
+	public static function sepia(...exprs:Expr):Expr {
 		return createSimpleRule('sepia', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'sepia(${switch value {
@@ -99,7 +99,7 @@ class Filter {
 		});
 	}
 
-	public static function backdropBlur(...exprs:Expr) {
+	public static function backdropBlur(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-blur', exprs, [Word(['none', 'sm', 'base', 'md', 'lg', 'xl', 'xxl', '3xl'])], {
 			property: 'backdrop-filter',
 			process: value -> 'blur(${switch value {
@@ -116,21 +116,21 @@ class Filter {
 		});
 	}
 
-	public static function backdropBrightness(...exprs:Expr) {
+	public static function backdropBrightness(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-brightness', exprs, [Integer], {
 			property: 'backdrop-filter',
 			process: value -> 'brightness(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function backdropContrast(...exprs:Expr) {
+	public static function backdropContrast(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-contrast', exprs, [Integer], {
 			property: 'backdrop-filter',
 			process: value -> 'contrast(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function backdropGrayscale(...exprs:Expr) {
+	public static function backdropGrayscale(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-grayscale', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'grayscale(${switch value {
@@ -140,14 +140,14 @@ class Filter {
 		});
 	}
 
-	public static function backdropHueRotate(...exprs:Expr) {
+	public static function backdropHueRotate(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-hue-rotate', exprs, [Integer], {
 			property: 'backdrop-filter',
 			process: value -> 'hue-rotate(${value}deg)'
 		});
 	}
 
-	public static function backdropInvert(...exprs:Expr) {
+	public static function backdropInvert(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-invert', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'invert(${switch value {
@@ -157,21 +157,21 @@ class Filter {
 		});
 	}
 
-	public static function backdropOpacity(...exprs:Expr) {
+	public static function backdropOpacity(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-opacity', exprs, [Integer], {
 			property: 'backdrop-filter',
 			process: value -> 'opacity(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function backdropSaturate(...exprs:Expr) {
+	public static function backdropSaturate(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-saturate', exprs, [Integer], {
 			property: 'backdrop-filter',
 			process: value -> 'saturate(${Std.parseInt(value) / 100})'
 		});
 	}
 
-	public static function backdropSepia(...exprs:Expr) {
+	public static function backdropSepia(...exprs:Expr):Expr {
 		return createSimpleRule('backdrop-sepia', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'sepia(${switch value {

@@ -37,7 +37,7 @@ class Svg {
 		}
 	}
 
-	public static function stroke(...exprs:Expr) {
+	public static function stroke(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		return switch args.args {
 			case [colorExpr]:
@@ -64,7 +64,7 @@ class Svg {
 		}
 	}
 
-	public static function strokeWidth(...exprs:Expr) {
+	public static function strokeWidth(...exprs:Expr):Expr {
 		return createSimpleRule('stroke-width', exprs, [Integer]);
 	}
 }

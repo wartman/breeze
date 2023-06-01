@@ -9,7 +9,7 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Sizing {
-	public static function width(...exprs) {
+	public static function width(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		var allowedWords = ['full', 'screen', 'min', 'max', 'fit'];
 		var process = value -> switch value {
@@ -28,7 +28,7 @@ class Sizing {
 		}
 	}
 
-	public static function height(...exprs) {
+	public static function height(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
 		var allowedWords = ['full', 'screen', 'min', 'max', 'fit'];
 		var process = value -> switch value {

@@ -10,7 +10,7 @@ using breeze.core.MacroTools;
 using breeze.core.CssTools;
 
 class Spacing {
-	public static function pad(...expr:Expr) {
+	public static function pad(...expr:Expr):Expr {
 		var args = prepareArguments(expr.toArray());
 		return switch args.args {
 			case [sizeExpr]:
@@ -22,7 +22,7 @@ class Spacing {
 		}
 	}
 
-	public static function margin(...expr:Expr) {
+	public static function margin(...expr:Expr):Expr {
 		var args = prepareArguments(expr.toArray());
 		return switch args.args {
 			case [sizeExpr]:
@@ -34,7 +34,7 @@ class Spacing {
 		}
 	}
 
-	public static function between(...expr:Expr) {
+	public static function between(...expr:Expr):Expr {
 		var args = prepareArguments(expr.toArray());
 		return switch args.args {
 			case [directionExpr, valueExpr]:
