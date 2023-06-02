@@ -66,6 +66,8 @@ function main() {
 					// Background.color('sky', 500),
 					Border.style('dotted'),
 					Border.color('black', 0),
+					Border.color('top', 'red', 300),
+					Border.color('bottom', 'rgb(0,0,0)'),
 					Border.width('2px'),
 					Sizing.width('50px'),
 					Sizing.height('50px'),

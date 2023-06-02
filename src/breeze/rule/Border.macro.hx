@@ -16,7 +16,10 @@ class Border {
 	}
 
 	public static function width(...exprs:Expr):Expr {
+		// @todo: DRY up directions stuff
+		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 		var args = prepareArguments(exprs);
+
 		return switch args.args {
 			case [expr]:
 				var width = expr.extractCssValue([Unit]);
@@ -28,7 +31,7 @@ class Border {
 					pos: Context.currentPos()
 				});
 			case [directionExpr, widthExpr]:
-				var direction = directionExpr.extractCssValue([Word(['top', 'right', 'bottom', 'left', 'x', 'y'])]);
+				var direction = directionExpr.extractCssValue([Word(directions)]);
 				var width = widthExpr.extractCssValue([Unit]);
 				createRule({
 					prefix: 'border',
@@ -53,18 +56,57 @@ class Border {
 			default:
 				expectedArguments(1, 2);
 		}
-
-		return createSimpleRule('border', exprs, [Unit], {property: 'border-width'});
 	}
 
-	// @todo: Need to be able to define a direction as well.
 	public static function style(...exprs:Expr):Expr {
-		return createSimpleRule('border', exprs, [Word(['solid', 'dashed', 'dotted', 'double', 'hidden', 'none'])], {property: 'border-style'});
+		// @todo: DRY up directions stuff
+		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
+		var styles = ['solid', 'dashed', 'dotted', 'double', 'hidden', 'none'];
+		var args = prepareArguments(exprs);
+
+		return switch args.args {
+			case [styleExpr]:
+				var style = styleExpr.extractCssValue([Word(styles)]);
+				createRule({
+					prefix: 'border',
+					type: [style],
+					variants: args.variants,
+					properties: [{name: 'border-style', value: style}],
+					pos: Context.currentPos()
+				});
+			case [directionExpr, styleExpr]:
+				var direction = directionExpr.extractCssValue([Word(directions)]);
+				var style = styleExpr.extractCssValue([Word(styles)]);
+				createRule({
+					prefix: 'border',
+					type: [direction, style],
+					variants: args.variants,
+					properties: switch direction {
+						case 'x':
+							[
+								{name: 'border-left-style', value: style},
+								{name: 'border-right-style', value: style}
+							];
+						case 'y':
+							[
+								{name: 'border-top-style', value: style},
+								{name: 'border-bottom-style', value: style}
+							];
+						default:
+							[{name: 'border-${direction}-style', value: style}];
+					},
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1, 2);
+		}
 	}
 
-	// @todo: Need to be able to define a direction as well.
 	public static function color(...exprs:Expr):Expr {
+		// @todo: DRY up directions stuff
+		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 		var args = prepareArguments(exprs);
+
 		return switch args.args {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
@@ -84,7 +126,33 @@ class Border {
 					pos: Context.currentPos()
 				});
 			case [colorExpr, intensityExpr]:
-				var color = colorExpr.extractCssValue([ColorName]);
+				var color = colorExpr.extractCssValue([ColorName, Word(directions)]);
+
+				if (directions.contains(color)) {
+					var direction = color;
+					var color = intensityExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
+					return createRule({
+						prefix: 'border',
+						type: [direction, color],
+						variants: args.variants,
+						properties: switch direction {
+							case 'x':
+								[
+									{name: 'border-left-color', value: color},
+									{name: 'border-right-color', value: color}
+								];
+							case 'y':
+								[
+									{name: 'border-top-color', value: color},
+									{name: 'border-bottom-color', value: color}
+								];
+							default:
+								[{name: 'border-${direction}-color', value: color}];
+						},
+						pos: Context.currentPos()
+					});
+				}
+
 				var intensity = intensityExpr.extractCssValue([Integer]);
 				createRule({
 					prefix: 'border',
@@ -93,8 +161,33 @@ class Border {
 					properties: [{name: 'border-color', value: parseColor(color, intensity)}],
 					pos: Context.currentPos()
 				});
+			case [directionExpr, colorExpr, intensityExpr]:
+				var direction = directionExpr.extractCssValue([Word(directions)]);
+				var color = colorExpr.extractCssValue([ColorName]);
+				var intensity = intensityExpr.extractCssValue([Integer]);
+				var value = parseColor(color, intensity);
+				return createRule({
+					prefix: 'border',
+					type: [direction, color, intensity],
+					variants: args.variants,
+					properties: switch direction {
+						case 'x':
+							[
+								{name: 'border-left-color', value: value},
+								{name: 'border-right-color', value: value}
+							];
+						case 'y':
+							[
+								{name: 'border-top-color', value: value},
+								{name: 'border-bottom-color', value: value}
+							];
+						default:
+							[{name: 'border-${direction}-color', value: value}];
+					},
+					pos: Context.currentPos()
+				});
 			default:
-				expectedArguments(1, 2);
+				expectedArguments(1, 3);
 		}
 	}
 
