@@ -33,11 +33,9 @@ class Breakpoint {
 		}
 		var name = 'break-$breakpoint';
 		return wrapWithVariant(name, entry -> {
-			if (entry.wrapper != null) {
-				Context.error('This rule already has a wrapper -- make sure you haven\'t wrapped it too deeply', Context.currentPos());
-			}
 			entry.selector = '$name:${entry.selector}';
-			entry.wrapper = '@media screen and ($constraint)';
+			entry.setWrapper('@media screen and ($constraint)');
+			entry.increasePriority();
 			return entry;
 		}, exprs.toArray());
 	}
@@ -75,14 +73,12 @@ class Breakpoint {
 		}
 		var selector = 'container-$name-$breakpoint';
 		return wrapWithVariant(selector, entry -> {
-			if (entry.wrapper != null) {
-				Context.error('This rule already has a wrapper -- make sure you haven\'t wrapped it too deeply', Context.currentPos());
-			}
 			entry.selector = '$selector:${entry.selector}';
-			entry.wrapper = (switch name {
+			entry.setWrapper((switch name {
 				case 'any': '@container';
 				case name: '@container $name';
-			}) + ' ($constraint)';
+			}) + ' ($constraint)');
+			entry.increasePriority();
 			return entry;
 		}, exprs);
 	}

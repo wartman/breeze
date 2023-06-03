@@ -11,7 +11,7 @@ function main() {
 		Border.radius(3),
 		Border.width(1),
 		Border.style('solid'),
-		Border.color('black', 0),
+		ColorScheme.light(Border.color('black', 0)),
 		ColorScheme.dark(Border.color('white', 0)),
 		Filter.dropShadow('md'),
 		Modifier.hover(Filter.dropShadow('xxl')),
@@ -39,8 +39,7 @@ function main() {
 					Flex.gap(3),
 					Typography.font('sans'),
 					Typography.fontSize('base'),
-					Typography.fontWeight('bold'),
-					Modifier.hover(Background.color('gray', 50))
+					Typography.fontWeight('bold')
 				]),
 				children: [
 					new Html<'div'>({

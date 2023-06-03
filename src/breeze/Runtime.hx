@@ -23,7 +23,7 @@ class Runtime {
 	}
 
 	public function add(id:String, css:String, priority:Int = 1) {
-		// @todo: Not sure how to handle priority yet.
+		// @todo: Not sure how to handle priority yet, if we even can.
 		if (css.charAt(0) != '@') {
 			css = '@media all { $css }';
 		}

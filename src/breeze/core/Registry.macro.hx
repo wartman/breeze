@@ -18,12 +18,29 @@ final CssMeta = ':bz.css';
 // @todo: We have two different objects representing our CSS now --
 // this CssEntry object and the Rule object in the RuleBuilder.
 // We should look into simplifying and unifying these things.
+
+@:using(breeze.core.Registry.CssEntryTools)
 typedef CssEntry = {
 	public var wrapper:Null<String>;
 	public var selector:String;
 	public var priority:Int;
 	public var modifiers:Array<String>;
 	public var css:String;
+}
+
+class CssEntryTools {
+	public static function increasePriority(entry:CssEntry) {
+		entry.priority = entry.priority == null ? 2 : entry.priority + 1;
+		return entry;
+	}
+
+	public static function setWrapper(entry:CssEntry, wrapper:String) {
+		if (entry.wrapper != null) {
+			Context.error('This rule already has a wrapper -- make sure you haven\'t wrapped it too deeply', Context.currentPos());
+		}
+		entry.wrapper = wrapper;
+		return entry;
+	}
 }
 
 function registerCss(css:CssEntry, pos:Position) {
