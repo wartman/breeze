@@ -26,6 +26,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [width],
+					priority: 2,
 					variants: args.variants,
 					properties: [{name: 'border-width', value: width}],
 					pos: Context.currentPos()
@@ -36,6 +37,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [direction, width],
+					priority: 1,
 					variants: args.variants,
 					properties: switch direction {
 						case 'x':
@@ -70,6 +72,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [style],
+					priority: 2,
 					variants: args.variants,
 					properties: [{name: 'border-style', value: style}],
 					pos: Context.currentPos()
@@ -80,6 +83,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [direction, style],
+					priority: 1,
 					variants: args.variants,
 					properties: switch direction {
 						case 'x':
@@ -113,6 +117,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [color],
+					priority: 2,
 					variants: args.variants,
 					properties: [
 						{
@@ -134,6 +139,7 @@ class Border {
 					return createRule({
 						prefix: 'border',
 						type: [direction, color],
+						priority: 1,
 						variants: args.variants,
 						properties: switch direction {
 							case 'x':
@@ -157,6 +163,7 @@ class Border {
 				createRule({
 					prefix: 'border',
 					type: [color, intensity],
+					priority: 2,
 					variants: args.variants,
 					properties: [{name: 'border-color', value: parseColor(color, intensity)}],
 					pos: Context.currentPos()
@@ -169,6 +176,7 @@ class Border {
 				return createRule({
 					prefix: 'border',
 					type: [direction, color, intensity],
+					priority: 2,
 					variants: args.variants,
 					properties: switch direction {
 						case 'x':

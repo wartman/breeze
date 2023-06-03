@@ -35,6 +35,7 @@ class Css {
 					selector: createClassName(),
 					wrapper: null,
 					css: css,
+					priority: 1,
 					modifiers: []
 				};
 				if (args.variants.length > 0) {

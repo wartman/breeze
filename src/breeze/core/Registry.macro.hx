@@ -15,9 +15,13 @@ using sys.FileSystem;
 
 final CssMeta = ':bz.css';
 
+// @todo: We have two different objects representing our CSS now --
+// this CssEntry object and the Rule object in the RuleBuilder.
+// We should look into simplifying and unifying these things.
 typedef CssEntry = {
 	public var wrapper:Null<String>;
 	public var selector:String;
+	public var priority:Int;
 	public var modifiers:Array<String>;
 	public var css:String;
 }
@@ -27,23 +31,23 @@ function registerCss(css:CssEntry, pos:Position) {
 	if (css.modifiers.length > 0) parsed += css.modifiers.join('');
 	parsed += css.css;
 	if (css.wrapper != null) parsed = css.wrapper + '{$parsed}';
-	return export(css.selector, parsed, pos);
+	return export(css.selector, parsed, css.priority, pos);
 }
 
 function registerRawCss(id:String, css:String, ?pos:Position) {
 	var pos = pos ?? Context.currentPos();
-	return export(id, css, pos);
+	return export(id, css, 0, pos);
 }
 
 private var initialized:Bool = false;
 
-private function export(id:String, css:String, pos:Position) {
+private function export(id:String, css:String, priority:Int, pos:Position) {
 	var cls = Context.getLocalClass().get();
 	return switch Config.instance().export {
 		case Runtime:
 			// @todo: This is a bit ugly, but it works well enough for
 			// development purposes.
-			return macro breeze.Runtime.instance().rule($v{id}, $v{css});
+			return macro breeze.Runtime.instance().rule($v{id}, $v{css}, $v{priority});
 		case None:
 			macro breeze.ClassName.ofString($v{id});
 		case File(path):
@@ -55,7 +59,7 @@ private function export(id:String, css:String, pos:Position) {
 			// weird.
 			//
 			// Take a look at tink_onbuild for some guidance.
-			cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}], pos);
+			cls.meta.add(CssMeta, [macro $v{id}, macro $v{css}, macro $v{priority}], pos);
 			exportFile(path);
 			macro breeze.ClassName.ofString($v{id});
 	}
@@ -73,24 +77,27 @@ private function exportFile(path:Null<String>) {
 
 		if (Config.instance().includePreflight) {
 			var preflight = [for (_ => part in Config.instance().preflight) part].join('\n');
-			data.unshift(preflight);
+			data.unshift({css: preflight, priority: -1});
 		}
 
+		data.sort((a, b) -> a.priority - b.priority);
+
 		ensureDir(path);
-		File.saveContent(path, data.join(#if debug '\n' #else '' #end));
+		File.saveContent(path, data.map(item -> item.css).join(#if debug '\n' #else '' #end));
 	});
 }
 
 private function extractAllCssFromTypes(types:ReadOnlyArray<ModuleType>) {
-	var output:Map<String, String> = [];
+	var output:Map<String, {css:String, priority:Int}> = [];
 	for (type in types) switch type {
 		case TClassDecl(_.get() => cls) if (cls.meta.has(CssMeta)):
 			var meta = cls.meta.extract(CssMeta);
 			for (item in meta) switch item.params {
-				case [name, css]:
+				case [name, css, priority]:
 					var name = name.extractString();
 					var css = css.extractString();
-					output.set(name, css);
+					var priority = priority.extractInt();
+					output.set(name, {css: css, priority: priority});
 				default:
 					Context.error('Invalid css data', Context.currentPos());
 			}

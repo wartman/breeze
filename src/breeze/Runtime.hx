@@ -17,12 +17,13 @@ class Runtime {
 		setupPreflight();
 	}
 
-	public function rule(id:String, css:String) {
-		if (!indices.exists(id)) add(id, css);
+	public function rule(id:String, css:String, ?priority:Int) {
+		if (!indices.exists(id)) add(id, css, priority);
 		return new ClassName(id);
 	}
 
-	public function add(id:String, css:String) {
+	public function add(id:String, css:String, priority:Int = 1) {
+		// @todo: Not sure how to handle priority yet.
 		if (css.charAt(0) != '@') {
 			css = '@media all { $css }';
 		}

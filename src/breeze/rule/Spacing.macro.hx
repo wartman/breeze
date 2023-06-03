@@ -67,6 +67,7 @@ private function createSpacingRule(prefix:String, property:String, typeExpr:Null
 	var rule:Rule = {
 		prefix: prefix,
 		type: [type, size],
+		priority: type == null ? 1 : 2,
 		variants: variants,
 		properties: switch type {
 			case null: [{name: property, value: size}];

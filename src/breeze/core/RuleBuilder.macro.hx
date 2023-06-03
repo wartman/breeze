@@ -10,10 +10,42 @@ using breeze.core.ValueTools;
 using breeze.core.CssTools;
 
 typedef Rule = {
+	/**
+		The prefix to apply to this rule.
+	**/
 	public final prefix:String;
-	public final ?type:Array<String>;
+
+	/**
+		Specify this rule a bit more (for example, for a pad rule,
+		this might be a pixel value). `null` will be ignored.
+	**/
+	public final ?type:Array<Null<String>>;
+
+	/**
+		Set the priority of the CSS rule. The higher the 
+		priority, the lower in the CSS file it will appear
+		(and thus the higher prescience it will have when being
+		applied).
+
+		If ignored, a default value of `1` will be used.
+	**/
+	public final ?priority:Int;
+
+	/**
+		Variants are basically post-processing hooks used to
+		wrap CSS rules in things like media queries or to
+		add pseudo classes. See `breeze.core.RuleBuilder.maybeRegisterVariant`.
+	**/
 	public final variants:Array<String>;
+
+	/**
+		The CSS Properties this rule should define.
+	**/
 	public final properties:Array<RuleProperty>;
+
+	/**
+		The position this rule was defined at (used for errors).
+	**/
 	public final pos:Position;
 }
 
@@ -28,6 +60,7 @@ function createRule(rule:Rule):Expr {
 		selector: parseClassName(rule),
 		wrapper: null,
 		css: css,
+		priority: rule.priority ?? 1,
 		modifiers: []
 	};
 	if (rule.variants.length > 0) {
