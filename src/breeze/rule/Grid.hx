@@ -3,6 +3,8 @@ package breeze.rule;
 class Grid {
 	macro public static function display(...exprs);
 
+	macro public static function gap(...exprs);
+
 	macro public static function columns(...exprs);
 
 	macro public static function column(...exprs);

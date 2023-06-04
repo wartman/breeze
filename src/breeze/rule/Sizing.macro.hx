@@ -11,7 +11,7 @@ using breeze.core.ValueTools;
 class Sizing {
 	public static function width(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
-		var allowedWords = ['full', 'screen', 'min', 'max', 'fit'];
+		var allowedWords = ['full', 'screen', 'min', 'max', 'fit', 'auto'];
 		var process = value -> switch value {
 			case 'min' | 'max' | 'fit': '$value-content';
 			case 'screen': '100vw';
@@ -30,7 +30,7 @@ class Sizing {
 
 	public static function height(...exprs:Expr):Expr {
 		var args = prepareArguments(exprs);
-		var allowedWords = ['full', 'screen', 'min', 'max', 'fit'];
+		var allowedWords = ['full', 'screen', 'min', 'max', 'fit', 'auto'];
 		var process = value -> switch value {
 			case 'min' | 'max' | 'fit': '$value-content';
 			case 'screen': '100vh';

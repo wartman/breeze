@@ -1,6 +1,7 @@
 package breeze.rule;
 
 import breeze.core.RuleBuilder;
+import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -41,7 +42,7 @@ class Layout {
 					pos: size.pos
 				});
 			default:
-				Context.error('Expected 0 or 1 argument', Context.currentPos());
+				expectedArguments(0, 1);
 		}
 	}
 
@@ -114,7 +115,7 @@ class Layout {
 					pos: overflowExpr.pos
 				});
 			default:
-				Context.error('Expected 1 to 2 arguments', Context.currentPos());
+				expectedArguments(1, 2);
 		}
 	}
 
@@ -158,7 +159,7 @@ class Layout {
 					pos: overscrollExpr.pos
 				});
 			default:
-				Context.error('Expected 1 to 2 arguments', Context.currentPos());
+				expectedArguments(1, 2);
 		}
 	}
 
@@ -184,7 +185,7 @@ class Layout {
 					pos: sideExpr.pos
 				});
 			default:
-				Context.error('Expected 1 argument', Context.currentPos());
+				expectedArguments(1);
 		}
 	}
 
@@ -226,7 +227,7 @@ class Layout {
 					pos: layerExpr.pos
 				});
 			default:
-				Context.error('Expected 1 or two arguments', Context.currentPos());
+				expectedArguments(1, 2);
 		}
 	}
 }

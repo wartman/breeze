@@ -36,7 +36,7 @@ function main() {
 					Grid.columns(2),
 					Breakpoint.viewport('sm', Grid.columns(3)),
 					Breakpoint.viewport('lg', Grid.columns(4)),
-					Flex.gap(3),
+					Flex.gap(1 + 2), // Just to show it works
 					Typography.font('sans'),
 					Typography.fontSize('base'),
 					Typography.fontWeight('bold')
@@ -62,7 +62,7 @@ function main() {
 			}),
 			new Html<'div'>({
 				className: ClassName.ofArray([
-					// Background.color('sky', 500),
+					Background.color('sky', 500),
 					Border.style('dotted'),
 					Border.color('black', 0),
 					Border.color('top', 'red', 300),

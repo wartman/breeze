@@ -15,6 +15,10 @@ class Grid {
 		return Layout.display(...exprs);
 	}
 
+	macro public static function gap(...exprs:Expr):Expr {
+		return Flex.gap(...exprs);
+	}
+
 	public static function columns(...exprs:Expr):Expr {
 		return createSimpleRule('grid-cols', exprs, [Word(['none']), Integer], {
 			property: 'grid-template-columns',

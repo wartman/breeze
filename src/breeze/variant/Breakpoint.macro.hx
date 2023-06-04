@@ -36,6 +36,13 @@ class Breakpoint {
 			entry.selector = '$name:${entry.selector}';
 			entry.setWrapper('@media screen and ($constraint)');
 			entry.increasePriority();
+			switch breakpoint {
+				case 'md': entry.priority += 1;
+				case 'lg': entry.priority += 2;
+				case 'xl': entry.priority += 3;
+				case 'xxl': entry.priority += 4;
+				default:
+			}
 			return entry;
 		}, exprs.toArray());
 	}
@@ -79,6 +86,13 @@ class Breakpoint {
 				case name: '@container $name';
 			}) + ' ($constraint)');
 			entry.increasePriority();
+			switch breakpoint {
+				case 'md': entry.priority += 1;
+				case 'lg': entry.priority += 2;
+				case 'xl': entry.priority += 3;
+				case 'xxl': entry.priority += 4;
+				default:
+			}
 			return entry;
 		}, exprs);
 	}

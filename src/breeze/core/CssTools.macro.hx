@@ -8,7 +8,7 @@ function sanitizeClassName(name:String) {
 
 function sanitizeCssClassName(name:String) {
 	name = name.toLowerCase();
-	for (char in [':', '#', '.', '[', ']', '(', ')', '%']) {
+	for (char in [':', '#', '+', '/', '*', '.', '[', ']', '(', ')', '%']) {
 		name = name.replace(char, '\\$char');
 	}
 	return name;

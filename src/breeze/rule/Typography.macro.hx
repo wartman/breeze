@@ -223,7 +223,9 @@ class Typography {
 	}
 
 	public static function whitespace(...exprs:Expr):Expr {
-		return createSimpleRule('whitespace', exprs, [Word(['normal', 'nowrap', 'pre', 'pre-line', 'pre-wrap', 'break-spaces'])]);
+		return createSimpleRule('whitespace', exprs, [Word(['normal', 'nowrap', 'pre', 'pre-line', 'pre-wrap', 'break-spaces'])], {
+			property: 'white-space'
+		});
 	}
 
 	public static function wordBreak(...exprs:Expr):Expr {

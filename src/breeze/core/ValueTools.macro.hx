@@ -25,6 +25,23 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 	}
 
 	return switch e.expr {
+		case EBinop(opExpr, e1, e2) if (allowed.contains(Unit)):
+			var op = switch opExpr {
+				case OpAdd: '+';
+				case OpSub: '-';
+				case OpMult: '*';
+				case OpDiv: '/';
+				default: Context.error('Invalid operator', e.pos);
+			}
+			var left = switch e1.expr {
+				case EParenthesis(e): 'calc(${extractCssValue(e1, allowed)})';
+				default: extractCssValue(e1, allowed);
+			}
+			var right = switch e2.expr {
+				case EParenthesis(e): 'calc(${extractCssValue(e2, allowed)})';
+				default: extractCssValue(e2, allowed);
+			}
+			return 'calc(${left} ${op} ${right})';
 		case EConst(CString(s, _)) if (allowed.contains(String)):
 			s;
 		case EConst(CString(value, _)) if (isCssUnit(value)):
