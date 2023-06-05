@@ -1,5 +1,6 @@
 package breeze;
 
+import haxe.macro.Expr;
 import haxe.macro.Context;
 
 enum CssExport {
@@ -9,6 +10,15 @@ enum CssExport {
 }
 
 class Config {
+	public static function getPreflight():Expr {
+		var config = instance();
+		if (!config.includePreflight) return macro '';
+		var out = [for (_ => value in config.preflight) value];
+		out.sort((a, b) -> a.priority - b.priority);
+		var css = out.map(item -> item.css).join('\n');
+		return macro $v{css};
+	}
+
 	public static function load(?file:String) {
 		// @todo: this will load a JSON file relative to the
 		// project root. If a file is found, it will be parsed and *merged*
@@ -34,7 +44,7 @@ class Config {
 			case path: File(path);
 		}
 	public var includePreflight:Bool = true;
-	public var preflight:Map<String, String> = ['default' => breeze.core.Preflight.defaultPreflight];
+	public var preflight:Map<String, {priority:Int, css:String}> = ['default' => {priority: -1, css: breeze.core.Preflight.defaultPreflight}];
 	public final fontFamilies:Map<String, String> = [
 		'sans' =>
 		'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"',
@@ -169,6 +179,16 @@ class Config {
 			'50%' => 'transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1)'
 		]
 	];
+	public var darkModeStrategy:DarkModeStrategy = SystemStrategy;
 
 	public function new() {}
+
+	public function addGlobalCss(id:String, css:String, priority:Int = 0) {
+		preflight.set(id, {css: css, priority: priority});
+	}
+}
+
+enum DarkModeStrategy {
+	SystemStrategy;
+	ClassNameStrategy(?name:String);
 }

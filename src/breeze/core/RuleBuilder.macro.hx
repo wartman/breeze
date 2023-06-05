@@ -58,10 +58,11 @@ function createRule(rule:Rule):Expr {
 	var css = '{${parseProperties(rule.properties)}}';
 	var entry:CssEntry = {
 		selector: parseClassName(rule),
+		modifiers: [],
+		specifiers: [],
 		wrapper: null,
 		css: css,
-		priority: rule.priority ?? 1,
-		modifiers: []
+		priority: rule.priority ?? 1
 	};
 	if (rule.variants.length > 0) {
 		for (name in rule.variants) {

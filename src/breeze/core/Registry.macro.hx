@@ -15,16 +15,13 @@ using sys.FileSystem;
 
 final CssMeta = ':bz.css';
 
-// @todo: We have two different objects representing our CSS now --
-// this CssEntry object and the Rule object in the RuleBuilder.
-// We should look into simplifying and unifying these things.
-
 @:using(breeze.core.Registry.CssEntryTools)
 typedef CssEntry = {
 	public var wrapper:Null<String>;
 	public var selector:String;
-	public var priority:Int;
+	public var specifiers:Array<{selector:String, ?prefix:Bool}>;
 	public var modifiers:Array<String>;
+	public var priority:Int;
 	public var css:String;
 }
 
@@ -43,12 +40,24 @@ class CssEntryTools {
 	}
 }
 
-function registerCss(css:CssEntry, pos:Position) {
-	var parsed = '.${css.selector.sanitizeCssClassName()}';
-	if (css.modifiers.length > 0) parsed += css.modifiers.join('');
-	parsed += css.css;
-	if (css.wrapper != null) parsed = css.wrapper + '{$parsed}';
-	return export(css.selector, parsed, css.priority, pos);
+function registerCss(entry:CssEntry, pos:Position) {
+	var parsed = '.${entry.selector.sanitizeCssClassName()}';
+	if (entry.modifiers.length > 0) parsed += entry.modifiers.join('');
+	if (entry.specifiers.length > 0) {
+		var classes = [];
+		var prefixes = entry.specifiers.filter(spec -> spec.prefix == true);
+		var suffixes = entry.specifiers.filter(spec -> spec.prefix != true);
+		for (prefix in prefixes) {
+			classes.push(prefix + ' ' + parsed);
+		}
+		for (suffix in suffixes) {
+			classes.push(parsed + ' ' + suffix);
+		}
+		parsed = classes.join(',');
+	}
+	parsed += entry.css;
+	if (entry.wrapper != null) parsed = entry.wrapper + '{$parsed}';
+	return export(entry.selector, parsed, entry.priority, pos);
 }
 
 function registerRawCss(id:String, css:String, ?pos:Position) {
@@ -93,14 +102,16 @@ private function exportFile(path:Null<String>) {
 		var path = getExportFilename(path);
 
 		if (Config.instance().includePreflight) {
-			var preflight = [for (_ => part in Config.instance().preflight) part].join('\n');
+			var parts = [for (_ => part in Config.instance().preflight) part];
+			parts.sort((a, b) -> a.priority - b.priority);
+			var preflight = parts.map(part -> part.css).join('\n');
 			data.unshift({css: preflight, priority: -1});
 		}
 
 		data.sort((a, b) -> a.priority - b.priority);
 
 		ensureDir(path);
-		File.saveContent(path, data.map(item -> item.css).join(#if debug '\n' #else '' #end));
+		File.saveContent(path, data.map(item -> item.css).join('\n'));
 	});
 }
 

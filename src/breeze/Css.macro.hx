@@ -33,10 +33,11 @@ class Css {
 				var css = '{ ' + normalizeCss(expr.extractString()) + ' }';
 				var entry:CssEntry = {
 					selector: createClassName(),
+					specifiers: [],
+					modifiers: [],
 					wrapper: null,
 					css: css,
-					priority: 1,
-					modifiers: []
+					priority: 1
 				};
 				if (args.variants.length > 0) {
 					for (name in args.variants) {

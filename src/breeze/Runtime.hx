@@ -45,7 +45,7 @@ class Runtime {
 	}
 
 	function setupPreflight() {
-		var preflight = breeze.core.Preflight.getPreflight();
-		for (id => css in preflight) add(id, css);
+		var preflight = breeze.Config.getPreflight();
+		add('__bz-preflight', preflight);
 	}
 }
