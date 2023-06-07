@@ -48,10 +48,10 @@ function registerCss(entry:CssEntry, pos:Position) {
 		var prefixes = entry.specifiers.filter(spec -> spec.prefix == true);
 		var suffixes = entry.specifiers.filter(spec -> spec.prefix != true);
 		for (prefix in prefixes) {
-			classes.push(prefix + ' ' + parsed);
+			classes.push(prefix.selector + ' ' + parsed);
 		}
 		for (suffix in suffixes) {
-			classes.push(parsed + ' ' + suffix);
+			classes.push(parsed + ' ' + suffix.selector);
 		}
 		parsed = classes.join(',');
 	}

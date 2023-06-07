@@ -352,7 +352,10 @@ class Border {
 
 private function divideSuffix() {
 	return maybeRegisterVariant('divide-suffix', entry -> {
-		entry.selector += ' > * + *';
+		entry.specifiers.push({
+			selector: ' > * + *',
+			prefix: false
+		});
 		entry;
 	});
 }

@@ -4,7 +4,7 @@ using StringTools;
 
 abstract ClassName(String) to String {
 	@:from public inline static function ofString(s:String):ClassName {
-		return if (s == null) null else new ClassName(s.trim());
+		return if (s == null) null else new ClassName(s);
 	}
 
 	@:from public inline static function ofMap(parts:Map<String, Bool>) {
