@@ -16,7 +16,7 @@ abstract ClassName(String) to String {
 	}
 
 	@:from public static function ofArray(parts:Array<String>) {
-		var name = parts.map(ofString).filter(s -> s != null).join(' ');
+		var name = parts.map(ofString).filter(s -> s != null && s != '').join(' ');
 		return new ClassName(name);
 	}
 
@@ -29,5 +29,13 @@ abstract ClassName(String) to String {
 			case [null, v] | [v, null]: v;
 			case [a, b]: '$a $b';
 		});
+	}
+
+	public inline function normalize():ClassName {
+		return toArray();
+	}
+
+	@:to public inline function toArray():Array<String> {
+		return this.split(' ').filter(s -> s != null && s != '');
 	}
 }
