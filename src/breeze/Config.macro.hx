@@ -37,7 +37,7 @@ class Config {
 		return config;
 	}
 
-	public var export:CssExport = switch Context.definedValue('breeze.output') {
+	public var export:CssExport = switch Context.definedValue('breeze.output') ?? Context.definedValue('breeze-output') {
 			case null: File();
 			case 'none': None;
 			case 'runtime': Runtime;

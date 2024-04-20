@@ -12,6 +12,7 @@ using breeze.core.MacroTools;
 using haxe.io.Path;
 using haxe.macro.Tools;
 using sys.FileSystem;
+using StringTools;
 
 final CssMeta = ':bz.css';
 
@@ -138,8 +139,14 @@ private function getExportFilename(path:Null<String>) {
 	return switch path {
 		case null:
 			Path.join([sys.FileSystem.absolutePath(Compiler.getOutput().directory()), 'styles']).withExtension('css');
-		case abs = _.charAt(0) => '.' | '/':
-			abs.withExtension('css');
+		case absolute if (absolute.startsWith('abs:')):
+			var path = absolute.substr(4);
+			path.withExtension('css');
+		// Relative to CWD:
+		case relative if (relative.startsWith('cwd:')):
+			var path = relative.substr(4);
+			Path.join([Sys.getCwd(), path]).withExtension('css');
+		// Relative to output file (default behavior):
 		case relative:
 			Path.join([sys.FileSystem.absolutePath(Compiler.getOutput().directory()), relative]).withExtension('css');
 	}
