@@ -94,7 +94,7 @@ function createSimpleRule(prefix:String, exprs:Array<Expr>, allowed:Array<CssVal
 
 function parseClassName(rule:Rule) {
 	var selector = rule.prefix;
-	var type = rule?.type?.filter(f -> f != null) ?.map(sanitizeClassName);
+	var type = rule?.type?.filter(f -> f != null)?.map(sanitizeClassName);
 	if (type != null && type.length > 0) {
 		selector += '-' + type.join('-');
 	}

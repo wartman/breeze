@@ -80,7 +80,7 @@ private function export(id:String, css:String, priority:Int, pos:Position) {
 		case File(path):
 			// @todo: This works really poorly. All kinds of weird stuff can
 			// happen. We need to figure out a bit better how the Completion server
-			// and cacheing work, as this only outputs the correct CSS file
+			// and caching work, as this only outputs the correct CSS file
 			// on a fresh build. The main issue is that the the CSS file will be
 			// regenerated whenever the completion server runs, which can be super
 			// weird.
