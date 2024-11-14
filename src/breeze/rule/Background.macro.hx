@@ -92,6 +92,9 @@ class Background {
 	}
 
 	public static function image(...exprs:Expr):Expr {
-		throw 'not yet';
+		return createSimpleRule('bg-img', exprs, [All], {
+			property: 'background-image',
+			process: value -> 'url($value)'
+		});
 	}
 }

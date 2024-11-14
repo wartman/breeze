@@ -32,7 +32,7 @@ class Breakpoint {
 			case unit: 'min-width: $unit';
 		}
 		var name = 'break-$breakpoint';
-		return wrapWithVariant(name, entry -> {
+		return wrapWithVariant('breakpoint:$name', entry -> {
 			entry.selector = '$name:${entry.selector}';
 			entry.setWrapper('@media screen and ($constraint)');
 			entry.increasePriority();
@@ -79,7 +79,7 @@ class Breakpoint {
 			case unit: 'width > $unit';
 		}
 		var selector = 'container-$name-$breakpoint';
-		return wrapWithVariant(selector, entry -> {
+		return wrapWithVariant('breakpoint:$selector', entry -> {
 			entry.selector = '$selector:${entry.selector}';
 			entry.setWrapper((switch name {
 				case 'any': '@container';

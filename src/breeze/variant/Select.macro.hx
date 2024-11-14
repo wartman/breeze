@@ -17,9 +17,18 @@ class Select {
 
 		var name = modifier.extractCssValue([Word(['first', 'last', 'odd', 'even'])]);
 
-		return wrapWithVariant(name, entry -> {
+		return wrapWithVariant('select:$name', entry -> {
 			entry.selector = '$name:${entry.selector}';
 			entry.modifiers.push(':${name}-child');
+			return entry;
+		}, exprs);
+	}
+
+	public static function descendants(...exprs:Expr):Expr {
+		var exprs = exprs.toArray();
+		return wrapWithVariant('select:descendants', entry -> {
+			entry.selector = '${entry.selector}:*';
+			entry.modifiers.push(' *');
 			return entry;
 		}, exprs);
 	}

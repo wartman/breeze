@@ -64,7 +64,7 @@ private function createModifierVariant(modifier:Null<Expr>, exprs:Array<Expr>) {
 		])
 	]);
 
-	return wrapWithVariant(name, entry -> {
+	return wrapWithVariant('modifier:$name', entry -> {
 		entry.selector = '$name:${entry.selector}';
 		entry.modifiers.push(':$name');
 		return entry;
