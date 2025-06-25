@@ -23,8 +23,11 @@ class Border {
 
 	macro public static function divideColor(...exprs);
 
-	// macro public static function ringWidth(...exprs);
-	// macro public static function ringColor(...exprs);
-	// macro public static function ringOffsetWidth(...exprs);
-	// macro public static function ringOffsetColor(...exprs);
+	macro public static function ringWidth(...exprs);
+
+	macro public static function ringColor(...exprs);
+
+	macro public static function ringOffsetWidth(...exprs);
+
+	macro public static function ringOffsetColor(...exprs);
 }

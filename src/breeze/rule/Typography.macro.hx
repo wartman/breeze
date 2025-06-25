@@ -61,12 +61,36 @@ class Typography {
 					pos: Context.currentPos()
 				});
 			default:
-				Context.error('Expected 1 or 2 arguments', Context.currentPos());
+				expectedArguments(1, 2);
 		}
 	}
 
 	public static function fontSmoothing(...exprs:Expr):Expr {
-		throw 'todo';
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [smoothingExpr]:
+				var smoothing = smoothingExpr.extractCssValue([Word(['antialiased', 'subpixel-antialiased'])]);
+				return createRule({
+					prefix: 'font-smoothing',
+					type: [smoothing],
+					variants: args.variants,
+					pos: Context.currentPos(),
+					properties: switch smoothing {
+						case 'antialiased': [
+								{name: '-webkit-font-smoothing', value: 'antialiased'},
+								{name: '-moz-osx-font-smoothing', value: 'grayscale'}
+							];
+						case 'subpixel-antialiased': [
+								{name: '-webkit-font-smoothing', value: 'subpixel-antialiased'},
+								{name: '-moz-osx-font-smoothing', value: 'auto'}
+							];
+						default:
+							Context.error('Invalid font smoothing: $smoothing', Context.currentPos());
+					}
+				});
+			default:
+				expectedArguments(1);
+		}
 	}
 
 	public static function fontStyle(...exprs:Expr):Expr {
@@ -103,8 +127,26 @@ class Typography {
 	}
 
 	public static function lineClamp(...exprs:Expr):Expr {
-		// https://tailwindcss.com/docs/line-clamp
-		throw 'todo';
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [linesExpr]:
+				var lines = linesExpr.extractCssValue([Integer]);
+				createRule({
+					prefix: 'line-clamp',
+					type: [lines],
+					variants: args.variants,
+					properties: [
+						{name: 'overflow', value: 'hidden'},
+						{name: 'display', value: '-webkit-box'},
+						{name: '-webkit-box-orient', value: 'vertical'},
+						{name: '-webkit-line-clamp', value: lines},
+						// {name: 'line-clamp', value: lines}
+					],
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1);
+		}
 	}
 
 	public static function leading(...exprs:Expr):Expr {
@@ -123,8 +165,9 @@ class Typography {
 	}
 
 	public static function listStyle(...exprs:Expr):Expr {
-		// https://tailwindcss.com/docs/list-style-image
-		throw 'todo';
+		return createSimpleRule('list', exprs, [Word(['none', 'disc', 'decimal'])], {
+			property: 'list-style-type'
+		});
 	}
 
 	public static function listPosition(...exprs:Expr):Expr {

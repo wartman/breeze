@@ -12,16 +12,16 @@ class Filter {
 		return createSimpleRule('blur', exprs, [Word(['none', 'sm', 'base', 'md', 'lg', 'xl', 'xxl', '3xl'])], {
 			property: 'filter',
 			process: value -> 'blur(${switch value {
-      case 'none': '0';
-      case 'sm': '4px';
-      case 'base': '8px';
-      case 'md': '12px';
-      case 'lg': '16px';
-      case 'xl': '24px';
-      case 'xxl': '40px';
-      case '3xl': '64px';
-      default: throw 'assert'; 
-    }})'
+				case 'none': '0';
+				case 'sm': '4px';
+				case 'base': '8px';
+				case 'md': '12px';
+				case 'lg': '16px';
+				case 'xl': '24px';
+				case 'xxl': '40px';
+				case '3xl': '64px';
+				default: throw 'assert'; 
+			}})'
 		});
 	}
 
@@ -59,9 +59,9 @@ class Filter {
 		return createSimpleRule('grayscale', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'grayscale(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 
@@ -76,9 +76,9 @@ class Filter {
 		return createSimpleRule('invert', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'invert(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 
@@ -93,9 +93,9 @@ class Filter {
 		return createSimpleRule('sepia', exprs, [Word(['off', 'on'])], {
 			property: 'filter',
 			process: value -> 'sepia(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 
@@ -103,16 +103,16 @@ class Filter {
 		return createSimpleRule('backdrop-blur', exprs, [Word(['none', 'sm', 'base', 'md', 'lg', 'xl', 'xxl', '3xl'])], {
 			property: 'backdrop-filter',
 			process: value -> 'blur(${switch value {
-      case 'none': '0';
-      case 'sm': '4px';
-      case 'base': '8px';
-      case 'md': '12px';
-      case 'lg': '16px';
-      case 'xl': '24px';
-      case 'xxl': '40px';
-      case '3xl': '64px';
-      default: throw 'assert'; 
-    }})'
+				case 'none': '0';
+				case 'sm': '4px';
+				case 'base': '8px';
+				case 'md': '12px';
+				case 'lg': '16px';
+				case 'xl': '24px';
+				case 'xxl': '40px';
+				case '3xl': '64px';
+				default: throw 'assert'; 
+			}})'
 		});
 	}
 
@@ -134,9 +134,9 @@ class Filter {
 		return createSimpleRule('backdrop-grayscale', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'grayscale(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 
@@ -151,9 +151,9 @@ class Filter {
 		return createSimpleRule('backdrop-invert', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'invert(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 
@@ -175,9 +175,9 @@ class Filter {
 		return createSimpleRule('backdrop-sepia', exprs, [Word(['off', 'on'])], {
 			property: 'backdrop-filter',
 			process: value -> 'sepia(${switch value {
-      case 'off': '0';
-      default: '100%';
-    }})'
+				case 'off': '0';
+				default: '100%';
+			}})'
 		});
 	}
 }

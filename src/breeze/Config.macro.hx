@@ -19,9 +19,6 @@ class Config {
 		return macro $v{css};
 	}
 
-	// public static function load(?path:String) {
-	// 	return breeze.ConfigLoader.loadConfig(path);
-	// }
 	@:persistent static var config:Null<Config> = null;
 
 	public static function instance() {

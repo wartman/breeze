@@ -1,6 +1,6 @@
 package breeze.core;
 
-import breeze.core.CssTools.sanitizeClassName;
+import breeze.core.CssTools;
 import haxe.macro.Context;
 import breeze.core.Registry;
 import haxe.macro.Expr;
@@ -8,6 +8,7 @@ import haxe.macro.Expr;
 using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 using breeze.core.CssTools;
+using haxe.macro.Tools;
 
 typedef Rule = {
 	/**
@@ -115,6 +116,33 @@ function parseProperties(properties:Array<RuleProperty>):String {
 	].join('; ');
 }
 
+function composeRules(exprs:Array<Expr>):Expr {
+	var args = prepareArguments(exprs);
+	var variants = args.variants;
+	var exprs = args.args;
+	var pos = Context.currentPos();
+
+	if (variants.length == 0) {
+		return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs}]);
+	}
+
+	var variantArgs = variants.map(variant -> createVariantIdentifier(macro $v{variant}));
+
+	function apply(expr:Expr) {
+		return switch expr.expr {
+			case ECall(e, params):
+				{
+					expr: ECall(e, params.concat(variantArgs)),
+					pos: expr.pos
+				};
+			default:
+				expr;
+		}
+	}
+
+	return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs.map(apply)}]);
+}
+
 final VariantCollection:Map<String, Variant> = [];
 
 typedef Variant = {
@@ -124,22 +152,7 @@ typedef Variant = {
 
 function wrapWithVariant(name:String, parser:(entry:CssEntry) -> CssEntry, exprs:Array<Expr>) {
 	maybeRegisterVariant(name, parser);
-
-	var args = prepareArguments(exprs);
-	var variants = args.variants.map(name -> createVariantIdentifier(macro $v{name}));
-
-	variants.push(createVariantIdentifier(macro $v{name}));
-
-	var out = [
-		for (expr in args.args) switch expr.expr {
-			case ECall(e, params):
-				expr.expr = ECall(e, params.concat(variants));
-				expr;
-			default:
-				expr;
-		}
-	];
-	return macro breeze.ClassName.ofArray([$a{out}]);
+	return composeRules(exprs.concat([createVariantIdentifier(macro $v{name})]));
 }
 
 function variantExists(name:String) {
@@ -181,29 +194,6 @@ function extractVariantIdentifier(e:Expr) {
 	}
 }
 
-function applyVariants(variants:Array<String>, exprs:Array<Expr>):Expr {
-	var pos = Context.currentPos();
-
-	if (variants.length == 0) {
-		return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs}]);
-	}
-
-	var args = variants.map(variant -> createVariantIdentifier(macro $v{variant}));
-
-	function apply(expr:Expr) {
-		return switch expr.expr {
-			case ECall(e, params):
-				{
-					expr: ECall(e, params.concat(args)),
-					pos: expr.pos
-				};
-			default: expr;
-		}
-	}
-
-	return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs.map(apply)}]);
-}
-
 function isVariant(e) {
 	return switch e.expr {
 		case EMeta({name: ':bz.variant'}, _): true;
@@ -211,20 +201,43 @@ function isVariant(e) {
 	}
 }
 
-function prepareArguments(exprs:Array<Expr>):{args:Array<Expr>, variants:Array<String>} {
-	var args:Array<Expr> = [];
-	var variants = [];
+/**
+	Compose an array of rules with any variants that might be in a list
+	of arguments.
 
-	for (expr in exprs) {
-		if (isVariant(expr)) {
-			variants.push(extractVariantIdentifier(expr));
-		} else {
-			args.push(expr);
-		}
+	```haxe
+	// Because of how Breeze works, we include the variants that wrap
+	// each rule in our arguments list. These need to be applied to each
+	// function call to work.
+	function box(...exprs) {
+		return withVariants([
+			macro breeze.rule.Spacing.pad(3),
+			macro breeze.rule.Flex.display()
+		], exprs);
 	}
+	```
+**/
+function composeWithVariants(rules:Array<Expr>, args:Array<Expr>) {
+	return composeRules(rules.concat(getVariants(args)));
+}
 
+/**
+	Extract all variant identifiers from a list of arguments.
+**/
+function getVariants(args:Array<Expr>) {
+	return args.filter(isVariant);
+}
+
+/**
+	Ignore any variant identifiers that might be in an arguments list.
+**/
+function withoutVariants(args:Array<Expr>) {
+	return args.filter(arg -> !isVariant(arg));
+}
+
+function prepareArguments(exprs:Array<Expr>):{args:Array<Expr>, variants:Array<String>} {
 	return {
-		args: args,
-		variants: variants
+		args: withoutVariants(exprs),
+		variants: getVariants(exprs).map(extractVariantIdentifier)
 	};
 }

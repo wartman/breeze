@@ -1,7 +1,6 @@
 package breeze.rule;
 
-import breeze.core.Registry.registerRawCss;
-import breeze.core.Registry.registerCss;
+import breeze.core.Registry;
 import breeze.core.RuleBuilder;
 import haxe.macro.Context;
 import haxe.macro.Expr;

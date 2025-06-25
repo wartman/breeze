@@ -344,10 +344,115 @@ class Border {
 		}
 	}
 
-	// public static function ringWidth(...exprs:Expr):Expr {}
-	// public static function ringColor(...exprs:Expr):Expr {}
-	// public static function ringOffsetWidth(...exprs:Expr):Expr {}
-	// public static function ringOffsetColor(...exprs:Expr):Expr {}
+	// @todo: The following were implemented via LLM -- need to test and verify. They look right,
+	// but who knows. Still a bit shocked how well it's parsed this weird codebase.
+	//
+	// Also not sure where it's getting the default colors from. Tailwind?
+
+	public static function ringWidth(...exprs:Expr):Expr {
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case []:
+				createRule({
+					prefix: 'ring',
+					type: [],
+					variants: args.variants,
+					properties: [
+						{name: '--bz-ring-shadow', value: '0 0 0 3px var(--bz-ring-color, rgba(59,130,246,0.5))'},
+						{name: 'box-shadow', value: 'var(--bz-ring-shadow)'}
+					],
+					pos: Context.currentPos()
+				});
+			case [widthExpr]:
+				var width = widthExpr.extractCssValue([Unit]);
+				createRule({
+					prefix: 'ring',
+					type: [width],
+					variants: args.variants,
+					properties: [
+						{name: '--bz-ring-shadow', value: '0 0 0 ${width} var(--bz-ring-color, rgba(59,130,246,0.5))'},
+						{name: 'box-shadow', value: 'var(--bz-ring-shadow)'}
+					],
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(0, 1);
+		}
+	}
+
+	public static function ringColor(...exprs:Expr):Expr {
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [colorExpr]:
+				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
+				createRule({
+					prefix: 'ring',
+					type: [color],
+					variants: args.variants,
+					properties: [{name: '--bz-ring-color', value: color}],
+					pos: Context.currentPos()
+				});
+			case [colorExpr, intensityExpr]:
+				var color = colorExpr.extractCssValue([ColorName]);
+				var intensity = intensityExpr.extractCssValue([Integer]);
+				createRule({
+					prefix: 'ring',
+					type: [color, intensity],
+					variants: args.variants,
+					properties: [{name: '--bz-ring-color', value: parseColor(color, intensity)}],
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1, 2);
+		}
+	}
+
+	public static function ringOffsetWidth(...exprs:Expr):Expr {
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [widthExpr]:
+				var width = widthExpr.extractCssValue([Unit]);
+				createRule({
+					prefix: 'ring-offset',
+					type: [width],
+					variants: args.variants,
+					properties: [
+						{name: '--bz-ring-offset-shadow', value: '0 0 0 ${width} var(--bz-ring-offset-color, #fff)'},
+						{name: 'box-shadow', value: 'var(--bz-ring-offset-shadow), var(--bz-ring-shadow)'}
+					],
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1);
+		}
+	}
+
+	public static function ringOffsetColor(...exprs:Expr):Expr {
+		var args = prepareArguments(exprs);
+		return switch args.args {
+			case [colorExpr]:
+				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
+				createRule({
+					prefix: 'ring-offset',
+					type: [color],
+					variants: args.variants,
+					properties: [{name: '--bz-ring-offset-color', value: color}],
+					pos: Context.currentPos()
+				});
+			case [colorExpr, intensityExpr]:
+				var color = colorExpr.extractCssValue([ColorName]);
+				var intensity = intensityExpr.extractCssValue([Integer]);
+				createRule({
+					prefix: 'ring-offset',
+					type: [color, intensity],
+					variants: args.variants,
+					properties: [{name: '--bz-ring-offset-color', value: parseColor(color, intensity)}],
+					pos: Context.currentPos()
+				});
+			default:
+				expectedArguments(1, 2);
+		}
+	}
 }
 
 private function divideSuffix() {

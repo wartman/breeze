@@ -13,7 +13,8 @@ function main() {
 		ColorScheme.light(Border.color('black', 0)),
 		ColorScheme.dark(Border.color('white', 0)),
 		Filter.dropShadow('md'),
-		Modifier.hover(Filter.dropShadow('xxl')),
+		Modifier.hover(Border.style('dotted'), Filter.dropShadow('xxl')),
+		Breakpoint.viewport('lg', Modifier.hover(Border.style('solid'), Filter.dropShadow('xl'))),
 		Css.rule('
 			--test: #ccc;
 			background-color: var(--test);
