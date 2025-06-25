@@ -181,6 +181,29 @@ function extractVariantIdentifier(e:Expr) {
 	}
 }
 
+function applyVariants(variants:Array<String>, exprs:Array<Expr>):Expr {
+	var pos = Context.currentPos();
+
+	if (variants.length == 0) {
+		return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs}]);
+	}
+
+	var args = variants.map(variant -> createVariantIdentifier(macro $v{variant}));
+
+	function apply(expr:Expr) {
+		return switch expr.expr {
+			case ECall(e, params):
+				{
+					expr: ECall(e, params.concat(args)),
+					pos: expr.pos
+				};
+			default: expr;
+		}
+	}
+
+	return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs.map(apply)}]);
+}
+
 function isVariant(e) {
 	return switch e.expr {
 		case EMeta({name: ':bz.variant'}, _): true;

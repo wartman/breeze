@@ -1,14 +1,17 @@
 package breeze.core;
 
+import haxe.macro.Expr;
 import haxe.macro.Context;
 
-function parseColor(name:String, intensity:String) {
+function parseColor(name:String, intensity:String, ?pos:Position) {
+	pos ??= Context.currentPos();
+
 	if (!isColorName(name)) {
-		Context.error('Invalid color: $name', Context.currentPos());
+		Context.error('Invalid color: $name', pos);
 	}
 	if (!isColorIntensity(name, intensity)) {
 		var intensities = [for (intensity in getColorConfig().get(name).keys()) intensity].join(', ');
-		Context.error('Invalid color intensity: $name $intensity. Allowed intensities for this color are: $intensities.', Context.currentPos());
+		Context.error('Invalid color intensity: $name $intensity. Allowed intensities for this color are: $intensities.', pos);
 	}
 	return getColorIntensity(name, intensity);
 }
@@ -35,7 +38,7 @@ function isColorIntensity(name:String, intensity:String) {
 }
 
 function getColorIntensity(name:String, intensity:String) {
-	return getColorConfig().get(name) ?.get(intensity);
+	return getColorConfig().get(name)?.get(intensity);
 }
 
 private function getColorConfig() {

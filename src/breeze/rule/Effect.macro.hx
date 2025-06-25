@@ -11,17 +11,15 @@ using breeze.core.ValueTools;
 
 class Effect {
 	public static function shadow(...exprs:Expr):Expr {
-		return createSimpleRule('shadow', exprs, [Word(['sm', 'md', 'lg', 'xl', 'xxl', 'inner', 'none'])], {
+		var shadows = Config.instance().shadows;
+		var keys = [for (key => _ in shadows) key];
+		return createSimpleRule('shadow', exprs, [Word(keys)], {
 			property: 'box-shadow',
-			process: value -> switch value {
-				case 'sm': '0 1px 2px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))';
-				case 'md': '0 1px 3px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1))';
-				case 'lg': '0 4px 6px -1px var(--bz-shadow-color, rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1))';
-				case 'xl': '0 10px 15px -3px var(--bz-shadow-color, rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1))';
-				case 'xxl': '0 20px 25px -5px var(--bz-shadow-color, rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1))';
-				case 'inner': 'inset 0 2px 4px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))';
-				case 'none': '0 0 #0000';
-				case other: throw 'assert';
+			process: key -> {
+				if (!shadows.exists(key)) {
+					Context.error('Unknown shadow value: $key', Context.currentPos());
+				}
+				shadows.get(key);
 			}
 		});
 	}
@@ -64,11 +62,52 @@ class Effect {
 	}
 
 	public static function mixBlend(...exprs:Expr):Expr {
-		throw 'todo';
+		return createSimpleRule('mix-blend', exprs, [
+			Word([
+				'normal',
+				'multiply',
+				'screen',
+				'overlay',
+				'darken',
+				'lighten',
+				'color-dodge',
+				'color-burn',
+				'hard-light',
+				'soft-light',
+				'difference',
+				'exclusion',
+				'hue',
+				'saturation',
+				'color',
+				'luminosity'
+			])
+		], {
+			property: 'mix-blend-mode'
+		});
 	}
 
 	public static function bgBlend(...exprs:Expr):Expr {
-		throw 'todo';
+		return createSimpleRule('bg-blend', exprs, [
+			Word([
+				'normal',
+				'multiply',
+				'screen',
+				'overlay',
+				'darken',
+				'lighten',
+				'color-dodge',
+				'color-burn',
+				'hard-light',
+				'soft-light',
+				'difference',
+				'exclusion',
+				'hue',
+				'saturation',
+				'color',
+				'luminosity'
+			])
+		], {
+			property: 'background-blend-mode'
+		});
 	}
 }
-

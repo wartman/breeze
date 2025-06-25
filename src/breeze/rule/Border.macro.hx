@@ -165,7 +165,7 @@ class Border {
 					type: [color, intensity],
 					priority: 2,
 					variants: args.variants,
-					properties: [{name: 'border-color', value: parseColor(color, intensity)}],
+					properties: [{name: 'border-color', value: parseColor(color, intensity, intensityExpr.pos)}],
 					pos: Context.currentPos()
 				});
 			case [directionExpr, colorExpr, intensityExpr]:

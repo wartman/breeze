@@ -1,7 +1,7 @@
 package breeze;
 
-import haxe.macro.Expr;
 import haxe.macro.Context;
+import haxe.macro.Expr;
 
 enum CssExport {
 	None;
@@ -19,17 +19,9 @@ class Config {
 		return macro $v{css};
 	}
 
-	public static function load(?file:String) {
-		// @todo: this will load a JSON file relative to the
-		// project root. If a file is found, it will be parsed and *merged*
-		// with the default Config options (*not* overwritten).
-		//
-		// This should be run as an initialization macro.
-		//
-		// Alternatively, the user could just add a custom initialization
-		// macro where they manually configure the Config instance.
-	}
-
+	// public static function load(?path:String) {
+	// 	return breeze.ConfigLoader.loadConfig(path);
+	// }
 	@:persistent static var config:Null<Config> = null;
 
 	public static function instance() {
@@ -163,6 +155,15 @@ class Config {
 			'950' => 'rgb(80, 20, 20)',
 		],
 		// @todo: more
+	];
+	public final shadows:Map<String, String> = [
+		'sm' => '0 1px 2px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))',
+		'md' => '0 1px 3px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+		'lg' => '0 4px 6px -1px var(--bz-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+		'xl' => '0 10px 15px -3px var(--bz-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+		'xxl' => '0 20px 25px -5px var(--bz-shadow-color, rgb(0 0 0 / 0.1)), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+		'inner' => 'inset 0 2px 4px 0 var(--bz-shadow-color, rgb(0 0 0 / 0.05))',
+		'none' => '0 0 #0000'
 	];
 	public final animations:Map<String, String> = [
 		'spin' => '1s linear infinite',
