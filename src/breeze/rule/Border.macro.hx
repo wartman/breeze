@@ -11,13 +11,13 @@ using breeze.core.MacroTools;
 using breeze.core.ValueTools;
 
 class Border {
+	static final directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
+
 	public static function radius(...exprs:Expr):Expr {
 		return createSimpleRule('border-radius', exprs, [Unit]);
 	}
 
 	public static function width(...exprs:Expr):Expr {
-		// @todo: DRY up directions stuff
-		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 		var args = prepareArguments(exprs);
 
 		return switch args.args {
@@ -61,8 +61,6 @@ class Border {
 	}
 
 	public static function style(...exprs:Expr):Expr {
-		// @todo: DRY up directions stuff
-		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 		var styles = ['solid', 'dashed', 'dotted', 'double', 'hidden', 'none'];
 		var args = prepareArguments(exprs);
 
@@ -107,8 +105,6 @@ class Border {
 	}
 
 	public static function color(...exprs:Expr):Expr {
-		// @todo: DRY up directions stuff
-		var directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 		var args = prepareArguments(exprs);
 
 		return switch args.args {

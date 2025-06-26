@@ -42,8 +42,6 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 				default: extractCssValue(e2, allowed);
 			}
 			return 'calc(${left} ${op} ${right})';
-		case EConst(CString(s, _)) if (allowed.contains(String)):
-			s;
 		case EConst(CString(value, _)) if (isCssUnit(value)):
 			if (!allowed.contains(Unit) && !allowed.contains(All)) {
 				e.pos.createError(allowed);
@@ -61,6 +59,8 @@ function extractCssValue(e:Expr, allowed:Array<CssValueType>) {
 				case Word(allowed):
 					for (word in allowed) if (value == word) return value;
 				case ColorExpr if (value.isColorExpr()):
+					return value;
+				case String:
 					return value;
 				default:
 			}

@@ -305,9 +305,19 @@ class Typography {
 		return createSimpleRule('hyphens', exprs, [Word(['none', 'manual', 'auto'])]);
 	}
 
+	/**
+		Define the content of an element (useful for things like :before).
+
+		This can be any arbitrary value, however be aware that strings will need to be wrapped in quotes.
+
+		For example:
+
+		```haxe
+		Typography.content('var(--some-css-var)');
+		Typography.content('"Some text"');
+		```
+	**/
 	public static function content(...exprs:Expr):Expr {
-		// @todo: Maybe allow other content (from the Config)?
-		// @see: https://tailwindcss.com/docs/content
-		return createSimpleRule('content', exprs, [Word(['none'])]);
+		return createSimpleRule('content', exprs, [Word(['none']), String]);
 	}
 }

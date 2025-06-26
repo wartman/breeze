@@ -202,42 +202,22 @@ function isVariant(e) {
 }
 
 /**
-	Compose an array of rules with any variants that might be in a list
-	of arguments.
-
-	```haxe
-	// Because of how Breeze works, we include the variants that wrap
-	// each rule in our arguments list. These need to be applied to each
-	// function call to work.
-	function box(...exprs) {
-		return withVariants([
-			macro breeze.rule.Spacing.pad(3),
-			macro breeze.rule.Flex.display()
-		], exprs);
-	}
-	```
-**/
-function composeWithVariants(rules:Array<Expr>, args:Array<Expr>) {
-	return composeRules(rules.concat(getVariants(args)));
-}
-
-/**
 	Extract all variant identifiers from a list of arguments.
 **/
-function getVariants(args:Array<Expr>) {
+function onlyVariants(args:Array<Expr>) {
 	return args.filter(isVariant);
 }
 
 /**
 	Ignore any variant identifiers that might be in an arguments list.
 **/
-function withoutVariants(args:Array<Expr>) {
+function stripVariants(args:Array<Expr>) {
 	return args.filter(arg -> !isVariant(arg));
 }
 
 function prepareArguments(exprs:Array<Expr>):{args:Array<Expr>, variants:Array<String>} {
 	return {
-		args: withoutVariants(exprs),
-		variants: getVariants(exprs).map(extractVariantIdentifier)
+		args: stripVariants(exprs),
+		variants: onlyVariants(exprs).map(extractVariantIdentifier)
 	};
 }
