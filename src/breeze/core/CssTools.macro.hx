@@ -13,3 +13,7 @@ function sanitizeCssClassName(name:String) {
 	}
 	return name;
 }
+
+function normalizeCss(value:String) {
+	return value.replace('\r\n', '\n').split('\n').map(part -> part.trim()).join(' ').trim();
+}

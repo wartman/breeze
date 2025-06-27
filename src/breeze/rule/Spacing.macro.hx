@@ -2,7 +2,7 @@ package breeze.rule;
 
 import haxe.macro.Context;
 import haxe.macro.Expr;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 
 using breeze.core.ValueTools;
@@ -11,8 +11,8 @@ using breeze.core.CssTools;
 
 class Spacing {
 	public static function pad(...expr:Expr):Expr {
-		var args = prepareArguments(expr.toArray());
-		return switch args.args {
+		var args:Arguments = expr;
+		return switch args.exprs {
 			case [sizeExpr]:
 				createSpacingRule('p', 'padding', null, sizeExpr, args.variants);
 			case [typeExpr, sizeExpr]:
@@ -23,8 +23,8 @@ class Spacing {
 	}
 
 	public static function margin(...expr:Expr):Expr {
-		var args = prepareArguments(expr.toArray());
-		return switch args.args {
+		var args:Arguments = expr;
+		return switch args.exprs {
 			case [sizeExpr]:
 				createSpacingRule('m', 'margin', null, sizeExpr, args.variants);
 			case [typeExpr, sizeExpr]:
@@ -35,16 +35,16 @@ class Spacing {
 	}
 
 	public static function between(...expr:Expr):Expr {
-		var args = prepareArguments(expr.toArray());
-		return switch args.args {
+		var args:Arguments = expr;
+		return switch args.exprs {
 			case [directionExpr, valueExpr]:
 				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
 				var value = valueExpr.extractCssValue([Unit]);
-				return createRule({
+				return Rule.create({
 					prefix: 'between',
 					type: [direction, value],
 					variants: args.variants.concat([
-						maybeRegisterVariant('between-wrapper', css -> {
+						Variant.create('between-wrapper', css -> {
 							css.modifiers.push(' > :not([hidden]) ~ :not([hidden])');
 							return css;
 						})
@@ -61,10 +61,10 @@ class Spacing {
 	}
 }
 
-private function createSpacingRule(prefix:String, property:String, typeExpr:Null<Expr>, sizeExpr:Expr, variants:Array<String>) {
+private function createSpacingRule(prefix:String, property:String, typeExpr:Null<Expr>, sizeExpr:Expr, variants:Array<VariantIdentifier>) {
 	var type = typeExpr?.extractCssValue([Word(['top', 'left', 'bottom', 'right', 'x', 'y'])]);
 	var size = sizeExpr.extractCssValue([Word(['auto']), Unit]);
-	var rule:Rule = {
+	return Rule.create({
 		prefix: prefix,
 		type: [type, size],
 		priority: type == null ? 1 : 2,
@@ -76,6 +76,5 @@ private function createSpacingRule(prefix:String, property:String, typeExpr:Null
 			case other: [{name: '$property-$other', value: size}];
 		},
 		pos: sizeExpr.pos
-	};
-	return createRule(rule);
+	});
 }

@@ -1,6 +1,6 @@
 package breeze.rule;
 
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -10,7 +10,7 @@ using breeze.core.ValueTools;
 
 class Sizing {
 	public static function width(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
+		var args:Arguments = exprs;
 		var allowedWords = ['full', 'screen', 'min', 'max', 'fit', 'auto'];
 		var process = value -> switch value {
 			case 'min' | 'max' | 'fit': '$value-content';
@@ -18,7 +18,7 @@ class Sizing {
 			case 'full': '100%';
 			default: value;
 		}
-		return switch args.args {
+		return switch args.exprs {
 			case [value]:
 				createSizingRule('width', null, value, args.variants, allowedWords, process);
 			case [constraint, value]:
@@ -29,7 +29,7 @@ class Sizing {
 	}
 
 	public static function height(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
+		var args:Arguments = exprs;
 		var allowedWords = ['full', 'screen', 'min', 'max', 'fit', 'auto'];
 		var process = value -> switch value {
 			case 'min' | 'max' | 'fit': '$value-content';
@@ -37,7 +37,7 @@ class Sizing {
 			case 'full': '100%';
 			default: value;
 		}
-		return switch args.args {
+		return switch args.exprs {
 			case [value]:
 				createSizingRule('height', null, value, args.variants, allowedWords, process);
 			case [constraint, value]:
@@ -48,11 +48,11 @@ class Sizing {
 	}
 }
 
-private function createSizingRule(direction:String, constraintExpr:Null<Expr>, valueExpr:Expr, variants:Array<String>, allowedWords:Array<String>,
+private function createSizingRule(direction:String, constraintExpr:Null<Expr>, valueExpr:Expr, variants:Array<VariantIdentifier>, allowedWords:Array<String>,
 		processValue:(value:String) -> String) {
 	var constraint = constraintExpr?.extractCssValue([Word(['min', 'max'])]);
 	var value = valueExpr.extractCssValue([Unit, Word(allowedWords)]);
-	return createRule({
+	return Rule.create({
 		prefix: direction,
 		type: [constraint, value].filter(v -> v != null),
 		variants: variants,

@@ -1,11 +1,11 @@
 package styles;
 
-import breeze.core.RuleFactory;
+import breeze.core.RuleBuilder;
 import breeze.core.ErrorTools;
 
 class Container {
 	public static function box(...exprs) {
-		return RuleFactory
+		return RuleBuilder
 			.from(exprs)
 			.compose(args -> switch args {
 				case []:

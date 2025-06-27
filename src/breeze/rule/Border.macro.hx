@@ -2,7 +2,7 @@ package breeze.rule;
 
 import breeze.core.ColorTools;
 import breeze.core.ErrorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -14,16 +14,16 @@ class Border {
 	static final directions = ['top', 'right', 'bottom', 'left', 'x', 'y'];
 
 	public static function radius(...exprs:Expr):Expr {
-		return createSimpleRule('border-radius', exprs, [Unit]);
+		return Rule.simple('border-radius', exprs, [Unit]);
 	}
 
 	public static function width(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
+		var args:Arguments = exprs;
 
-		return switch args.args {
+		return switch args.exprs {
 			case [expr]:
 				var width = expr.extractCssValue([Unit]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [width],
 					priority: 2,
@@ -34,7 +34,7 @@ class Border {
 			case [directionExpr, widthExpr]:
 				var direction = directionExpr.extractCssValue([Word(directions)]);
 				var width = widthExpr.extractCssValue([Unit]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [direction, width],
 					priority: 1,
@@ -62,12 +62,12 @@ class Border {
 
 	public static function style(...exprs:Expr):Expr {
 		var styles = ['solid', 'dashed', 'dotted', 'double', 'hidden', 'none'];
-		var args = prepareArguments(exprs);
+		var args:Arguments = exprs;
 
-		return switch args.args {
+		return switch args.exprs {
 			case [styleExpr]:
 				var style = styleExpr.extractCssValue([Word(styles)]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [style],
 					priority: 2,
@@ -78,7 +78,7 @@ class Border {
 			case [directionExpr, styleExpr]:
 				var direction = directionExpr.extractCssValue([Word(directions)]);
 				var style = styleExpr.extractCssValue([Word(styles)]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [direction, style],
 					priority: 1,
@@ -105,12 +105,12 @@ class Border {
 	}
 
 	public static function color(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
+		var args:Arguments = exprs;
 
-		return switch args.args {
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [color],
 					priority: 2,
@@ -132,7 +132,7 @@ class Border {
 				if (directions.contains(color)) {
 					var direction = color;
 					var color = intensityExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
-					return createRule({
+					return Rule.create({
 						prefix: 'border',
 						type: [direction, color],
 						priority: 1,
@@ -156,7 +156,7 @@ class Border {
 				}
 
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'border',
 					type: [color, intensity],
 					priority: 2,
@@ -169,7 +169,7 @@ class Border {
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
 				var value = parseColor(color, intensity);
-				return createRule({
+				return Rule.create({
 					prefix: 'border',
 					type: [direction, color, intensity],
 					priority: 2,
@@ -196,15 +196,15 @@ class Border {
 	}
 
 	public static function outlineWidth(...exprs:Expr):Expr {
-		return createSimpleRule('outline-width', exprs, [Unit]);
+		return Rule.simple('outline-width', exprs, [Unit]);
 	}
 
 	public static function outlineStyle(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var value = expr.extractCssValue([Word(['none', 'solid', 'dashed', 'dotted', 'double'])]);
-				createRule({
+				Rule.create({
 					prefix: 'outline',
 					type: [value],
 					variants: args.variants,
@@ -223,11 +223,11 @@ class Border {
 	}
 
 	public static function outlineColor(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'outline',
 					type: [color],
 					variants: args.variants,
@@ -245,7 +245,7 @@ class Border {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'outline',
 					type: [color, intensity],
 					variants: args.variants,
@@ -258,16 +258,16 @@ class Border {
 	}
 
 	public static function outlineOffset(...exprs:Expr):Expr {
-		return createSimpleRule('outline-offset', exprs, [Unit]);
+		return Rule.simple('outline-offset', exprs, [Unit]);
 	}
 
 	public static function divideWidth(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [directionExpr, sizeExpr]:
 				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
 				var size = sizeExpr.extractCssValue([Unit]);
-				createRule({
+				Rule.create({
 					prefix: 'divide',
 					type: [direction, size],
 					variants: args.variants.concat([divideSuffix()]),
@@ -289,11 +289,11 @@ class Border {
 	}
 
 	public static function divideStyle(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var style = expr.extractCssValue([Word(['none', 'solid', 'dotted', 'dashed', 'double'])]);
-				createRule({
+				Rule.create({
 					prefix: 'divide',
 					type: [style],
 					variants: args.variants.concat([divideSuffix()]),
@@ -306,11 +306,11 @@ class Border {
 	}
 
 	public static function divideColor(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['inherit', 'current', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'divide',
 					type: [color],
 					variants: args.variants.concat([divideSuffix()]),
@@ -328,7 +328,7 @@ class Border {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'divide',
 					type: [color, intensity],
 					variants: args.variants.concat([divideSuffix()]),
@@ -342,7 +342,7 @@ class Border {
 }
 
 private function divideSuffix() {
-	return maybeRegisterVariant('divide-suffix', entry -> {
+	return Variant.create('divide-suffix', entry -> {
 		entry.specifiers.push({
 			selector: ' > * + *',
 			prefix: false

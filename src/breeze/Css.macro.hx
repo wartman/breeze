@@ -1,12 +1,12 @@
 package breeze;
 
-import breeze.core.CssTools.sanitizeClassName;
 import breeze.core.Registry;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
-import breeze.core.RuleBuilder;
 
 using StringTools;
+using breeze.core.CssTools;
 using breeze.core.MacroTools;
 using haxe.macro.Tools;
 
@@ -27,10 +27,10 @@ class Css {
 		above). Breeze will do this for you.
 	**/
 	public static function rule(...expr:Expr) {
-		var args = prepareArguments(expr);
-		return switch args.args {
+		var args:Arguments = expr;
+		return switch args.exprs {
 			case [expr]:
-				var css = '{ ' + normalizeCss(expr.extractString()) + ' }';
+				var css = '{ ' + expr.extractString().normalizeCss() + ' }';
 				var entry:CssEntry = {
 					selector: createClassName(),
 					specifiers: [],
@@ -41,7 +41,7 @@ class Css {
 				};
 				if (args.variants.length > 0) {
 					for (name in args.variants) {
-						entry = getVariant(name).parse(entry);
+						entry = Variant.fromIdentifier(name).parse(entry);
 					}
 				}
 				registerCss(entry, expr.pos);
@@ -53,14 +53,10 @@ class Css {
 }
 
 private function createClassName() {
-	var id = sanitizeClassName(switch Context.getLocalType().toComplexType() {
+	var id = (switch Context.getLocalType().toComplexType() {
 		case TPath(p): p.pack.concat([p.name, p.sub].filter(s -> s != null)).join('-');
 		default: Context.signature(Context.getLocalType());
-	});
+	}).sanitizeClassName();
 	var pos = Context.currentPos().getInfos();
 	return 'bz-$id-${pos.max}';
-}
-
-private function normalizeCss(value:String) {
-	return value.replace('\r\n', '\n').split('\n').map(part -> part.trim()).join(' ').trim();
 }

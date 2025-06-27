@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.ColorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -12,11 +12,11 @@ using breeze.core.ValueTools;
 
 class Interactive {
 	public static function accentColor(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var value = expr.extractCssValue([Word(['inherit', 'currentColor', 'transparent'])]);
-				createRule({
+				Rule.create({
 					prefix: 'accent',
 					type: [value],
 					variants: args.variants,
@@ -26,7 +26,7 @@ class Interactive {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'accent',
 					type: [color, intensity],
 					variants: args.variants,
@@ -39,11 +39,11 @@ class Interactive {
 	}
 
 	public static function appearance(...exprs:Expr):Expr {
-		return createSimpleRule('appearance', exprs, [Word(['none'])]);
+		return Rule.simple('appearance', exprs, [Word(['none'])]);
 	}
 
 	public static function cursor(...exprs:Expr):Expr {
-		return createSimpleRule('cursor', exprs, [
+		return Rule.simple('cursor', exprs, [
 			Word([
 				'auto', 'default', 'pointer', 'wait', 'text', 'move', 'help', 'not-allowed', 'none', 'context-menu', 'progress', 'cell', 'crosshair',
 				'vertical-text', 'alias', 'copy', 'no-drop', 'grab', 'grabbing', 'alt-scroll', 'col-resize', 'n-resize', 'e-resize', 's-resize', 'w-resize',
@@ -53,11 +53,11 @@ class Interactive {
 	}
 
 	public static function caretColor(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var value = expr.extractCssValue([Word(['inherit', 'currentColor', 'transparent'])]);
-				createRule({
+				Rule.create({
 					prefix: 'caret',
 					type: [value],
 					variants: args.variants,
@@ -67,7 +67,7 @@ class Interactive {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'caret',
 					type: [color, intensity],
 					variants: args.variants,
@@ -80,15 +80,15 @@ class Interactive {
 	}
 
 	public static function pointerEvents(...exprs:Expr):Expr {
-		return createSimpleRule('pointer-events', exprs, [Word(['none', 'auto'])]);
+		return Rule.simple('pointer-events', exprs, [Word(['none', 'auto'])]);
 	}
 
 	public static function resize(...exprs:Expr):Expr {
-		return createSimpleRule('resize', exprs, [Word(['none', 'vertical', 'horizontal', 'both'])]);
+		return Rule.simple('resize', exprs, [Word(['none', 'vertical', 'horizontal', 'both'])]);
 	}
 
 	public static function scrollBehavior(...exprs:Expr):Expr {
-		return createSimpleRule('scroll-behavior', exprs, [Word(['smooth', 'auto'])]);
+		return Rule.simple('scroll-behavior', exprs, [Word(['smooth', 'auto'])]);
 	}
 
 	public static function scrollMargin(...exprs:Expr):Expr {
@@ -102,11 +102,11 @@ class Interactive {
 	}
 
 	public static function scrollSnapAlign(...exprs:Expr):Expr {
-		return createSimpleRule('scroll-snap-align', exprs, [Word(['none', 'start', 'end', 'center'])]);
+		return Rule.simple('scroll-snap-align', exprs, [Word(['none', 'start', 'end', 'center'])]);
 	}
 
 	public static function scrollSnapStop(...exprs:Expr):Expr {
-		return createSimpleRule('scroll-snap-stop', exprs, [Word(['normal', 'always'])]);
+		return Rule.simple('scroll-snap-stop', exprs, [Word(['normal', 'always'])]);
 	}
 
 	public static function scrollSnapType(...exprs:Expr):Expr {
@@ -115,7 +115,7 @@ class Interactive {
 	}
 
 	public static function touch(...exprs:Expr):Expr {
-		return createSimpleRule('touch-action', exprs, [
+		return Rule.simple('touch-action', exprs, [
 			Word([
 				'auto', 'none', 'pan-x', 'pan-left', 'pan-right', 'pan-y', 'pan-up', 'pan-down', 'pinch-zoom', 'manipulation'
 			])
@@ -123,10 +123,10 @@ class Interactive {
 	}
 
 	public static function userSelect(...exprs:Expr):Expr {
-		return createSimpleRule('user-select', exprs, [Word(['none', 'text', 'all', 'auto'])]);
+		return Rule.simple('user-select', exprs, [Word(['none', 'text', 'all', 'auto'])]);
 	}
 
 	public static function willChange(...exprs:Expr):Expr {
-		return createSimpleRule('will-change', exprs, [Word(['auto', 'scroll-position', 'contents', 'transform'])]);
+		return Rule.simple('will-change', exprs, [Word(['auto', 'scroll-position', 'contents', 'transform'])]);
 	}
 }

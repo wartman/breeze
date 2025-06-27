@@ -3,7 +3,7 @@ package breeze.variant;
 import breeze.core.ErrorTools.expectedArguments;
 import haxe.macro.Expr;
 import haxe.macro.Context;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 
 using breeze.core.ValueTools;
 
@@ -32,7 +32,7 @@ class Breakpoint {
 			case unit: 'min-width: $unit';
 		}
 		var name = 'break-$breakpoint';
-		return wrapWithVariant('breakpoint:$name', entry -> {
+		return Variant.create('breakpoint:$name', entry -> {
 			entry.selector = '$name:${entry.selector}';
 			entry.setWrapper('@media screen and ($constraint)');
 			entry.increasePriority();
@@ -44,7 +44,7 @@ class Breakpoint {
 				default:
 			}
 			return entry;
-		}, exprs.toArray());
+		}).wrap(exprs);
 	}
 
 	/**
@@ -79,7 +79,7 @@ class Breakpoint {
 			case unit: 'width > $unit';
 		}
 		var selector = 'container-$name-$breakpoint';
-		return wrapWithVariant('breakpoint:$selector', entry -> {
+		return Variant.create('breakpoint:$selector', entry -> {
 			entry.selector = '$selector:${entry.selector}';
 			entry.setWrapper((switch name {
 				case 'any': '@container';
@@ -94,7 +94,7 @@ class Breakpoint {
 				default:
 			}
 			return entry;
-		}, exprs);
+		}).wrap(exprs);
 	}
 
 	/**
@@ -108,11 +108,11 @@ class Breakpoint {
 		```
 	**/
 	public static function markContainer(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var value = expr.extractCssValue([Word(['size', 'inline-size', 'normal'])]);
-				createRule({
+				Rule.create({
 					prefix: 'mark-container',
 					type: [value],
 					variants: args.variants,
@@ -127,7 +127,7 @@ class Breakpoint {
 					Context.error('`any` is not a valid name for containment contexts', nameExpr.pos);
 				}
 
-				createRule({
+				Rule.create({
 					prefix: 'mark-container',
 					type: [name, type],
 					variants: args.variants,

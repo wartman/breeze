@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.ColorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -15,7 +15,7 @@ class Typography {
 	public static function font(...exprs:Expr):Expr {
 		var fontConfig = Config.instance().fontFamilies;
 		var names = [for (name in fontConfig.keys()) name];
-		return createSimpleRule('font', exprs, [Word(names)], {
+		return Rule.simple('font', exprs, [Word(names)], {
 			property: 'font-family',
 			process: name -> {
 				var value = fontConfig.get(name);
@@ -28,15 +28,15 @@ class Typography {
 	public static function fontSize(...exprs:Expr):Expr {
 		var fontSizes = Config.instance().fontSizes;
 		var names = [for (name in fontSizes.keys()) name];
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [size]:
 				var name = size.extractCssValue([Word(names)]);
 				var info = fontSizes.get(name);
 				if (info == null) {
 					Context.error('Invalid font size: $name', Context.currentPos());
 				}
-				createRule({
+				Rule.create({
 					prefix: 'font-size',
 					type: [name],
 					variants: args.variants,
@@ -53,7 +53,7 @@ class Typography {
 				if (info == null) {
 					Context.error('Invalid font size: $name', Context.currentPos());
 				}
-				createRule({
+				Rule.create({
 					prefix: 'font-size',
 					type: [name, lh],
 					variants: args.variants,
@@ -66,11 +66,11 @@ class Typography {
 	}
 
 	public static function fontSmoothing(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [smoothingExpr]:
 				var smoothing = smoothingExpr.extractCssValue([Word(['antialiased', 'subpixel-antialiased'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'font-smoothing',
 					type: [smoothing],
 					variants: args.variants,
@@ -94,13 +94,13 @@ class Typography {
 	}
 
 	public static function fontStyle(...exprs:Expr):Expr {
-		return createSimpleRule('font-style', exprs, [Word(['italic', 'normal'])]);
+		return Rule.simple('font-style', exprs, [Word(['italic', 'normal'])]);
 	}
 
 	public static function fontWeight(...exprs:Expr):Expr {
 		var fontWeights = Config.instance().fontWeights;
 		var names = [for (name in fontWeights.keys()) name];
-		return createSimpleRule('font-weight', exprs, [Word(names)], {
+		return Rule.simple('font-weight', exprs, [Word(names)], {
 			process: name -> {
 				var value = fontWeights.get(name);
 				if (value == null) {
@@ -114,7 +114,7 @@ class Typography {
 	public static function tracking(...exprs:Expr):Expr {
 		var tracking = Config.instance().tracking;
 		var names = [for (name in tracking.keys()) name];
-		return createSimpleRule('tracking', exprs, [Word(names)], {
+		return Rule.simple('tracking', exprs, [Word(names)], {
 			property: 'letter-spacing',
 			process: name -> {
 				var value = tracking.get(name);
@@ -127,11 +127,11 @@ class Typography {
 	}
 
 	public static function lineClamp(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [linesExpr]:
 				var lines = linesExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'line-clamp',
 					type: [lines],
 					variants: args.variants,
@@ -152,7 +152,7 @@ class Typography {
 	public static function leading(...exprs:Expr):Expr {
 		var leading = Config.instance().leading;
 		var names = [for (name in leading.keys()) name];
-		return createSimpleRule('leading', exprs, [Word(names)], {
+		return Rule.simple('leading', exprs, [Word(names)], {
 			property: 'line-height',
 			process: name -> {
 				var value = leading.get(name);
@@ -165,29 +165,29 @@ class Typography {
 	}
 
 	public static function listStyle(...exprs:Expr):Expr {
-		return createSimpleRule('list', exprs, [Word(['none', 'disc', 'decimal'])], {
+		return Rule.simple('list', exprs, [Word(['none', 'disc', 'decimal'])], {
 			property: 'list-style-type'
 		});
 	}
 
 	public static function listPosition(...exprs:Expr):Expr {
-		return createSimpleRule('list', exprs, [Word(['inside, outside'])], {
+		return Rule.simple('list', exprs, [Word(['inside, outside'])], {
 			property: 'list-style-position'
 		});
 	}
 
 	public static function textAlign(...exprs:Expr):Expr {
-		return createSimpleRule('text', exprs, [Word(['left', 'center', 'right', 'justify', 'start', 'end'])], {
+		return Rule.simple('text', exprs, [Word(['left', 'center', 'right', 'justify', 'start', 'end'])], {
 			property: 'text-align'
 		});
 	}
 
 	public static function textColor(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['inherit', 'currentColor', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'text-color',
 					type: [color.sanitizeClassName()],
 					variants: args.variants,
@@ -197,7 +197,7 @@ class Typography {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'text-color',
 					type: [color, intensity],
 					variants: args.variants,
@@ -210,23 +210,23 @@ class Typography {
 	}
 
 	public static function textDecoration(...exprs:Expr):Expr {
-		return createSimpleRule('text-decoration', exprs, [Word(['underline', 'overline', 'line-through', 'none'])]);
+		return Rule.simple('text-decoration', exprs, [Word(['underline', 'overline', 'line-through', 'none'])]);
 	}
 
 	public static function textDecorationColor(...exprs:Expr):Expr {
-		return createSimpleRule('decoration-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])], {
+		return Rule.simple('decoration-color', exprs, [ColorName, ColorExpr, Word(['inherit', 'currentColor', 'transparent'])], {
 			property: 'text-decoration-color'
 		});
 	}
 
 	public static function textDecorationStyle(...exprs:Expr):Expr {
-		return createSimpleRule('decoration', exprs, [Word(['solid', 'double', 'dotted', 'dashed', 'wavy'])], {
+		return Rule.simple('decoration', exprs, [Word(['solid', 'double', 'dotted', 'dashed', 'wavy'])], {
 			property: 'text-decoration-style'
 		});
 	}
 
 	public static function textDecorationThickness(...exprs:Expr):Expr {
-		return createSimpleRule('decoration', exprs, [Word(['auto', 'form-font']), Integer], {
+		return Rule.simple('decoration', exprs, [Word(['auto', 'form-font']), Integer], {
 			property: 'text-decoration-thickness',
 			process: value -> switch value {
 				case 'auto' | 'from-font': value;
@@ -236,7 +236,7 @@ class Typography {
 	}
 
 	public static function textUnderlineOffset(...exprs:Expr):Expr {
-		return createSimpleRule('underline-offset', exprs, [Word(['auto']), Integer], {
+		return Rule.simple('underline-offset', exprs, [Word(['auto']), Integer], {
 			property: 'text-underline-offset',
 			process: value -> switch value {
 				case 'auto': value;
@@ -246,37 +246,37 @@ class Typography {
 	}
 
 	public static function textTransform(...exprs:Expr):Expr {
-		return createSimpleRule('transform', exprs, [Word(['uppercase', 'lowercase', 'capitalize', 'none'])], {
+		return Rule.simple('transform', exprs, [Word(['uppercase', 'lowercase', 'capitalize', 'none'])], {
 			property: 'text-transform'
 		});
 	}
 
 	public static function textOverflow(...exprs:Expr):Expr {
-		return createSimpleRule('text-overflow', exprs, [Word(['ellipsis', 'clip'])]);
+		return Rule.simple('text-overflow', exprs, [Word(['ellipsis', 'clip'])]);
 	}
 
 	public static function textIndent(...exprs:Expr):Expr {
-		return createSimpleRule('text-indent', exprs, [Unit]);
+		return Rule.simple('text-indent', exprs, [Unit]);
 	}
 
 	public static function textVerticalAlign(...exprs:Expr):Expr {
-		return createSimpleRule('vertical-align', exprs, [
+		return Rule.simple('vertical-align', exprs, [
 			Word(['baseline', 'top', 'middle', 'bottom', 'text-top', 'text-bottom', 'sub', 'super'])
 		]);
 	}
 
 	public static function whitespace(...exprs:Expr):Expr {
-		return createSimpleRule('whitespace', exprs, [Word(['normal', 'nowrap', 'pre', 'pre-line', 'pre-wrap', 'break-spaces'])], {
+		return Rule.simple('whitespace', exprs, [Word(['normal', 'nowrap', 'pre', 'pre-line', 'pre-wrap', 'break-spaces'])], {
 			property: 'white-space'
 		});
 	}
 
 	public static function wordBreak(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [expr]:
 				var type = expr.extractCssValue([Word(['normal', 'words', 'all', 'keep'])]);
-				createRule({
+				Rule.create({
 					prefix: 'beak',
 					type: [type],
 					variants: args.variants,
@@ -302,7 +302,7 @@ class Typography {
 	}
 
 	public static function hyphens(...exprs:Expr):Expr {
-		return createSimpleRule('hyphens', exprs, [Word(['none', 'manual', 'auto'])]);
+		return Rule.simple('hyphens', exprs, [Word(['none', 'manual', 'auto'])]);
 	}
 
 	/**
@@ -318,6 +318,6 @@ class Typography {
 		```
 	**/
 	public static function content(...exprs:Expr):Expr {
-		return createSimpleRule('content', exprs, [Word(['none']), String]);
+		return Rule.simple('content', exprs, [Word(['none']), String]);
 	}
 }

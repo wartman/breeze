@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.ErrorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -12,11 +12,11 @@ using breeze.core.ValueTools;
 
 class Transform {
 	public static function scale(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [scaleExpr]:
 				var scale = scaleExpr.extractCssValue([Number]);
-				createRule({
+				Rule.create({
 					prefix: 'scale',
 					type: [scale],
 					variants: args.variants,
@@ -26,7 +26,7 @@ class Transform {
 			case [directionExpr, scaleExpr]:
 				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
 				var scale = scaleExpr.extractCssValue([Number]);
-				createRule({
+				Rule.create({
 					prefix: 'scale',
 					type: [direction, scale],
 					variants: args.variants,
@@ -39,19 +39,19 @@ class Transform {
 	}
 
 	public static function rotate(...exprs:Expr):Expr {
-		return createSimpleRule('rotate', exprs, [Integer], {
+		return Rule.simple('rotate', exprs, [Integer], {
 			property: 'transform',
 			process: value -> 'rotate(${value}deg)'
 		});
 	}
 
 	public static function translate(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [directionExpr, translateExpr]:
 				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
 				var translate = translateExpr.extractCssValue([Unit]);
-				createRule({
+				Rule.create({
 					prefix: 'translate',
 					type: [direction, translate],
 					variants: args.variants,
@@ -64,12 +64,12 @@ class Transform {
 	}
 
 	public static function skew(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [directionExpr, skewExpr]:
 				var direction = directionExpr.extractCssValue([Word(['x', 'y'])]);
 				var skew = skewExpr.extractCssValue([Unit]);
-				createRule({
+				Rule.create({
 					prefix: 'skew',
 					type: [direction, skew],
 					variants: args.variants,
@@ -82,7 +82,7 @@ class Transform {
 	}
 
 	public static function origin(...exprs:Expr):Expr {
-		return createSimpleRule('origin', exprs, [
+		return Rule.simple('origin', exprs, [
 			Word([
 				'center',
 				'top',

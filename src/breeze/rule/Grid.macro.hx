@@ -1,6 +1,6 @@
 package breeze.rule;
 
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 import haxe.macro.Expr;
 
@@ -20,7 +20,7 @@ class Grid {
 	}
 
 	public static function columns(...exprs:Expr):Expr {
-		return createSimpleRule('grid-cols', exprs, [Word(['none']), Integer], {
+		return Rule.simple('grid-cols', exprs, [Word(['none']), Integer], {
 			property: 'grid-template-columns',
 			process: value -> switch value {
 				case 'none': 'none';
@@ -30,11 +30,11 @@ class Grid {
 	}
 
 	public static function column(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue([Word(['auto', 'full']), Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-col',
 					type: [value],
 					variants: args.variants,
@@ -53,7 +53,7 @@ class Grid {
 			case [sideExpr, valueExpr]:
 				var side = sideExpr.extractCssValue([Word(['start', 'end'])]);
 				var value = valueExpr.extractCssValue([Word(['auto']), Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-col',
 					type: [side, value],
 					variants: args.variants,
@@ -66,7 +66,7 @@ class Grid {
 	}
 
 	public static function rows(...exprs:Expr):Expr {
-		return createSimpleRule('grid-rows', exprs, [Word(['none']), Integer], {
+		return Rule.simple('grid-rows', exprs, [Word(['none']), Integer], {
 			property: 'grid-template-rows',
 			process: value -> switch value {
 				case 'none': 'none';
@@ -76,11 +76,11 @@ class Grid {
 	}
 
 	public static function row(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue([Word(['auto', 'full']), Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-row',
 					type: [value],
 					variants: args.variants,
@@ -99,7 +99,7 @@ class Grid {
 			case [sideExpr, valueExpr]:
 				var side = sideExpr.extractCssValue([Word(['start', 'end'])]);
 				var value = valueExpr.extractCssValue([Word(['auto']), Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-row',
 					type: [side, value],
 					variants: args.variants,
@@ -112,11 +112,11 @@ class Grid {
 	}
 
 	public static function flow(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue([Word(['row', 'column', 'dense'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-flow',
 					type: [value],
 					variants: args.variants,
@@ -126,7 +126,7 @@ class Grid {
 			case [targetExpr, valueExpr]:
 				var target = targetExpr.extractCssValue([Word(['row', 'column'])]);
 				var value = valueExpr.extractCssValue([Word(['dense'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'grid-flow',
 					type: [target, value],
 					variants: args.variants,
@@ -139,7 +139,7 @@ class Grid {
 	}
 
 	public static function autoColumns(...exprs:Expr):Expr {
-		return createSimpleRule('grid-auto-columns', exprs, [Word(['auto', 'min', 'max']), Integer], {
+		return Rule.simple('grid-auto-columns', exprs, [Word(['auto', 'min', 'max']), Integer], {
 			process: value -> switch value {
 				case 'min': 'min-content';
 				case 'max': 'max-content';
@@ -150,7 +150,7 @@ class Grid {
 	}
 
 	public static function autoRows(...exprs:Expr):Expr {
-		return createSimpleRule('grid-auto-rows', exprs, [Word(['auto', 'min', 'max']), Integer], {
+		return Rule.simple('grid-auto-rows', exprs, [Word(['auto', 'min', 'max']), Integer], {
 			process: value -> switch value {
 				case 'min': 'min-content';
 				case 'max': 'max-content';

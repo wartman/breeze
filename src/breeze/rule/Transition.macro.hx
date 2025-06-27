@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.Registry;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -11,10 +11,10 @@ using breeze.core.ValueTools;
 
 class Transition {
 	public static function transition(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case []:
-				createRule({
+				Rule.create({
 					prefix: 'transition',
 					type: [],
 					variants: args.variants,
@@ -30,7 +30,7 @@ class Transition {
 				});
 			case [expr]:
 				var type = expr.extractCssValue([Word(['none', 'all', 'colors', 'opacity', 'shadow', 'transform'])]);
-				createRule({
+				Rule.create({
 					prefix: 'transition',
 					type: [type],
 					variants: args.variants,
@@ -62,14 +62,14 @@ class Transition {
 	}
 
 	public static function duration(...exprs:Expr):Expr {
-		return createSimpleRule('duration', exprs, [Integer], {
+		return Rule.simple('duration', exprs, [Integer], {
 			property: 'transition-duration',
 			process: value -> value + 'ms'
 		});
 	}
 
 	public static function ease(...exprs:Expr):Expr {
-		return createSimpleRule('ease', exprs, [Word(['in', 'out', 'linear', 'in-out'])], {
+		return Rule.simple('ease', exprs, [Word(['in', 'out', 'linear', 'in-out'])], {
 			property: 'transition-timing-function',
 			process: value -> switch value {
 				case 'linear': 'linear';
@@ -81,7 +81,7 @@ class Transition {
 	}
 
 	public static function delay(...exprs:Expr):Expr {
-		return createSimpleRule('delay', exprs, [Integer], {
+		return Rule.simple('delay', exprs, [Integer], {
 			property: 'transition-delay',
 			process: value -> value + 'ms'
 		});
@@ -92,8 +92,8 @@ class Transition {
 		var animations = config.animations;
 		var keyframes = config.keyframes;
 		var animationNames = [for (name in animations.keys()) name];
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [nameExpr]:
 				var name = nameExpr.extractCssValue([Word(animationNames)]);
 				var animation = animations.get(name);
@@ -103,7 +103,7 @@ class Transition {
 				}
 				var exprs = [
 					registerKeyframes(name, frames, Context.currentPos()),
-					createRule({
+					Rule.create({
 						prefix: 'animation',
 						type: [name],
 						variants: args.variants,

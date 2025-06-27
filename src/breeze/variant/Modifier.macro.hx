@@ -1,7 +1,7 @@
 package breeze.variant;
 
 import breeze.core.ErrorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Expr;
 
 using breeze.core.ValueTools;
@@ -64,9 +64,11 @@ private function createModifierVariant(modifier:Null<Expr>, exprs:Array<Expr>) {
 		])
 	]);
 
-	return wrapWithVariant('modifier:$name', entry -> {
-		entry.selector = '$name:${entry.selector}';
-		entry.modifiers.push(':$name');
-		return entry;
-	}, exprs);
+	return Variant
+		.create('modifier:$name', entry -> {
+			entry.selector = '$name:${entry.selector}';
+			entry.modifiers.push(':$name');
+			return entry;
+		})
+		.wrap(exprs);
 }

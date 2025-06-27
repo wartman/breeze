@@ -2,7 +2,7 @@ package breeze.variant;
 
 import breeze.core.ErrorTools;
 import haxe.macro.Expr;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 
 using breeze.core.ValueTools;
 
@@ -17,19 +17,23 @@ class Select {
 
 		var name = modifier.extractCssValue([Word(['first', 'last', 'odd', 'even'])]);
 
-		return wrapWithVariant('select:$name', entry -> {
-			entry.selector = '$name:${entry.selector}';
-			entry.modifiers.push(':${name}-child');
-			return entry;
-		}, exprs);
+		return Variant
+			.create('select:$name', entry -> {
+				entry.selector = '$name:${entry.selector}';
+				entry.modifiers.push(':${name}-child');
+				return entry;
+			})
+			.wrap(exprs);
 	}
 
 	public static function descendants(...exprs:Expr):Expr {
 		var exprs = exprs.toArray();
-		return wrapWithVariant('select:descendants', entry -> {
-			entry.selector = '${entry.selector}:*';
-			entry.modifiers.push(' *');
-			return entry;
-		}, exprs);
+		return Variant
+			.create('select:descendants', entry -> {
+				entry.selector = '${entry.selector}:*';
+				entry.modifiers.push(' *');
+				return entry;
+			})
+			.wrap(exprs);
 	}
 }

@@ -1,7 +1,7 @@
 package breeze.rule;
 
 import breeze.core.ColorTools;
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
@@ -11,11 +11,11 @@ using breeze.core.ValueTools;
 
 class Svg {
 	public static function fill(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['none', 'inherit', 'currentColor', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'fill',
 					type: [color],
 					variants: args.variants,
@@ -25,7 +25,7 @@ class Svg {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'fill',
 					type: [color, intensity],
 					variants: args.variants,
@@ -38,11 +38,11 @@ class Svg {
 	}
 
 	public static function stroke(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [colorExpr]:
 				var color = colorExpr.extractCssValue([Word(['none', 'inherit', 'currentColor', 'transparent']), ColorExpr]);
-				createRule({
+				Rule.create({
 					prefix: 'stroke',
 					type: [color],
 					variants: args.variants,
@@ -52,7 +52,7 @@ class Svg {
 			case [colorExpr, intensityExpr]:
 				var color = colorExpr.extractCssValue([ColorName]);
 				var intensity = intensityExpr.extractCssValue([Integer]);
-				createRule({
+				Rule.create({
 					prefix: 'stroke',
 					type: [color, intensity],
 					variants: args.variants,
@@ -65,6 +65,6 @@ class Svg {
 	}
 
 	public static function strokeWidth(...exprs:Expr):Expr {
-		return createSimpleRule('stroke-width', exprs, [Integer]);
+		return Rule.simple('stroke-width', exprs, [Integer]);
 	}
 }

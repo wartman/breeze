@@ -112,7 +112,7 @@ private function exportFile(path:Null<String>) {
 		data.sort((a, b) -> a.priority - b.priority);
 
 		ensureDir(path);
-		File.saveContent(path, data.map(item -> item.css).join('\n'));
+		File.saveContent(path, data.map(item -> item.css.normalizeCss()).join('\n'));
 	});
 }
 

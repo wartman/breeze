@@ -1,6 +1,6 @@
 package breeze.rule;
 
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -17,19 +17,19 @@ class Flex {
 	}
 
 	public static function basis(...exprs:Expr):Expr {
-		return createSimpleRule('flex-basis', exprs, [Unit]);
+		return Rule.simple('flex-basis', exprs, [Unit]);
 	}
 
 	public static function direction(...exprs:Expr):Expr {
-		return createSimpleRule('flex-direction', exprs, [Word(['row', 'row-reverse', 'column', 'column-reverse'])]);
+		return Rule.simple('flex-direction', exprs, [Word(['row', 'row-reverse', 'column', 'column-reverse'])]);
 	}
 
 	public static function wrap(...exprs:Expr):Expr {
-		return createSimpleRule('flex-wrap', exprs, [Word(['wrap', 'wrap-reverse', 'nowrap'])]);
+		return Rule.simple('flex-wrap', exprs, [Word(['wrap', 'wrap-reverse', 'nowrap'])]);
 	}
 
 	public static function define(...exprs:Expr):Expr {
-		return createSimpleRule('flex', exprs, [Word(['auto', 'initial', 'none']), Integer], {
+		return Rule.simple('flex', exprs, [Word(['auto', 'initial', 'none']), Integer], {
 			process: value -> switch value {
 				case 'auto': '1 1 auto';
 				case 'none': 'none';
@@ -45,10 +45,10 @@ class Flex {
 		an integer that will control how much the flex item will grow.
 	**/
 	public static function grow(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case []:
-				return createRule({
+				return Rule.create({
 					prefix: 'flx-grow',
 					variants: args.variants,
 					properties: [{name: 'flex-grow', value: '1'}],
@@ -56,7 +56,7 @@ class Flex {
 				});
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue([Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'flx-grow',
 					type: [value],
 					variants: args.variants,
@@ -73,10 +73,10 @@ class Flex {
 		an integer that will control how much the flex item will shrink.
 	**/
 	public static function shrink(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case []:
-				return createRule({
+				return Rule.create({
 					prefix: 'flx-shrink',
 					variants: args.variants,
 					properties: [{name: 'flex-shrink', value: '1'}],
@@ -84,7 +84,7 @@ class Flex {
 				});
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue([Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'flx-shrink',
 					type: [value],
 					variants: args.variants,
@@ -97,11 +97,11 @@ class Flex {
 	}
 
 	public static function order(...exprs:Expr):Expr {
-		return createSimpleRule('flex-order', exprs, [Integer], {property: 'order'});
+		return Rule.simple('flex-order', exprs, [Integer], {property: 'order'});
 	}
 
 	public static function justify(...exprs:Expr):Expr {
-		return createSimpleRule('justify', exprs, [
+		return Rule.simple('justify', exprs, [
 			Word(['normal', 'start', 'end', 'center', 'between', 'around', 'evenly', 'stretch'])
 		], {
 			property: 'justify-content',
@@ -114,15 +114,15 @@ class Flex {
 	}
 
 	public static function justifyItems(...exprs:Expr):Expr {
-		return createSimpleRule('justify-items', exprs, [Word(['start', 'end', 'center', 'stretch'])]);
+		return Rule.simple('justify-items', exprs, [Word(['start', 'end', 'center', 'stretch'])]);
 	}
 
 	public static function justifySelf(...exprs:Expr):Expr {
-		return createSimpleRule('justify-self', exprs, [Word(['auto', 'start', 'end', 'center', 'stretch'])]);
+		return Rule.simple('justify-self', exprs, [Word(['auto', 'start', 'end', 'center', 'stretch'])]);
 	}
 
 	public static function align(...exprs:Expr):Expr {
-		return createSimpleRule('align', exprs, [
+		return Rule.simple('align', exprs, [
 			Word(['normal', 'start', 'end', 'center', 'between', 'around', 'evenly', 'stretch'])
 		], {
 			property: 'align-content',
@@ -135,7 +135,7 @@ class Flex {
 	}
 
 	public static function alignItems(...exprs:Expr):Expr {
-		return createSimpleRule('align-items', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
+		return Rule.simple('align-items', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
 			process: value -> switch value {
 				case 'start' | 'end': 'flex-$value';
 				default: value;
@@ -144,7 +144,7 @@ class Flex {
 	}
 
 	public static function alignSelf(...exprs:Expr):Expr {
-		return createSimpleRule('align-self', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
+		return Rule.simple('align-self', exprs, [Word(['start', 'end', 'center', 'baseline', 'stretch'])], {
 			process: value -> switch value {
 				case 'start' | 'end': 'flex-$value';
 				default: value;
@@ -153,6 +153,6 @@ class Flex {
 	}
 
 	public static function gap(...exprs:Expr):Expr {
-		return createSimpleRule('gap', exprs, [Unit]);
+		return Rule.simple('gap', exprs, [Unit]);
 	}
 }

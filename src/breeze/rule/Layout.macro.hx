@@ -1,6 +1,6 @@
 package breeze.rule;
 
-import breeze.core.RuleBuilder;
+import breeze.core.Rule;
 import breeze.core.ErrorTools;
 import haxe.macro.Context;
 import haxe.macro.Expr;
@@ -11,10 +11,10 @@ using breeze.core.ValueTools;
 
 class Layout {
 	public static function container(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case []:
-				return createRule({
+				return Rule.create({
 					prefix: 'container',
 					variants: args.variants,
 					properties: [{name: 'width', value: '100%'}],
@@ -25,7 +25,7 @@ class Layout {
 				var names = [for (name in config.keys()) name];
 				names.push('full');
 				var breakpoint = size.extractCssValue([Word(names), Unit]);
-				return createRule({
+				return Rule.create({
 					prefix: 'container',
 					type: [breakpoint],
 					variants: args.variants,
@@ -47,11 +47,11 @@ class Layout {
 	}
 
 	public static function columns(...exprs:Expr):Expr {
-		return createSimpleRule('columns', exprs, [Integer]);
+		return Rule.simple('columns', exprs, [Integer]);
 	}
 
 	public static function boxSizing(...exprs) {
-		return createSimpleRule('box-sizing', exprs, [Word(['border', 'content'])], {
+		return Rule.simple('box-sizing', exprs, [Word(['border', 'content'])], {
 			process: value -> switch value {
 				case 'border': 'border-box';
 				default: 'content-box';
@@ -60,7 +60,7 @@ class Layout {
 	}
 
 	public static function display(...exprs) {
-		return createSimpleRule('display', exprs, [
+		return Rule.simple('display', exprs, [
 			Word([
 				'block', 'inline-block', 'inline', 'flex', 'inline-flex', 'table', 'inline-table', 'table-caption', 'table-cell', 'table-column',
 				'table-column-group', 'table-footer-group', 'table-header-group', 'table-row-group', 'table-row', 'flow-root', 'grid', 'inline-grid',
@@ -71,15 +71,15 @@ class Layout {
 	}
 
 	public static function float(...exprs) {
-		return createSimpleRule('float', exprs, [Word(['left', 'right', 'none'])]);
+		return Rule.simple('float', exprs, [Word(['left', 'right', 'none'])]);
 	}
 
 	public static function clear(...exprs) {
-		return createSimpleRule('clear', exprs, [Word(['left', 'right', 'both', 'none'])]);
+		return Rule.simple('clear', exprs, [Word(['left', 'right', 'both', 'none'])]);
 	}
 
 	public static function isolate(...exprs) {
-		return createSimpleRule('isolation', exprs, [Word(['isolate', 'auto'])]);
+		return Rule.simple('isolation', exprs, [Word(['isolate', 'auto'])]);
 	}
 
 	/**
@@ -93,11 +93,11 @@ class Layout {
 		horizontally (x) or vertically (y).
 	**/
 	public static function overflow(...exprs) {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [overflowExpr]:
 				var overflow = overflowExpr.extractCssValue([Word(['auto', 'hidden', 'clip', 'visible', 'scroll'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'overflow',
 					type: [overflow],
 					variants: args.variants,
@@ -107,7 +107,7 @@ class Layout {
 			case [sideExpr, overflowExpr]:
 				var side = sideExpr.extractCssValue([Word(['x', 'y'])]);
 				var overflow = overflowExpr.extractCssValue([Word(['auto', 'hidden', 'clip', 'visible', 'scroll'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'overflow',
 					type: [side, overflow],
 					variants: args.variants,
@@ -137,11 +137,11 @@ class Layout {
 		primary scroll area.
 	**/
 	public static function overscroll(...exprs) {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [overscrollExpr]:
 				var overscroll = overscrollExpr.extractCssValue([Word(['auto', 'contain', 'none'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'overscroll',
 					type: [overscroll],
 					variants: args.variants,
@@ -151,7 +151,7 @@ class Layout {
 			case [sideExpr, overscrollExpr]:
 				var side = sideExpr.extractCssValue([Word(['x', 'y'])]);
 				var overscroll = overscrollExpr.extractCssValue([Word(['auto', 'contain', 'none'])]);
-				return createRule({
+				return Rule.create({
 					prefix: 'overscroll',
 					type: [side, overscroll],
 					variants: args.variants,
@@ -164,16 +164,16 @@ class Layout {
 	}
 
 	public static function position(...exprs:Expr):Expr {
-		return createSimpleRule('position', exprs, [Word(['static', 'fixed', 'absolute', 'relative', 'sticky'])]);
+		return Rule.simple('position', exprs, [Word(['static', 'fixed', 'absolute', 'relative', 'sticky'])]);
 	}
 
 	public static function attach(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [sideExpr, distanceExpr]:
 				var side = sideExpr.extractCssValue([Word(['top', 'right', 'bottom', 'left', 'inset', 'inset-x', 'inset-y'])]);
 				var distance = distanceExpr.extractCssValue([Unit]);
-				return createRule({
+				return Rule.create({
 					prefix: 'attach',
 					type: [side, distance],
 					variants: args.variants,
@@ -190,18 +190,18 @@ class Layout {
 	}
 
 	public static function visibility(...exprs:Expr):Expr {
-		return createSimpleRule('visibility', exprs, [Word(['visible', 'hidden', 'collapse'])]);
+		return Rule.simple('visibility', exprs, [Word(['visible', 'hidden', 'collapse'])]);
 	}
 
 	/**
 		Sets the z-index in a consistent way.
 	**/
 	public static function layer(...exprs:Expr):Expr {
-		var args = prepareArguments(exprs);
-		return switch args.args {
+		var args:Arguments = exprs;
+		return switch args.exprs {
 			case [layerExpr]:
 				var layer = layerExpr.extractCssValue([Word(['auto']), Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'layer',
 					type: [layer],
 					variants: args.variants,
@@ -211,7 +211,7 @@ class Layout {
 			case [directionExpr, layerExpr]:
 				var direction = directionExpr.extractCssValue([Word(['+', '-'])]);
 				var layer = layerExpr.extractCssValue([Integer]);
-				return createRule({
+				return Rule.create({
 					prefix: 'layer',
 					type: [direction == '-' ? 'neg' : null, layer].filter(s -> s != null),
 					variants: args.variants,
