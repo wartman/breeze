@@ -18,6 +18,10 @@ function main() {
 			Container.box(3),
 			Container.box(5)
 		),
+		Select.before(
+			Typography.textColor('sky', 200),
+			Typography.content('"foo bar"')
+		),
 		Css.rule('
 			--test: #ccc;
 			background-color: var(--test);

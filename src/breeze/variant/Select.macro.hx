@@ -32,4 +32,20 @@ class Select {
 			return entry;
 		}).wrap(exprs);
 	}
+
+	macro public static function before(...exprs:Expr):Expr {
+		return Variant.create('select:before', entry -> {
+			entry.selector = 'before:${entry.selector}';
+			entry.modifiers.push('::before');
+			return entry;
+		}).wrap(exprs);
+	}
+
+	macro public static function after(...exprs:Expr):Expr {
+		return Variant.create('select:after', entry -> {
+			entry.selector = 'after:${entry.selector}';
+			entry.modifiers.push('::after');
+			return entry;
+		}).wrap(exprs);
+	}
 }
