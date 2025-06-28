@@ -318,6 +318,20 @@ class Typography {
 		```
 	**/
 	public static function content(...exprs:Expr):Expr {
-		return Rule.simple('content', exprs, [Word(['none']), String]);
+		var args:Arguments = exprs;
+		return switch args.exprs {
+			case []:
+				Rule.create({
+					prefix: 'content',
+					type: ['default'],
+					variants: args.variants,
+					properties: [
+						{name: 'content', value: 'var(--bz-content, "")'}
+					],
+					pos: Context.currentPos()
+				});
+			default:
+				Rule.simple('content', exprs, [Word(['none']), String]);
+		}
 	}
 }

@@ -64,11 +64,9 @@ private function createModifierVariant(modifier:Null<Expr>, exprs:Array<Expr>) {
 		])
 	]);
 
-	return Variant
-		.create('modifier:$name', entry -> {
-			entry.selector = '$name:${entry.selector}';
-			entry.modifiers.push(':$name');
-			return entry;
-		})
-		.wrap(exprs);
+	return Variant.create('modifier:$name', entry -> {
+		entry.selector = '$name:${entry.selector}';
+		entry.modifiers.push(':$name');
+		return entry;
+	}).wrap(exprs);
 }

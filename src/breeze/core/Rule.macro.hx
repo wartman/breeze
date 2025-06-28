@@ -174,10 +174,6 @@ typedef VariantObject = {
 
 @:forward
 abstract Variant(VariantObject) from VariantObject {
-	/**
-		Create *and register* a Variant. If a Variant already exists it will not be
-		registered again.
-	**/
 	public static function create(name, parse) {
 		var variant = new Variant(name, parse);
 		variant.register();
