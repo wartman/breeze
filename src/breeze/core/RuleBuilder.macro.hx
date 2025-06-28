@@ -48,7 +48,9 @@ class RuleBuilder {
 			case None:
 				macro null;
 			case Composition(factory):
-				Rule.compose(factory(arguments).concat(variants.map(variant -> variant.toExpr())));
+				ClassNameBuilder
+					.fromExprs(factory(arguments))
+					.apply(variants.map(variant -> variant.toExpr()));
 			case Definition(factory):
 				var def = factory(arguments);
 				Rule.create({

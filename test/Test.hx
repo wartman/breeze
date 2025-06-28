@@ -1,6 +1,8 @@
 // import js.Browser;
 // import pine.html.Html;
 // import pine.html.client.Client;
+import styles.Container;
+
 using Breeze;
 
 function main() {
@@ -14,7 +16,11 @@ function main() {
 		ColorScheme.dark(Border.color('white', 0)),
 		Filter.dropShadow('md'),
 		Modifier.hover(Border.style('dotted'), Filter.dropShadow('xxl')),
-		Breakpoint.viewport('lg', Modifier.hover(Border.style('solid'), Filter.dropShadow('xl'))),
+		Breakpoint.viewport('lg',
+			Modifier.hover(Border.style('solid'), Filter.dropShadow('xl')),
+			Container.box(3),
+			Container.box(5)
+		),
 		Css.rule('
 			--test: #ccc;
 			background-color: var(--test);

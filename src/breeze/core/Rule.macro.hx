@@ -58,68 +58,34 @@ typedef RuleProperty = {
 
 @:forward
 abstract Rule(RuleObject) {
-	/**
-		Create *and register* a Rule.
-	**/
-	public static function create(config):Expr {
-		var rule = new Rule(config);
-		return rule.register();
+	public static function create(config) {
+		return new Rule(config);
 	}
 
-	/**
-		Create *and register* a simple rule.
-	**/
-	public static function simple(prefix:String, args:Arguments, allowed:Array<CssValueType>,
-			?options:{?property:String, ?process:(value:String) -> String}):Expr {
+	public static function simple(prefix:String, args:Arguments, allowed:Array<CssValueType>, ?options:{?property:String, ?process:(value:String) -> String}) {
 		var process = options?.process ?? (value) -> value;
 		var property = options?.property ?? prefix;
 		return switch args.exprs {
 			case [valueExpr]:
 				var value = valueExpr.extractCssValue(allowed);
-				var rule = new Rule({
+				new Rule({
 					prefix: prefix,
 					type: [value],
 					variants: args.variants,
 					properties: [{name: property, value: process(value)}],
 					pos: Context.currentPos()
 				});
-				rule.register();
 			default:
 				ErrorTools.expectedArguments(1);
+				null;
 		}
-	}
-
-	public static function compose(args:Arguments):Expr {
-		var exprs = args.exprs;
-		var variants = args.variants;
-		var pos = Context.currentPos();
-
-		if (variants.length == 0) {
-			return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs}]);
-		}
-
-		var variantArgs = variants.map(variant -> variant.toExpr());
-
-		function apply(expr:Expr) {
-			return switch expr.expr {
-				case ECall(e, params):
-					{
-						expr: ECall(e, params.concat(variantArgs)),
-						pos: expr.pos
-					};
-				default:
-					expr;
-			}
-		}
-
-		return macro @:pos(pos) breeze.ClassName.ofArray([$a{exprs.map(apply)}]);
 	}
 
 	public function new(config) {
 		this = config;
 	}
 
-	public function register() {
+	@:to public function register():Expr {
 		var css = '{${parseProperties()}}';
 		var entry:CssEntry = {
 			selector: parseClassName(),
@@ -158,6 +124,44 @@ abstract Rule(RuleObject) {
 			selector += '-' + type.join('-');
 		}
 		return selector;
+	}
+}
+
+@:forward
+abstract ClassNameBuilder(Array<Expr>) {
+	@:from public static function fromRules(rules:Array<Rule>) {
+		return new ClassNameBuilder(rules.map(rule -> rule.register()));
+	}
+
+	@:from public static function fromExprs(exprs) {
+		return new ClassNameBuilder(exprs);
+	}
+
+	public function new(rules) {
+		this = rules;
+	}
+
+	@:to public function toExpr():Expr {
+		var exprs = this;
+		return macro breeze.ClassName.ofArray([$a{exprs}]);
+	}
+
+	public function apply(args:Arguments) {
+		var exprs = this.concat(args.exprs);
+		var variantArgs = args.variants.map(variant -> variant.toExpr());
+
+		function applyVariant(expr:Expr) {
+			return switch expr.expr {
+				case ECall(e, params):
+					{
+						expr: ECall(e, params.concat(variantArgs)),
+						pos: expr.pos
+					};
+				default:
+					expr;
+			}
+		}
+		return macro breeze.ClassName.ofArray([$a{exprs.map(applyVariant)}]);
 	}
 }
 
@@ -207,7 +211,7 @@ abstract Variant(VariantObject) from VariantObject {
 	}
 
 	public function wrap(exprs:Array<Expr>) {
-		return Rule.compose(exprs.concat([this.name]));
+		return ClassNameBuilder.fromExprs(exprs).apply([this.name.toExpr()]);
 	}
 }
 
