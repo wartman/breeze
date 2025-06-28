@@ -1,3 +1,11 @@
 package breeze.rule;
 
-// @todo: https://tailwindcss.com/docs/border-collapse
+class Table {
+	public static macro function borderCollapse(...exprs) {}
+
+	public static macro function borderSpacing(...exprs) {}
+
+	public static macro function layout(...exprs) {}
+
+	public static macro function captionSide(...exprs) {}
+}

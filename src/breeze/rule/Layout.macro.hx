@@ -92,7 +92,7 @@ class Layout {
 		Use `overflow('x', ...)` or  `overflow('y', ...)` to only apply these settings
 		horizontally (x) or vertically (y).
 	**/
-	public static function overflow(...exprs) {
+	public static function overflow(...exprs):Expr {
 		var args:Arguments = exprs;
 		return switch args.exprs {
 			case [overflowExpr]:
@@ -136,7 +136,7 @@ class Layout {
 		scrolling a parent scroll area when they reach the boundary of the 
 		primary scroll area.
 	**/
-	public static function overscroll(...exprs) {
+	public static function overscroll(...exprs):Expr {
 		var args:Arguments = exprs;
 		return switch args.exprs {
 			case [overscrollExpr]:
@@ -201,7 +201,7 @@ class Layout {
 		return switch args.exprs {
 			case [layerExpr]:
 				var layer = layerExpr.extractCssValue([Word(['auto']), Integer]);
-				return Rule.create({
+				Rule.create({
 					prefix: 'layer',
 					type: [layer],
 					variants: args.variants,
@@ -211,7 +211,7 @@ class Layout {
 			case [directionExpr, layerExpr]:
 				var direction = directionExpr.extractCssValue([Word(['+', '-'])]);
 				var layer = layerExpr.extractCssValue([Integer]);
-				return Rule.create({
+				Rule.create({
 					prefix: 'layer',
 					type: [direction == '-' ? 'neg' : null, layer].filter(s -> s != null),
 					variants: args.variants,

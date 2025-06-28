@@ -109,7 +109,7 @@ class Transition {
 						variants: args.variants,
 						properties: [{name: 'animation', value: '$name $animation'}],
 						pos: Context.currentPos()
-					})
+					}).register()
 				];
 				return macro breeze.ClassName.ofArray([$a{exprs}]);
 			default:
